@@ -1,0 +1,275 @@
+# depslib dependency file v1.0
+1445056289 source:d:\nili\my programs\algorithm\algorithminc\main.cpp
+	"common.h"
+	"prime.h"
+	"Search/search.h"
+	"graph/graph.h"
+	"tree/BinaryTree.h"
+	"sort/sort.h"
+	"list.h"
+
+1377586171 source:d:\nili\my programs\algorithm\algorithminc\linearlist\josephus.cpp
+	<iostream>
+	<assert.h>
+	"LinearList.h"
+
+1377577887 d:\nili\my programs\algorithm\algorithminc\linearlist\seq list.h
+	<iostream>
+	<iomanip>
+
+1377577885 source:d:\nili\my programs\algorithm\algorithminc\linearlist\seq list.cpp
+	"Seq List.h"
+
+1377586322 source:d:\nili\my programs\algorithm\algorithminc\linearlist\linearlist.cpp
+	"LinearList.h"
+	<iostream>
+	<cstring>
+	<iomanip>
+
+1377585905 d:\nili\my programs\algorithm\algorithminc\linearlist\linearlist.h
+
+1444358907 source:d:\nili\my programs\algorithm\algorithminc\linkedlist\带头结点的单链表\slink.cpp
+	"SLink.h"
+	<iostream>
+
+1444358912 d:\nili\my programs\algorithm\algorithminc\linkedlist\带头结点的单链表\slink.h
+
+1444279646 d:\nili\my programs\algorithm\algorithminc\prime.h
+	"common.h"
+
+1444054541 d:\nili\my programs\algorithm\algorithminc\search\permutation.h
+	"../common.h"
+
+1444358575 d:\nili\my programs\algorithm\algorithminc\common.h
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	<string.h>
+	<math.h>
+	<time.h>
+	<assert.h>
+	<memory.h>
+	<iostream>
+	<iomanip>
+	<queue>
+	<vector>
+	<list>
+	<set>
+	<algorithm>
+
+1444057044 d:\nili\my programs\algorithm\algorithminc\search\search.h
+	"../common.h"
+
+1444057098 source:d:\nili\my programs\algorithm\algorithminc\search\maze.cpp
+	"search.h"
+
+1444055964 source:d:\nili\my programs\algorithm\algorithminc\search\permutation.cpp
+	"search.h"
+
+1445056258 source:d:\nili\my programs\algorithm\algorithminc\graph\graph.cpp
+	"graph.h"
+	"../sort/sort.h"
+	"../tree/tree.h"
+
+1445056277 d:\nili\my programs\algorithm\algorithminc\graph\graph.h
+	"../common.h"
+
+1444057834 source:d:\nili\my programs\algorithm\algorithminc\search\floodfill.cpp
+
+1444316642 source:d:\nili\my programs\algorithm\algorithminc\graph\shortestpath.cpp
+	"graph.h"
+
+1444278419 source:d:\nili\my programs\algorithm\algorithminc\tree\binarytree.cpp
+	<stdio.h>
+	<stdlib.h>
+	"BinaryTree.h"
+	<stack>
+	<iostream>
+
+1444360306 d:\nili\my programs\algorithm\algorithminc\tree\binarytree.h
+	"../common.h"
+
+1289267522 source:d:\nili\my programs\algorithm\algorithminc\tree\binarytreewithparent.cpp
+	<stdio.h>
+	<stdlib.h>
+	"BinaryTreeWithParent.h"
+	<stack>
+	<string.h>
+
+1444359033 d:\nili\my programs\algorithm\algorithminc\tree\binarytreewithparent.h
+
+1444279094 source:d:\nili\my programs\algorithm\algorithminc\tree\main.cpp
+	<iostream>
+	"BinaryTree.h"
+	"BinaryTreeWithParent.h"
+
+1444317371 source:d:\nili\my programs\algorithm\algorithminc\prime.cpp
+	"prime.h"
+
+1444358627 source:d:\nili\my programs\algorithm\algorithminc\string\stringalg.cpp
+	"stringalg.h"
+
+1444279434 d:\nili\my programs\algorithm\algorithminc\string\stringalg.h
+	"../common.h"
+
+1444358558 source:d:\nili\my programs\algorithm\algorithminc\common.cpp
+	"common.h"
+
+1444808346 source:d:\nili\my programs\algorithm\algorithminc\sort\sort_main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<assert.h>
+	<memory.h>
+	<iostream>
+	<algorithm>
+	"Sort.h"
+
+1444808221 d:\nili\my programs\algorithm\algorithminc\sort\sort.h
+	"../common.h"
+
+1444357441 source:d:\nili\my programs\algorithm\algorithminc\random\random.cpp
+	"random.h"
+
+1444357524 d:\nili\my programs\algorithm\algorithminc\random\random.h
+	"../common.h"
+
+1444808217 source:d:\nili\my programs\algorithm\algorithminc\sort\sort.cpp
+	"sort.h"
+	"../random/random.h"
+
+1444361907 source:d:\nili\my programs\algorithm\algorithminc\tree\tree.cpp
+	"tree.h"
+
+1444362202 d:\nili\my programs\algorithm\algorithminc\tree\tree.h
+	"../common.h"
+
+1444899936 d:\nili\my programs\algorithm\algorithminc\list.h
+	"common.h"
+
+1488812499 source:d:\baiduyundownload\algorithminc\common.cpp
+	"common.h"
+
+1488812499 d:\baiduyundownload\algorithminc\common.h
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	<string.h>
+	<math.h>
+	<time.h>
+	<assert.h>
+	<memory.h>
+	<iostream>
+	<iomanip>
+	<queue>
+	<vector>
+	<list>
+	<set>
+	<algorithm>
+
+1488812510 source:d:\baiduyundownload\algorithminc\graph\graph.cpp
+	"graph.h"
+	"../sort/sort.h"
+	"../tree/tree.h"
+
+1488812507 d:\baiduyundownload\algorithminc\graph\graph.h
+	"../common.h"
+
+1488812503 d:\baiduyundownload\algorithminc\sort\sort.h
+	"../common.h"
+
+1488812500 d:\baiduyundownload\algorithminc\tree\tree.h
+	"../common.h"
+
+1488812507 source:d:\baiduyundownload\algorithminc\graph\shortestpath.cpp
+	"graph.h"
+
+1488812506 source:d:\baiduyundownload\algorithminc\linearlist\josephus.cpp
+	<iostream>
+	<assert.h>
+	"LinearList.h"
+
+1488812506 d:\baiduyundownload\algorithminc\linearlist\linearlist.h
+
+1488812506 source:d:\baiduyundownload\algorithminc\linearlist\linearlist.cpp
+	"LinearList.h"
+	<iostream>
+	<cstring>
+	<iomanip>
+
+1488812525 source:d:\baiduyundownload\algorithminc\linkedlist\带头结点的单链表\slink.cpp
+	"SLink.h"
+	<iostream>
+
+1488812524 d:\baiduyundownload\algorithminc\linkedlist\带头结点的单链表\slink.h
+
+1488812499 source:d:\baiduyundownload\algorithminc\prime.cpp
+	"prime.h"
+
+1488812498 d:\baiduyundownload\algorithminc\prime.h
+	"common.h"
+
+1488812505 source:d:\baiduyundownload\algorithminc\random\random.cpp
+	"random.h"
+
+1488812505 d:\baiduyundownload\algorithminc\random\random.h
+	"../common.h"
+
+1488812504 source:d:\baiduyundownload\algorithminc\search\floodfill.cpp
+
+1488812505 source:d:\baiduyundownload\algorithminc\search\maze.cpp
+	"search.h"
+
+1488812504 d:\baiduyundownload\algorithminc\search\search.h
+	"../common.h"
+
+1488812504 source:d:\baiduyundownload\algorithminc\search\permutation.cpp
+	"search.h"
+
+1488812504 source:d:\baiduyundownload\algorithminc\sort\sort.cpp
+	"sort.h"
+	"../random/random.h"
+
+1488812504 source:d:\baiduyundownload\algorithminc\sort\sort_main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<assert.h>
+	<memory.h>
+	<iostream>
+	<algorithm>
+	"Sort.h"
+
+1488812503 source:d:\baiduyundownload\algorithminc\string\stringalg.cpp
+	"stringalg.h"
+
+1488812502 d:\baiduyundownload\algorithminc\string\stringalg.h
+	"../common.h"
+
+1488812502 source:d:\baiduyundownload\algorithminc\tree\binarytree.cpp
+	<stdio.h>
+	<stdlib.h>
+	"BinaryTree.h"
+	<stack>
+	<iostream>
+
+1488812502 d:\baiduyundownload\algorithminc\tree\binarytree.h
+	"../common.h"
+
+1488812501 source:d:\baiduyundownload\algorithminc\tree\binarytreewithparent.cpp
+	<stdio.h>
+	<stdlib.h>
+	"BinaryTreeWithParent.h"
+	<stack>
+	<string.h>
+
+1488812502 d:\baiduyundownload\algorithminc\tree\binarytreewithparent.h
+
+1488812501 source:d:\baiduyundownload\algorithminc\tree\main.cpp
+	<iostream>
+	"BinaryTree.h"
+	"BinaryTreeWithParent.h"
+
+1488812500 source:d:\baiduyundownload\algorithminc\tree\tree.cpp
+	"tree.h"
+
