@@ -27,7 +27,7 @@
 1488812507 c:\nili\mygitprojects\algorithminc\graph\graph.h
 	"../common.h"
 
-1489311026 c:\nili\mygitprojects\algorithminc\sort\sort.h
+1489329412 c:\nili\mygitprojects\algorithminc\sort\sort.h
 	"../common.h"
 
 1488812500 c:\nili\mygitprojects\algorithminc\tree\tree.h
@@ -80,10 +80,10 @@
 1488812499 source:c:\nili\mygitprojects\algorithminc\prime.cpp
 	"prime.h"
 
-1489314269 source:c:\nili\mygitprojects\algorithminc\random\random.cpp
+1489329528 source:c:\nili\mygitprojects\algorithminc\random\random.cpp
 	"random.h"
 
-1488812505 c:\nili\mygitprojects\algorithminc\random\random.h
+1489329556 c:\nili\mygitprojects\algorithminc\random\random.h
 	"../common.h"
 
 1488812504 source:c:\nili\mygitprojects\algorithminc\search\floodfill.cpp
@@ -94,11 +94,11 @@
 1488812504 source:c:\nili\mygitprojects\algorithminc\search\permutation.cpp
 	"search.h"
 
-1489311434 source:c:\nili\mygitprojects\algorithminc\sort\sort.cpp
+1489333129 source:c:\nili\mygitprojects\algorithminc\sort\sort.cpp
 	"sort.h"
 	"../random/random.h"
 
-1489311556 source:c:\nili\mygitprojects\algorithminc\sort\sort_main.cpp
+1489331300 source:c:\nili\mygitprojects\algorithminc\sort\sort_main.cpp
 	<stdio.h>
 	<stdlib.h>
 	<time.h>

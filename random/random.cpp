@@ -1,12 +1,6 @@
 #include "random.h"
 
-inline int bigrand() {
-    return RAND_MAX*rand() + rand();
-}
 
-inline int randint(int l, int u) {
-    return l + bigrand() % (u-l+1);
-}
 //[0,n-1]之间的k个不同的随机数
 void createRandomKData(int* keys,int n,int k) {
     time_t seed;

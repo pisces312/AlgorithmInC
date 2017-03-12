@@ -22,6 +22,7 @@ void quickSortForDup(int* a,int n);
 void quickSortSedgewick(int* x,int n);
 void quickSortTwoWayPartition(int* x,int n);
 void quickSortTwoWayPartition2(int* x,int n);
+void quickSortTwoWayPartition3(int* x,int n);
 void _fastcall quickSortFinal(int* x,int n);
 int partition(int*x,int l,int u);
 void quickSortNonRecursive(int*x,int n);

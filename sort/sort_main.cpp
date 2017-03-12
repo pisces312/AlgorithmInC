@@ -336,29 +336,7 @@ void testHeapSort() {
 }
 
 
-void testQuickSortLomuto2(){
-    int* ptr=NULL;
-    int n=0;
-
-    int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
-    ptr=a;
-    n=sizeof(a)/sizeof(int);
-    printArray(ptr,n);
-    quickSortLomuto2(ptr,n);
-    printArray(ptr,n);
-    printf("\n");
-
-    int b[]= {2,1,1,1,1,1,1};
-    ptr=b;
-    n=sizeof(b)/sizeof(int);
-    printArray(ptr,n);
-    quickSortLomuto2(ptr,n);
-    printArray(ptr,n);
-    printf("\n");
-
-}
-
-void testQuickSortForDup(){
+void testQuickSortForDup() {
     int* ptr=NULL;
     int n=0;
 
@@ -380,40 +358,73 @@ void testQuickSortForDup(){
 
 }
 
-
-void testQuickSortTwoPartition2(){
+//Test sort with well-prepared data
+void testSortFunc(SortFunc func) {
     int* ptr=NULL;
     int n=0;
 
-//    int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
-//    ptr=a;
-//    n=sizeof(a)/sizeof(int);
-//    printArray(ptr,n);
-//    quickSortTwoWayPartition2(ptr,n);
-//    printArray(ptr,n);
-//    printf("\n");
+    //case 1
+    int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
+    ptr=a;
+    n=sizeof(a)/sizeof(int);
+    printArray(ptr,n);
+    func(ptr,n);
+    printArray(ptr,n);
+    printf("\n");
+    assertSorted(ptr,n);
 
+    //case 2
+    //The case that most values are the same
     int b[]= {2,1,1,1,1,1,1};
     ptr=b;
     n=sizeof(b)/sizeof(int);
     printArray(ptr,n);
-    quickSortTwoWayPartition2(ptr,n);
+    func(ptr,n);
     printArray(ptr,n);
     printf("\n");
+    assertSorted(ptr,n);
 
+
+    //case 3
+    //One element
+    int c[]= {0};
+    ptr=c;
+    n=sizeof(c)/sizeof(int);
+    printArray(ptr,n);
+    func(ptr,n);
+    printArray(ptr,n);
+    printf("\n");
+    assertSorted(ptr,n);
+
+
+
+    //Random case
+    testSort(func,99);
 }
 
 
 int testSortMain() {
+
+
+//!incorrect
+    testSortFunc(quickSortForDup);
+
+//    testSortFunc(quickSortTwoWayPartition3);
+
+//    testSortFunc(quickSortTwoWayPartition2);
+
+//    testSortFunc(quickSortTwoWayPartition);
+//    testSortFunc(quickSortLomuto2);
+
+
+
 //    int n=10;
 //    int n=100;
 //    int n=12345;
 //    testDriver(n);
 
 
-testQuickSortTwoPartition2();
-//testQuickSortForDup();
-//    testQuickSortLomuto2();
+
 
 //
 //    int* keys=new int[n];

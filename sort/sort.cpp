@@ -143,13 +143,12 @@ void quickSortLomuto2(int* x,const int n) {
     qsortLomuto2(x,0,n-1);
 }
 
-
-//!???incorrect
+//!TODO incorrect
 void qsortForDup(int* x,int l,int u) {
     if(l>=u)
         return;
 
-    int m=u+1;//用于--操作
+    int m=u+1;//for --
     int n=m;
     int pivot = x[l];
     for(int i=u; i>=l; i--) {
@@ -185,15 +184,12 @@ void quickSortForDup(int* a,int n) {
 }
 
 
-/* Sedgewick's version of Lomuto, with sentinel
-使用哨卫
-Start from right
-*/
+//Sedgewick's version of Lomuto, with sentinel
 void qsortSedgewick(int* x,int l, int u) {
     if (l >= u)
         return;
     int i, m;
-    m = i = u+1;
+    m = i = u+1; //sentinel
     do {
         do i--;
         while (x[i] < x[l]);
@@ -209,19 +205,51 @@ void quickSortSedgewick(int* x,int n) {
 void qsortTwoWayPartition(int* x,const int l, const int u) {
     int mid=partition(x,l,u);
     if(mid<0) return;
+    printf("partition = %d\n",mid);
     qsortTwoWayPartition(x,l, mid-1);
     qsortTwoWayPartition(x,mid+1, u);
 }
 void quickSortTwoWayPartition(int* x,int n) {
     qsortTwoWayPartition(x,0,n-1);
 }
+
+
+//Randomly choose pivot
+int partitionFinal(int*x,const int l,const int u) {
+    if (l >= u)
+        return -1;
+    swap(x,l, randint(l, u));//optimize
+    int pivot = x[l]; //l stands for pivot's index
+    int i = l;
+    int j = u+1; //Reduce compare operation in the loop
+    while (true) {
+//Must do i++ before while. So even all values are the same,
+//it will choose a middle place for partition
+        do i++; //i must >= l+1
+        while (i <= u && x[i] < pivot);
+        //i may > u after loop, so the final pivot place cannot use i
+
+        //no need check left border j>=l, because x[l]=pivot as guard
+        do j--;
+        while (x[j] > pivot);
+        if (i >= j) //The minimal j=l, and now x[j]==pivot; so j==l<i
+            break;
+        swap(x,i, j);
+    }
+//Place pivot to the write place
+//if j==l, no need to swap, pivot is already in the correct place
+    if(l!=j)
+        swap(x,l, j);
+    return j;
+}
+
 /* qsort3 + randomization + isort small subarrays + swap inline */
 
 void qsortFinal(int* x,int l, int u) {
     static const int cutoff=50;
     if (u - l < cutoff)//小于时直接退出！！
         return;
-    int mid=partition(x,l,u);
+    int mid=partitionFinal(x,l,u);
     qsortFinal(x,l, mid-1);
     qsortFinal(x,mid+1, u);
 }
@@ -235,47 +263,91 @@ void _fastcall quickSortFinal(int* x,int n) {
 
 
 
-int partition(int*x,int l,int u) {
+
+int partition(int*x,const int l,const int u) {
     if (l >= u)
         return -1;
-    //Use first element as pivot
-    swap(x,l, randint(l, u));//optimize
-    int pivot = x[l];
-    int i = l,j = u+1;
+    int pivot = x[l]; //l stands for pivot's index
+    int i = l;
+    int j = u+1; //Reduce compare operation in the loop
     while (true) {
+//Must do i++ before while. So even all values are the same,
+//it will choose a middle place for partition
         do i++;
         while (i <= u && x[i] < pivot);
+        //no need to check left border j>=l, because x[l]=pivot
         do j--;
-        //don't need check j>=l, because x[l]=pivot
         while (x[j] > pivot);
         if (i >= j)
             break;
         swap(x,i, j);
     }
-    if(l!=j)//can not use i here, because i may equal to u
+//Place pivot to the write place
+//if j==l, no need to swap, pivot is already in the correct place
+    if(l!=j)
         swap(x,l, j);
     return j;
 }
 
-
-//????
-int partition2(int*x,int l,int u) {
+//Not use swap func, but use x[i] as dynamic tmp var
+int partition3(int*x,const int l,const int u) {
     if (l >= u)
         return -1;
-    int pivot = x[l];
+    const int pivot = x[l]; //l stands for pivot's index
+    int i = l;
+    int j = u+1;
+    while (true) {
+        do j--;
+        while (x[j] > pivot);
+        //Must check
+        if(i>=j)
+            break;
+        x[i]=x[j];
+
+        //Must check i<=u
+        do i++;
+        while (i <= u && x[i] < pivot);
+        if(i>=j)
+            break;
+        x[j]=x[i];
+    }
+//Place pivot to the right place
+    x[j]=pivot;
+    return j;
+}
+
+void qsortTwoWayPartition3(int* x,const int l, const int u) {
+    int p=partition3(x,l,u);
+    if(p<0)
+        return;
+    printf("partition = %d\n",p);
+    qsortTwoWayPartition3(x,l, p-1);
+    qsortTwoWayPartition3(x,p+1, u);
+}
+void quickSortTwoWayPartition3(int* x,int n) {
+    qsortTwoWayPartition3(x,0,n-1);
+}
+
+
+int partition2(int*x,const int l,const int u) {
+    if (l >= u)
+        return -1;
     int low = l;
+    //Backup first x[low]
+    int pivot = x[low];
     int high = u;
     while(low < high) {
-//??是否可去掉low < high
-        while(low < high && x[high] > pivot) {
+//Must be >=, otherwise it cannot exit loop if
+//all values are the same
+        while(low < high && x[high] >= pivot) {
             --high;
         }
-//看high,v[low]可作为临时变量，用于放置<=pivot的元素
+//As tmp, x[low] stores current element which <=pivot
         x[low] = x[high];
-        while(low < high && x[low] < pivot) {
+        while(low < high && x[low] <= pivot) {
             ++low;
         }
-//看low,v[high]可作为临时变量，用于放置>=pivot的元素
+//As tmp, x[high] stores current element which >=pivot
         x[high] = x[low];
     }
 //low >= high
@@ -285,12 +357,12 @@ int partition2(int*x,int l,int u) {
 
 
 void qsortTwoWayPartition2(int* x,const int l, const int u) {
-    int mid=partition2(x,l,u);
-    if(mid<0)
+    int p=partition2(x,l,u);
+    if(p<0)
         return;
-        printf("mid=%d\n",mid);
-    qsortTwoWayPartition2(x,l, mid-1);
-    qsortTwoWayPartition2(x,mid+1, u);
+    printf("partition = %d\n",p);
+    qsortTwoWayPartition2(x,l, p-1);
+    qsortTwoWayPartition2(x,p+1, u);
 }
 void quickSortTwoWayPartition2(int* x,int n) {
     qsortTwoWayPartition2(x,0,n-1);
