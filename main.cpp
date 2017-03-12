@@ -110,10 +110,10 @@ int hasLoop(Node *node) {
 void testLoop() {
 
     Node *pList=NULL;
-    int length = 0;
+//    int length = 0;
     int i;
 
-    int posElem;
+//    int posElem;
 
     initList(&pList);       //������ʼ��
     printList(pList);       //������������ӡ����
@@ -181,6 +181,7 @@ void hanoi2(int n,char a,char b,char c) {
         hanoi2(n-1,b,a,c);
     }
 }
+
 
 
 int main() {

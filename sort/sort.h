@@ -11,12 +11,14 @@ void insertSort1(int* x,int n);
 void insertSort2(int* x,int n);
 /* Move assignments to and from t out of loop */
 void insertSort3(int* x,int n);
-//鏀硅繘锛氫娇鐢ㄤ簩鍒嗘悳绱㈡壘鍒版彃鍏ョ殑浣嶇疆
+//改进：使用二分搜索找到插入的位置
 void insertSortWithBisearch(int* x,int n);
 
 
 
 void quickSortLomuto(int* x,int n);
+void quickSortLomuto2(int* x,int n);
+void quickSortForDup(int* a,int n);
 void quickSortSedgewick(int* x,int n);
 void quickSortTwoWayPartition(int* x,int n);
 void _fastcall quickSortFinal(int* x,int n);
@@ -58,7 +60,7 @@ void bitSortNoDuplicatePositiveInteger(int *x,int n,int max);
 void radixSortForPositiveInteger(int* x,int n,int m,int d);
 
 /*
-鍐呴儴鎺掑簭姣旇緝
+内部排序比较
 
 Statistics
 */

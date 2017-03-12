@@ -170,8 +170,8 @@ mergeSort2               n=123456        clicks=30       time=3e+007ns
 radixSort                n=123456        clicks=340      time=3.4e+008ns
 
 **/
-void testDriverCore(int* keys,int n) {
-    const int STACK_MAX_SIZE=1024*1024;
+void testDriverCore(int* keys,unsigned int n) {
+    const unsigned int STACK_MAX_SIZE=1024*1024;
     if(keys==NULL||n<0) return;
 //    int* keys=new int[n];
     int* org=new int[n];
@@ -336,16 +336,62 @@ void testHeapSort() {
 }
 
 
+void testQuickSortLomuto2(){
+    int* ptr=NULL;
+    int n=0;
+
+    int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
+    ptr=a;
+    n=sizeof(a)/sizeof(int);
+    printArray(ptr,n);
+    quickSortLomuto2(ptr,n);
+    printArray(ptr,n);
+    printf("\n");
+
+    int b[]= {2,1,1,1,1,1,1};
+    ptr=b;
+    n=sizeof(b)/sizeof(int);
+    printArray(ptr,n);
+    quickSortLomuto2(ptr,n);
+    printArray(ptr,n);
+    printf("\n");
+
+}
+
+void testQuickSortForDup(){
+    int* ptr=NULL;
+    int n=0;
+
+    int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
+    ptr=a;
+    n=sizeof(a)/sizeof(int);
+    printArray(ptr,n);
+    quickSortForDup(ptr,n);
+    printArray(ptr,n);
+    printf("\n");
+
+    int b[]= {2,1,1,1,1,1,1};
+    ptr=b;
+    n=sizeof(b)/sizeof(int);
+    printArray(ptr,n);
+    quickSortForDup(ptr,n);
+    printArray(ptr,n);
+    printf("\n");
+
+}
 
 
 int testSortMain() {
 //    int n=10;
 //    int n=100;
-    int n=12345;
+//    int n=12345;
+//    testDriver(n);
 
 
-    testDriver(n);
+testQuickSortForDup();
+//    testQuickSortLomuto2();
 
+//
 //    int* keys=new int[n];
 //    int* result;
 //    int i;

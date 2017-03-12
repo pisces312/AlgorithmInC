@@ -188,9 +188,9 @@ int insertLastList(Node **pNode,int insertElem) {
 }
 
 /******************************************************************/
-int testList() {
+void testList() {
     Node *pList=NULL;
-    int length = 0;
+//    int length = 0;
     int i;
 
     int posElem;
