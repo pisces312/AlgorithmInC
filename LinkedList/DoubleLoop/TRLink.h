@@ -1,13 +1,13 @@
 #include"TLNode.h"
 #include<stdlib.h>
-class TLink
+class TRLink
 {
 public:
 	TLNode *head;
-	TLink();
-	TLink(int n);
-	~TLink();
-	int TLink::length()const;
+	TRLink();
+	TRLink(int n);
+	~TRLink();
+	int length()const;
 	bool isEmpty() const
 	{
 		return head==NULL;
@@ -30,19 +30,22 @@ public:
 	void reverseoutput() const;
 	void output() const;
 	void output(TLNode *p) const;
+	void output(int n) const;
 };
 
-TLink::TLink()
+TRLink::TRLink()
 {
 	head=new TLNode;
+	head->prior=head;
+	head->next=head;
 }
-TLink::TLink(int n)
+TRLink::TRLink(int n)
 {
 	head=new TLNode;
 	TLNode *p=head;
 	if(n<0)
 	{
-		cout<<"输入错误!\n";
+		std::cout<<"输入错误!\n";
 		exit(1);
 	}
 	for(int i=0;i<n;)
@@ -52,11 +55,13 @@ TLink::TLink(int n)
 		p=p->next;
 		p->data=++i;
 	}
+	p->next=head;
+	head->prior=p;
 }
-TLink::~TLink()
+TRLink::~TRLink()
 {
-	TLNode *p=head,*t;
-	while(p!=NULL)
+	TLNode *p=head->next,*t;
+	while(p!=head)
 	{
 		t=p;
 		p=t->next;
@@ -64,61 +69,61 @@ TLink::~TLink()
 	}
 	head=NULL;
 }
-bool TLink::isExist(int i) const
+bool TRLink::isExist(int i) const
 {
-	if(i<1||i>length()) 
+	if(i<1||i>length())
 	{
-		cout<<"输入错误! 结点"<<i<<"不存在!\n";
+		std::cout<<"输入错误! 结点"<<i<<"不存在!\n";
 		return false;
 	}
 	return true;
 }
 
-int TLink::length()const
+int TRLink::length()const
 {
 	TLNode *p=head->next;
 	int i=0;
-	while(p!=NULL)
+	while(p!=head)
 	{
 		i++;
 		p=p->next;
 	}
 	return i;
 }
-TLNode* TLink::index(int i) const
+TLNode* TRLink::index(int i) const
 {
 	if(!isExist(i)) exit(1);
 	TLNode *p=head->next;
 	int j=0;
-	while(p!=NULL&&j<i-1)
+	while(p!=head&&j<i-1)
 	{
 		j++;
 		p=p->next;
 	}
 	return p;
 }
-int TLink::get(int i) const
+int TRLink::get(int i) const
 {
 	if(!isExist(i)) exit(1);
 	TLNode *p=head->next;
 	int j=0;
-	while(p!=NULL&&j<i-1)
+	while(p!=head&&j<i-1)
 	{
 		j++;
 		p=p->next;
 	}
 	return p->data;
 }
-bool TLink::set(int i,int n)
+bool TRLink::set(int i,int n)
 {
-	if(!isExist(i)) 
+	if(!isExist(i))
 	{
-		cout<<"设置失败!\n";
+		std::cout<<"设置失败!\n";
 		return false;
 	}
 	TLNode *p=head->next;
 	int j=0;
-	while(p!=NULL&&j<i-1)
+	while(p!=head&&j<i-1)
 	{
 		j++;
 		p=p->next;
@@ -126,70 +131,87 @@ bool TLink::set(int i,int n)
 	p->data=n;
 	return true;
 }
-TLNode* TLink::insertafter(TLNode* p,int n)
+TLNode* TRLink::insertafter(TLNode* p,int n)
 {
 	TLNode *q=new TLNode(n);
 	q->prior=p;
 	q->next=p->next;
-	if(p->next!=NULL)
+	if(p->next!=head)
 	{
 		p->next->prior=q;
 	}
 	p->next=q;
 	return q;
 }
-TLNode* TLink::insertbefore(TLNode* p,int n)
+TLNode* TRLink::insertbefore(TLNode* p,int n)
 {
 	return insertafter(p->prior,n);
 }
-bool TLink::insertbefore(int i,int n)
+bool TRLink::insertbefore(int i,int n)
 {
 	insertbefore(index(i),n);
 	return true;
 }
-bool TLink::insertafter(int i,int n)
+bool TRLink::insertafter(int i,int n)
 {
 	insertafter(index(i),n);
 	return true;
 }
-bool TLink::remove(TLNode* p)
+bool TRLink::remove(TLNode* p)
 {
 	TLNode *t=p->next;
 	p->prior->next=t;
-	if(t!=NULL)
+	if(t!=head)
 	{
-		t->prior=p->prior;	
+		t->prior=p->prior;
 	}
 	delete p;
 	return true;
 }
-bool TLink::remove(int i)
+bool TRLink::remove(int i)
 {
 	return remove(index(i));
 }
-void TLink::output(TLNode *p) const
+void TRLink::output(TLNode *p) const
 {
-	cout<<"Two Link: ";
-	if(head->next==NULL)
+	std::cout<<"Two Link: ";
+	if(head->next==head)
 	{
-		cout<<"空表\n";
+		std::cout<<"空表\n";
 	}
-	while(p!=NULL)
+	while(p!=head)
 	{
-		cout<<p->data;
+		std::cout<<p->data;
 		p=p->next;
-		if(p!=NULL) cout<<"->";
+		if(p!=head) std::cout<<"->";
 	}
-	cout<<endl;
+	std::cout<<std::endl;
 }
-void TLink::output() const
+void TRLink::output() const
 {
 	output(head->next);
 }
-void TLink::reverse()
+void TRLink::output(int n) const
+{
+	TLNode *p=head->next;
+	int i=0;
+	std::cout<<"Two Ring Link: ";
+	while(i<n)
+	{
+		if(p==head)
+		{
+			p=p->next;
+		}
+		std::cout<<p->data;
+		if(++i!=n) std::cout<<"->";
+		p=p->next;
+	}
+	std::cout<<std::endl;
+}
+void TRLink::reverse()
 {
 	TLNode *p=head->next,*q=NULL,*t=NULL;
-	while(p!=NULL)
+	while(p!=head)
 	{
 		q=p->next;
 		p->next=t;
@@ -199,21 +221,21 @@ void TLink::reverse()
 	}
 	head->next=t;
 }
-void TLink::reverseoutput() const
+void TRLink::reverseoutput() const
 {
 	TLNode *p=head;
-	while(p->next!=NULL)
+	while(p->next!=head)
 	{
 		p=p->next;
 	}
-	cout<<"Reversed Two Link: ";
-	while(p->prior!=NULL)
+	std::cout<<"Reversed Two Link: ";
+	while(p->prior!=head)
 	{
-		cout<<p->data;
+		std::cout<<p->data;
 		p=p->prior;
-		if(p->prior!=NULL) cout<<"->";
+		if(p->prior!=head) std::cout<<"->";
 	}
-	cout<<endl;
+	std::cout<<std::endl;
 }
 
 

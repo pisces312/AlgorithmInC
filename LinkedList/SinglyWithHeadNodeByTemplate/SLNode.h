@@ -1,4 +1,4 @@
-#include<iostream.h>
+#include<iostream>
 template<class T>
 class SLNode
 {

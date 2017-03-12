@@ -381,6 +381,29 @@ void testQuickSortForDup(){
 }
 
 
+void testQuickSortTwoPartition2(){
+    int* ptr=NULL;
+    int n=0;
+
+//    int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
+//    ptr=a;
+//    n=sizeof(a)/sizeof(int);
+//    printArray(ptr,n);
+//    quickSortTwoWayPartition2(ptr,n);
+//    printArray(ptr,n);
+//    printf("\n");
+
+    int b[]= {2,1,1,1,1,1,1};
+    ptr=b;
+    n=sizeof(b)/sizeof(int);
+    printArray(ptr,n);
+    quickSortTwoWayPartition2(ptr,n);
+    printArray(ptr,n);
+    printf("\n");
+
+}
+
+
 int testSortMain() {
 //    int n=10;
 //    int n=100;
@@ -388,7 +411,8 @@ int testSortMain() {
 //    testDriver(n);
 
 
-testQuickSortForDup();
+testQuickSortTwoPartition2();
+//testQuickSortForDup();
 //    testQuickSortLomuto2();
 
 //

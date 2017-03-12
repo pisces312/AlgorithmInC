@@ -1,5 +1,5 @@
 #include"TLink.h"
-void main()
+void testTRLink2()
 {
 	TLink list(10);
 	list.insertafter(10,3);
@@ -14,5 +14,5 @@ void main()
 	list.output();
 	cout<<list.length()<<endl;
 	list.reverseoutput();
-	
+
 }

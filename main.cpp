@@ -1,17 +1,15 @@
 #include "common.h"
 //#include"LinearList/LinearList.h"
-//#include"LinkedList/��ͷ�����ĵ�����/SLink.h"
 #include "prime.h"
 #include "Search/search.h"
 #include "graph/graph.h"
 #include "tree/BinaryTree.h"
 #include "sort/sort.h"
 #include "list.h"
-//using namespace std;
+#include "LinkedList/Singly/OneLink.h"
 
 ////////////////////////////////////////////////////////////
 /**
-쳲���������
 0,1,2,3,4,5,6, 7, 8, 9,10
 0,1,1,2,3,5,8,13,21,34,55
 f(0)=0,f(1)=1
@@ -66,7 +64,7 @@ void testFibonacci() {
 
 
 ////////////////////////////////////////////////////////////
-//ȫ����
+
 void permutation(char *s, int start, int end) {
     if (start == end) {
         printf("%s\n", s);
@@ -115,27 +113,27 @@ void testLoop() {
 
 //    int posElem;
 
-    initList(&pList);       //������ʼ��
-    printList(pList);       //������������ӡ����
+    initList(&pList);
+    printList(pList);
 
-//    insertHeadList(&pList,5);   //��ͷ����Ԫ��12
+//    insertHeadList(&pList,5);
 //    printList(pList);
 
-//    insertLastList(&pList,10);  //��β����Ԫ��10
+//    insertLastList(&pList,10);
 //    printList(pList);
 
 
 
-//    pList=creatList(pList); //��������
+//    pList=creatList(pList);
 //    printList(pList);
 
 
 
     for(i=1; i<=10; ++i)
-        insertLastList(&pList,i);  //��β����Ԫ��10
+        insertLastList(&pList,i);
 
 
-    sizeList(pList);        //�����ĳ���
+    sizeList(pList);
     printList(pList);
 
     Node* n10=getNode(pList,10);
@@ -173,7 +171,6 @@ void hanoi(int n,char A,char B,char C) {
 
 void hanoi2(int n,char a,char b,char c) {
     static int step=0;
-    //һ�����ӵ�������ֱ�Ӵ�a��cһ������
     if(n==1) printf("Step %d: Move disk %d from %c to %c\n",++step,n,a,c);
     else {
         hanoi2(n-1,a,c,b);
@@ -182,10 +179,17 @@ void hanoi2(int n,char a,char b,char c) {
     }
 }
 
+int testOneLink() {
+    OneLink link1(8);
+    link1.set(2,'9');
+    link1.output();
+    return 0;
+}
 
 
 int main() {
- //   Cutedge::testCutedge();
+//    testOneLink();
+//   Cutedge::testCutedge();
 //    Cutpoint2::testCutpoint();
 //    Cutpoint::testCutpoint();
 //    testList();

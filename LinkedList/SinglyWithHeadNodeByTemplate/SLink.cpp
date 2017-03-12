@@ -1,5 +1,5 @@
 #include"SLink.h"
-void main()
+void testSLink()
 {
 	SLink<char> s(0);
 	s.set(3,'1');

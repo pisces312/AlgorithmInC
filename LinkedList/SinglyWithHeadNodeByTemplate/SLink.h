@@ -1,5 +1,6 @@
 #include"SLNode.h"
 #include<stdlib.h>
+using namespace std;
 template<class T>
 class SLink
 {
@@ -15,7 +16,7 @@ public:
 	{
 		return head==NULL;
 	}
-	bool isFull() 
+	bool isFull()
 	{
 		return false;
 	}
@@ -74,7 +75,7 @@ template<class T>
 SLink<T>::SLink(SLink<T> &list)
 {
 	head=new SLNode<T>;
-	SLNode<T> *p=(list.head)->next,*t=head;	
+	SLNode<T> *p=(list.head)->next,*t=head;
 	while(p!=NULL)
 	{
 		insertafter(t,p->data);
@@ -95,9 +96,9 @@ SLink<T>::~SLink()
 	head=NULL;
 }
 template<class T>
-bool SLink<T>::isExist(int i) 
+bool SLink<T>::isExist(int i)
 {
-	if(i<1||i>length()) 
+	if(i<1||i>length())
 	{
 		cout<<"输入错误! 结点"<<i<<"不存在!\n";
 		return false;
@@ -117,7 +118,7 @@ int SLink<T>::length()
 	return i;
 }
 template<class T>
-SLNode<T>* SLink<T>::index(int i) 
+SLNode<T>* SLink<T>::index(int i)
 {
 	if(!isExist(i)) exit(1);
 	SLNode<T> *p=head->next;
@@ -130,7 +131,7 @@ SLNode<T>* SLink<T>::index(int i)
 	return p;
 }
 template<class T>
-T SLink<T>::get(int i) 
+T SLink<T>::get(int i)
 {
 	if(!isExist(i)) exit(1);
 	SLNode<T> *p=head->next;
@@ -191,7 +192,7 @@ SLNode<T>* SLink<T>::insertbefore(SLNode<T>* p,T n)
 template<class T>
 SLNode<T>* SLink<T>::insertafter(SLNode<T>* p,T n)
 {
-	
+
 	SLNode<T> *t=p->next;
 	p->next=new SLNode<T>(n);
 	p->next->next=t;
@@ -243,7 +244,7 @@ bool SLink<T>::RemoveData(T n)
 	return RemoveNode(searchdata(n));
 }
 template<class T>
-void SLink<T>::output(SLNode<T>* p) 
+void SLink<T>::output(SLNode<T>* p)
 {
 	cout<<"Single Link: ";
 	if(head->next==NULL)
@@ -259,7 +260,7 @@ void SLink<T>::output(SLNode<T>* p)
 	cout<<endl;
 }
 template<class T>
-void SLink<T>::output() 
+void SLink<T>::output()
 {
 	output(head->next);
 }
@@ -289,7 +290,7 @@ int SLink<T>::sum()
 	return s;
 }
 template<class T>
-SLNode<T>* SLink<T>::searchdata(T n) 
+SLNode<T>* SLink<T>::searchdata(T n)
 {
 	SLNode<T> *p=head->next;
 	while(p!=NULL)
@@ -304,7 +305,7 @@ SLink<T>* SLink<T>::AddLink(SLink<T> a)
 {
 	SLink<T> *c=new SLink<T>;
 	SLNode<T> *p=head->next,*t=c->head;
-	
+
 	while(p!=NULL)
 	{
 		c->insertafter(t,p->data);

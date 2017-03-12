@@ -11,7 +11,6 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option projectCompilerOptionsRelation="0" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -33,48 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="LinearList/Josephus.cpp" />
-		<Unit filename="LinearList/LinearList.cpp" />
-		<Unit filename="LinearList/LinearList.h" />
-		<Unit filename="LinkedList/带头结点的单链表/SLink.cpp" />
-		<Unit filename="LinkedList/带头结点的单链表/SLink.h" />
-		<Unit filename="Search/floodfill.cpp" />
-		<Unit filename="Search/maze.cpp" />
-		<Unit filename="Search/permutation.cpp" />
-		<Unit filename="Search/search.h" />
-		<Unit filename="common.cpp" />
-		<Unit filename="common.h" />
-		<Unit filename="graph/graph.cpp" />
-		<Unit filename="graph/graph.h" />
-		<Unit filename="graph/shortestpath.cpp" />
-		<Unit filename="list.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="prime.cpp" />
-		<Unit filename="prime.h" />
-		<Unit filename="random/random.cpp" />
-		<Unit filename="random/random.h" />
-		<Unit filename="sort/sort.cpp" />
-		<Unit filename="sort/sort.h" />
-		<Unit filename="sort/sort_main.cpp" />
-		<Unit filename="string/stringalg.cpp" />
-		<Unit filename="string/stringalg.h" />
-		<Unit filename="tree/BinaryTree.cpp" />
-		<Unit filename="tree/BinaryTree.h" />
-		<Unit filename="tree/BinaryTreeWithParent.cpp" />
-		<Unit filename="tree/BinaryTreeWithParent.h" />
-		<Unit filename="tree/main.cpp" />
-		<Unit filename="tree/tree.cpp" />
-		<Unit filename="tree/tree.h" />
 		<Extensions>
-			<DoxyBlocks>
-				<comment_style block="0" line="0" />
-				<doxyfile_project />
-				<doxyfile_build />
-				<doxyfile_warnings />
-				<doxyfile_output />
-				<doxyfile_dot />
-				<general />
-			</DoxyBlocks>
 			<code_completion />
 			<envvars />
 			<debugger />

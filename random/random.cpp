@@ -32,7 +32,7 @@ void genknuth(int m, int n) {
         }
 }
 
-void gensets(int m, int n) {
+void gensets(unsigned int m, int n) {
     std::set<int> S;
     std::set<int>::iterator i;
     while (S.size() < m) {
@@ -40,7 +40,7 @@ void gensets(int m, int n) {
         S.insert(t);
     }
     for (i = S.begin(); i != S.end(); ++i)
-        printf("%d\n",i);
+        printf("%d\n",*i);
 }
 
 void genshuf(int m, int n) {

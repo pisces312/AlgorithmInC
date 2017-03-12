@@ -1,36 +1,5 @@
-#include"SRLNode.h"
-#include<stdlib.h>
-class SRLink
-{
-public:
-	SRLNode* head;
-	SRLink();
-	SRLink(int n);
-	~SRLink();
-	int SRLink::length()const;
-	bool isEmpty() const
-	{
-		return head==NULL;
-	}
-	bool isFull() const
-	{
-		return false;
-	}
-	bool isExist(int i) const;
-	SRLNode* index(int i) const;
-	int get(int i) const;
-	bool set(int i,int n);
-	SRLNode* insertbefore(SRLNode* p,int n);
-	SRLNode* insertafter(SRLNode* p,int n);
-	bool insertbefore(int i,int n);
-	bool insertafter(int i,int n);
-	bool remove(SRLNode* p);
-	bool remove(int i);
-	void reverse();
-	void output() const;
-	void output(SRLNode *p) const;
-	void output(int n) const;
-};
+#include"SRLink.h"
+
 SRLink::SRLink()
 {
 	head=new SRLNode;
@@ -42,7 +11,7 @@ SRLink::SRLink(int n)
 	SRLNode *p=head;
 	if(n<0)
 	{
-		cout<<"输入错误!\n";
+		std::cout<<"输入错误!\n";
 		exit(1);
 	}
 	for(int i=0;i<n;)
@@ -66,9 +35,9 @@ SRLink::~SRLink()
 }
 bool SRLink::isExist(int i) const
 {
-	if(i<1||i>length()) 
+	if(i<1||i>length())
 	{
-		cout<<"输入错误! 结点"<<i<<"不存在!\n";
+		std::cout<<"输入错误! 结点"<<i<<"不存在!\n";
 		return false;
 	}
 	return true;
@@ -111,9 +80,9 @@ int SRLink::get(int i) const
 }
 bool SRLink::set(int i,int n)
 {
-	if(!isExist(i)) 
+	if(!isExist(i))
 	{
-		cout<<"设置失败!\n";
+		std::cout<<"设置失败!\n";
 		return false;
 	}
 	SRLNode *p=head->next;
@@ -143,7 +112,7 @@ SRLNode* SRLink::insertbefore(SRLNode* p,int n)
 	}
 	else
 	{
-		cout<<"无法插入!\n";
+		std::cout<<"无法插入!\n";
 		exit(1);
 	}
 }
@@ -181,7 +150,7 @@ bool SRLink::remove(SRLNode* p)
 	}
 	else
 	{
-		cout<<"无法删除!\n";
+		std::cout<<"无法删除!\n";
 		exit(1);
 	}
 	return false;
@@ -192,18 +161,18 @@ bool SRLink::remove(int i)
 }
 void SRLink::output(SRLNode *p) const
 {
-	cout<<"Single Ring Link: ";
+	std::cout<<"Single Ring Link: ";
 	if(head->next==head)
 	{
-		cout<<"空表\n";
+		std::cout<<"空表\n";
 	}
 	while(p!=head)
 	{
-		cout<<p->data;
+		std::cout<<p->data;
 		p=p->next;
-		if(p!=head) cout<<"->";
+		if(p!=head) std::cout<<"->";
 	}
-	cout<<endl;
+	std::cout<<std::endl;
 }
 void SRLink::output() const
 {
@@ -213,18 +182,18 @@ void SRLink::output(int n) const
 {
 	SRLNode *p=head->next;
 	int i=0;
-	cout<<"Single Ring Link: ";
+	std::cout<<"Single Ring Link: ";
 	while(i<n)
 	{
 		if(p==head)
 		{
 			p=p->next;
 		}
-		cout<<p->data;
-		if(++i!=n) cout<<"->";
+		std::cout<<p->data;
+		if(++i!=n) std::cout<<"->";
 		p=p->next;
 	}
-	cout<<endl;
+	std::cout<<std::endl;
 }
 void SRLink::reverse()
 {
@@ -239,5 +208,15 @@ void SRLink::reverse()
 	head->next=t;
 }
 
+//Test
+void testSRLink2()
+{
+	SRLink list(5);
+	std::cout<<list.get(3)<<std::endl;
+	list.insertafter(5,6);
+	list.remove(5);
+	list.reverse();
 
-
+	list.output();
+	list.output(19);
+}

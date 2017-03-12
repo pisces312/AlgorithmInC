@@ -1,6 +1,6 @@
 //#include"SLink.h"
 #include"SRLink.h"
-void main()
+void testSRLink()
 {
 //	SLink list(10);
 //	cout<<list.length()<<endl;

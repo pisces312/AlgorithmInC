@@ -232,6 +232,9 @@ void _fastcall quickSortFinal(int* x,int n) {
     insertSort3(x,n);
 }
 
+
+
+
 int partition(int*x,int l,int u) {
     if (l >= u)
         return -1;
@@ -253,6 +256,47 @@ int partition(int*x,int l,int u) {
         swap(x,l, j);
     return j;
 }
+
+
+//????
+int partition2(int*x,int l,int u) {
+    if (l >= u)
+        return -1;
+    int pivot = x[l];
+    int low = l;
+    int high = u;
+    while(low < high) {
+//??是否可去掉low < high
+        while(low < high && x[high] > pivot) {
+            --high;
+        }
+//看high,v[low]可作为临时变量，用于放置<=pivot的元素
+        x[low] = x[high];
+        while(low < high && x[low] < pivot) {
+            ++low;
+        }
+//看low,v[high]可作为临时变量，用于放置>=pivot的元素
+        x[high] = x[low];
+    }
+//low >= high
+    x[low] = pivot;
+    return low;
+}
+
+
+void qsortTwoWayPartition2(int* x,const int l, const int u) {
+    int mid=partition2(x,l,u);
+    if(mid<0)
+        return;
+        printf("mid=%d\n",mid);
+    qsortTwoWayPartition2(x,l, mid-1);
+    qsortTwoWayPartition2(x,mid+1, u);
+}
+void quickSortTwoWayPartition2(int* x,int n) {
+    qsortTwoWayPartition2(x,0,n-1);
+}
+
+
 //worst case, need 2*(n-1) partitions
 void quickSortNonRecursive(int*x,int n) {
 //    int c=2;
