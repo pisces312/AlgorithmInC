@@ -453,13 +453,16 @@ void quickSortNonRecursive2(int*x,int n) {
 }
 
 /* selection —°‘Ò≈≈–Ú*/
-//!TODO incorrect
 void selectSort(int* x,int n) {
-    int i, j;
-    for (i = 0; i < n-1; i++)
-        for (j = i; j < n; j++)
-            if (x[j] < x[i])
-                swap(x,i, j);
+    int i, j, m;
+    for (i = 0; i < n; i++) {
+        m=i;
+        for (j = i+1; j < n; j++)
+            if (x[j] < x[m])
+                m=j;
+        if(i!=m)
+            swap(x,i, m);
+    }
 }
 
 

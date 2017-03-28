@@ -408,8 +408,9 @@ int testSortMain() {
 
 //!incorrect
 //    testSortFunc(quickSortForDup);
-testSortFunc(shellSort3);
-testSortFunc(shellSort2);
+testSortFunc(selectSort);
+//testSortFunc(shellSort3);
+//testSortFunc(shellSort2);
 //testSortFunc(quickSortNonRecursive);
 //    testSortFunc(quickSortTwoWayPartition3);
 
