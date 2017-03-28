@@ -46,8 +46,8 @@ int deletemax(int*h,int n);
 
 
 void shellSort(int* x,int n);
-
-
+void shellSort2(int* x,int n);
+void shellSort3(int* x,int n);
 
 void bubbleSort1(int* x,int n);
 void bubbleSortWithFlag(int* x,int n);

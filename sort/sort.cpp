@@ -329,28 +329,34 @@ void quickSortTwoWayPartition3(int* x,int n) {
 }
 
 
-int partition2(int*x,const int l,const int u) {
-    if (l >= u)
+int partition2(int*x,int low,int high) {
+    if (low >= high)
         return -1;
-    int low = l;
-    //Backup first x[low]
+//Backup first x[low]
     int pivot = x[low];
-    int high = u;
     while(low < high) {
-//Must be >=, otherwise it cannot exit loop if
-//all values are the same
-        while(low < high && x[high] >= pivot) {
+//1) Must consider right pointer first
+//
+//2) "=" will cause bad partition (worst case: all values are the same),
+//but still have to use it.
+//If only "<", right pointer will not move when
+//the first value equals to pivot (worst case: all values are the same),
+//so the "while(low<hight)" loop cannot exit
+        while(low < high && pivot <= x[high]) {
             --high;
         }
-//As tmp, x[low] stores current element which <=pivot
+//As tmp variable, x[low] stores current element which <=pivot
+//worst case, high=low
         x[low] = x[high];
+//Have to use "=". Same reason
+//worst case, high=low, the loop will not be executed
         while(low < high && x[low] <= pivot) {
             ++low;
         }
 //As tmp, x[high] stores current element which >=pivot
         x[high] = x[low];
     }
-//low >= high
+//Place pivot to correct place
     x[low] = pivot;
     return low;
 }
@@ -447,6 +453,7 @@ void quickSortNonRecursive2(int*x,int n) {
 }
 
 /* selection —°‘Ò≈≈–Ú*/
+//!TODO incorrect
 void selectSort(int* x,int n) {
     int i, j;
     for (i = 0; i < n-1; i++)
@@ -475,7 +482,31 @@ void shellSort(int* x,int n) {
     }
 }
 
+void shellSort2(int* x,int n) {
+    int i, j, d;
+//calc max delta
+    for (d = 1; d < n; d *=2);
 
+    do { //i starts from delta(d)
+       for (i = d; i < n; i++)
+            for (j = i; j >= d&&x[j-d] > x[j]; j -= d) //j-d, so j>=d
+                    swap(x,j-d, j);
+        d/=2;
+    }while(d>0);
+}
+
+void shellSort3(int* x,int n) {
+    int i, j, d, t;
+    for (d = 1; d < n; d *=2);
+    do {
+       for (i = d; i < n; i++) {
+            for (j = i,t = x[i];  j>=d&&x[j-d]>t;  j-=d)
+                x[j]=x[j-d];
+            x[j]=t;
+        }
+        d/=2;
+    }while(d>0);
+}
 
 /*
 HEAP SORTS

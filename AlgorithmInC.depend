@@ -250,3 +250,195 @@
 1489312957 c:\nili\mygitprojects\algorithminc\linkedlist\singlywithheadnodebytemplate\slnode.h
 	<iostream>
 
+1489395359 source:d:\nili\myprograms\algorithminc\common.cpp
+	"common.h"
+
+1489395359 d:\nili\myprograms\algorithminc\common.h
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	<string.h>
+	<math.h>
+	<time.h>
+	<assert.h>
+	<memory.h>
+	<iostream>
+	<iomanip>
+	<queue>
+	<vector>
+	<list>
+	<set>
+	<algorithm>
+
+1489395359 source:d:\nili\myprograms\algorithminc\graph\graph.cpp
+	"graph.h"
+	"../sort/sort.h"
+	"../tree/tree.h"
+
+1489395359 d:\nili\myprograms\algorithminc\graph\graph.h
+	"../common.h"
+
+1490710730 d:\nili\myprograms\algorithminc\sort\sort.h
+	"../common.h"
+
+1489395360 d:\nili\myprograms\algorithminc\tree\tree.h
+	"../common.h"
+
+1489395359 source:d:\nili\myprograms\algorithminc\graph\shortestpath.cpp
+	"graph.h"
+
+1489395359 source:d:\nili\myprograms\algorithminc\linearlist\josephus.cpp
+	<iostream>
+	<assert.h>
+	"LinearList.h"
+
+1489395359 d:\nili\myprograms\algorithminc\linearlist\linearlist.h
+
+1489395359 source:d:\nili\myprograms\algorithminc\linearlist\linearlist.cpp
+	"LinearList.h"
+	<iostream>
+	<cstring>
+	<iomanip>
+
+1489395376 source:d:\nili\myprograms\algorithminc\linkedlist\double\tlink.cpp
+	"TLink.h"
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\double\tlink.h
+	"TLNode.h"
+	<stdlib.h>
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\double\tlnode.h
+	<iostream>
+
+1489395376 source:d:\nili\myprograms\algorithminc\linkedlist\doubleloop\trlink.cpp
+	"TRLink.h"
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\doubleloop\trlink.h
+	"TLNode.h"
+	<stdlib.h>
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\doubleloop\tlnode.h
+	<iostream>
+
+1489395376 source:d:\nili\myprograms\algorithminc\linkedlist\singly\onelink.cpp
+	"OneLink.h"
+	<iostream>
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\singly\onelink.h
+	"OneLinkNode.h"
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\singly\onelinknode.h
+	<stdlib.h>
+
+1489395376 source:d:\nili\myprograms\algorithminc\linkedlist\singlyloop\slink.cpp
+	"SRLink.h"
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\singlyloop\srlink.h
+	"SRLNode.h"
+	<stdlib.h>
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\singlyloop\srlnode.h
+	<iostream>
+
+1489395376 source:d:\nili\myprograms\algorithminc\linkedlist\singlyloop\srlink.cpp
+	"SRLink.h"
+
+1489395376 source:d:\nili\myprograms\algorithminc\linkedlist\singlywithheadnode\slink.cpp
+	"SLink.h"
+	<iostream>
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\singlywithheadnode\slink.h
+
+1489395376 source:d:\nili\myprograms\algorithminc\linkedlist\singlywithheadnodebytemplate\slink.cpp
+	"SLink.h"
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\singlywithheadnodebytemplate\slink.h
+	"SLNode.h"
+	<stdlib.h>
+
+1489395376 d:\nili\myprograms\algorithminc\linkedlist\singlywithheadnodebytemplate\slnode.h
+	<iostream>
+
+1489395376 source:d:\nili\myprograms\algorithminc\main.cpp
+	"common.h"
+	"prime.h"
+	"Search/search.h"
+	"graph/graph.h"
+	"tree/BinaryTree.h"
+	"sort/sort.h"
+	"list.h"
+	"LinkedList/Singly/OneLink.h"
+
+1489395359 d:\nili\myprograms\algorithminc\prime.h
+	"common.h"
+
+1489395359 d:\nili\myprograms\algorithminc\search\search.h
+	"../common.h"
+
+1489395359 d:\nili\myprograms\algorithminc\tree\binarytree.h
+	"../common.h"
+
+1489395359 d:\nili\myprograms\algorithminc\list.h
+	"common.h"
+
+1489395359 source:d:\nili\myprograms\algorithminc\prime.cpp
+	"prime.h"
+
+1489395376 source:d:\nili\myprograms\algorithminc\random\random.cpp
+	"random.h"
+
+1489395376 d:\nili\myprograms\algorithminc\random\random.h
+	"../common.h"
+
+1489395359 source:d:\nili\myprograms\algorithminc\search\floodfill.cpp
+
+1489395359 source:d:\nili\myprograms\algorithminc\search\maze.cpp
+	"search.h"
+
+1489395359 source:d:\nili\myprograms\algorithminc\search\permutation.cpp
+	"search.h"
+
+1490706888 source:d:\nili\myprograms\algorithminc\sort\sort.cpp
+	"sort.h"
+	"../random/random.h"
+
+1489395359 source:d:\nili\myprograms\algorithminc\string\stringalg.cpp
+	"stringalg.h"
+
+1489395359 d:\nili\myprograms\algorithminc\string\stringalg.h
+	"../common.h"
+
+1489395359 source:d:\nili\myprograms\algorithminc\tree\binarytree.cpp
+	<stdio.h>
+	<stdlib.h>
+	"BinaryTree.h"
+	<stack>
+	<iostream>
+
+1489395359 source:d:\nili\myprograms\algorithminc\tree\binarytreewithparent.cpp
+	<stdio.h>
+	<stdlib.h>
+	"BinaryTreeWithParent.h"
+	<stack>
+	<string.h>
+
+1489395359 d:\nili\myprograms\algorithminc\tree\binarytreewithparent.h
+
+1489395359 source:d:\nili\myprograms\algorithminc\tree\main.cpp
+	<iostream>
+	"BinaryTree.h"
+	"BinaryTreeWithParent.h"
+
+1489395359 source:d:\nili\myprograms\algorithminc\tree\tree.cpp
+	"tree.h"
+
+1490710199 source:d:\nili\myprograms\algorithminc\sort\sort_main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<assert.h>
+	<memory.h>
+	<iostream>
+	<algorithm>
+	"Sort.h"
+
