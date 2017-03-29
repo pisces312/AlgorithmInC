@@ -398,7 +398,7 @@
 1489395359 source:d:\nili\myprograms\algorithminc\search\permutation.cpp
 	"search.h"
 
-1490797187 source:d:\nili\myprograms\algorithminc\sort\sort.cpp
+1490799218 source:d:\nili\myprograms\algorithminc\sort\sort.cpp
 	"sort.h"
 	"../random/random.h"
 
@@ -432,7 +432,7 @@
 1489395359 source:d:\nili\myprograms\algorithminc\tree\tree.cpp
 	"tree.h"
 
-1490796907 source:d:\nili\myprograms\algorithminc\sort\sort_main.cpp
+1490799044 source:d:\nili\myprograms\algorithminc\sort\sort_main.cpp
 	<stdio.h>
 	<stdlib.h>
 	<time.h>

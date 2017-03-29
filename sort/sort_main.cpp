@@ -403,6 +403,16 @@ void testSortFunc(SortFunc func) {
 
     //Random case
     testSort(func,99);
+
+    //Sorted data
+    n=50000;
+//    n=100;
+    int* sorted=(int*)malloc(n*sizeof(int));
+    for(int i=0; i<n; ++i)
+        sorted[i]=i;
+    func(sorted,n);
+
+
 }
 
 
@@ -412,6 +422,7 @@ int testSortMain() {
 //!incorrect
 //    testSortFunc(quickSortForDup);
 
+testSortFunc(quickSortLomuto);
 //testSortFunc(bubbleSortWithTwoDirsAndPos);
 //testSortFunc(bubbleSortWithTwoDirs);
 //testSortFunc(bubbleSortWithPos);
@@ -429,10 +440,12 @@ int testSortMain() {
 
 
 
-//    int n=10;
 //    int n=100;
-    int n=12345;
-    testDriver(n);
+//int n=123456;
+//int n=50000;
+//    int n=12345;
+
+//    testDriver(n);
 
 
 

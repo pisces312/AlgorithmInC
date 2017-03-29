@@ -90,10 +90,9 @@ QUICKSORTS
 快速排序
 */
 
-/* Simplest version, Lomuto partitioning
-递归
-分治策略
-*/
+//Simplest version, Lomuto partitioning
+//!By default stack size, n>=50000 will lead stackoverflow
+//Set "-Wl,--stack,268435456" to "Other linker setting" of build option
 void qsortLomuto(int* x,int l, int u) {
     if (l >= u)
         return;
