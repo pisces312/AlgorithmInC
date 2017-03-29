@@ -205,7 +205,7 @@ void quickSortSedgewick(int* x,int n) {
 void qsortTwoWayPartition(int* x,const int l, const int u) {
     int mid=partition(x,l,u);
     if(mid<0) return;
-    printf("partition = %d\n",mid);
+//    printf("partition = %d\n",mid);
     qsortTwoWayPartition(x,l, mid-1);
     qsortTwoWayPartition(x,mid+1, u);
 }
@@ -465,6 +465,35 @@ void selectSort(int* x,int n) {
     }
 }
 
+void selectSortMinMax(int *r,int n) {
+    int i,j, minIdx,maxIdx;
+    for (i=0 ; i <n/2; i++) {
+        minIdx = i;
+        maxIdx = i;
+        for (j= i+1; j< n-i; j++) {
+            if (r[j] > r[maxIdx]) {
+                maxIdx = j ;
+            }  else if (r[j]< r[minIdx]) {
+                minIdx = j ;
+            }
+        }
+//        printf("i=%d,min=%d,max=%d\n",i,minIdx,maxIdx);
+
+        if(minIdx!=i) {
+            swap(r,minIdx,i);
+            //The first swap may affect the second swap
+            if(maxIdx==i) {
+                maxIdx=minIdx;
+            }
+        }
+//        printArray(r,n);
+
+        if(maxIdx!=(n-i-1)) {
+            swap(r,maxIdx,n-i-1);
+        }
+//        printArray(r,n);
+    }
+}
 
 /*希尔排序*/
 void shellSort(int* x,int n) {
@@ -491,24 +520,24 @@ void shellSort2(int* x,int n) {
     for (d = 1; d < n; d *=2);
 
     do { //i starts from delta(d)
-       for (i = d; i < n; i++)
+        for (i = d; i < n; i++)
             for (j = i; j >= d&&x[j-d] > x[j]; j -= d) //j-d, so j>=d
-                    swap(x,j-d, j);
+                swap(x,j-d, j);
         d/=2;
-    }while(d>0);
+    } while(d>0);
 }
 
 void shellSort3(int* x,int n) {
     int i, j, d, t;
     for (d = 1; d < n; d *=2);
     do {
-       for (i = d; i < n; i++) {
+        for (i = d; i < n; i++) {
             for (j = i,t = x[i];  j>=d&&x[j-d]>t;  j-=d)
                 x[j]=x[j-d];
             x[j]=t;
         }
         d/=2;
-    }while(d>0);
+    } while(d>0);
 }
 
 /*
@@ -773,6 +802,58 @@ void bubbleSortWithFlag(int* x,int n) {
         }
     }
 }
+void bubbleSortWithPos( int r[], int n) {
+    int i= n-1;  //初始时,最后位置保持不变
+    while ( i>0) {
+        int pos=0; //每趟开始时,无记录交换
+        for (int j=0; j<i; j++)
+            if (r[j]> r[j+1]) {
+                pos= j; //记录交换的位置
+                swap(r,j,j+1);
+            }
+        i= pos; //为下一趟排序作准备
+    }
+}
+void bubbleSortWithTwoDirs( int r[], int n) {
+    int low = 0;
+    int high= n-1;
+    int i;
+    while (low < high) {
+        for (i=low; i< high; ++i) //正向冒泡,找到最大者
+            if (r[i]> r[i+1])
+                swap(r,i,i+1);
+        --high;					//Modify right border
+        for (i=high; i>low; --i) //反向冒泡,找到最小者
+            if (r[i]<r[i-1])
+                swap(r,i,i-1);
+        ++low;					//Modify left border
+    }
+}
+void bubbleSortWithTwoDirsAndPos( int r[], int n) {
+    int low = 0;
+    int high= n-1;
+    int i,lPos,rPos;
+    while (low < high) {
+        rPos=0;
+//        rPos=high-1; //make sure it will move
+        for (i=low; i< high; ++i) //正向冒泡,找到最大者
+            if (r[i]> r[i+1]) {
+                rPos=i;
+                swap(r,i,i+1);
+            }
+        high=rPos; //Modify right border
+        lPos=n-1;
+//        lPos=low+1; //make sure it will move
+        for (i=high; i>low; --i) //反向冒泡,找到最小者
+            if (r[i]<r[i-1]) {
+                lPos=i;
+                swap(r,i,i-1);
+            }
+        low=lPos; //Modify left border
+//        printf("low=%d,high=%d\n",low,high);
+    }
+}
+
 /**
 归并排序
 **/

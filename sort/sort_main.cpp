@@ -227,6 +227,9 @@ void testDriverCore(int* keys,unsigned int n) {
         TEST(selectSort);
         TEST(bubbleSort1);
         TEST(bubbleSortWithFlag);
+        TEST(bubbleSortWithPos);
+        TEST(bubbleSortWithTwoDirs);
+        TEST(bubbleSortWithTwoDirsAndPos);
     } else {
         printf("Ignore the slow algs when %d>=%d",n,88888);
     }
@@ -408,7 +411,12 @@ int testSortMain() {
 
 //!incorrect
 //    testSortFunc(quickSortForDup);
-testSortFunc(selectSort);
+
+//testSortFunc(bubbleSortWithTwoDirsAndPos);
+//testSortFunc(bubbleSortWithTwoDirs);
+//testSortFunc(bubbleSortWithPos);
+//testSortFunc(selectSortMinMax);
+//testSortFunc(selectSort);
 //testSortFunc(shellSort3);
 //testSortFunc(shellSort2);
 //testSortFunc(quickSortNonRecursive);
@@ -423,8 +431,8 @@ testSortFunc(selectSort);
 
 //    int n=10;
 //    int n=100;
-//    int n=12345;
-//    testDriver(n);
+    int n=12345;
+    testDriver(n);
 
 
 

@@ -278,7 +278,7 @@
 1489395359 d:\nili\myprograms\algorithminc\graph\graph.h
 	"../common.h"
 
-1490710730 d:\nili\myprograms\algorithminc\sort\sort.h
+1490796509 d:\nili\myprograms\algorithminc\sort\sort.h
 	"../common.h"
 
 1489395360 d:\nili\myprograms\algorithminc\tree\tree.h
@@ -398,7 +398,7 @@
 1489395359 source:d:\nili\myprograms\algorithminc\search\permutation.cpp
 	"search.h"
 
-1490706888 source:d:\nili\myprograms\algorithminc\sort\sort.cpp
+1490797187 source:d:\nili\myprograms\algorithminc\sort\sort.cpp
 	"sort.h"
 	"../random/random.h"
 
@@ -432,7 +432,7 @@
 1489395359 source:d:\nili\myprograms\algorithminc\tree\tree.cpp
 	"tree.h"
 
-1490710199 source:d:\nili\myprograms\algorithminc\sort\sort_main.cpp
+1490796907 source:d:\nili\myprograms\algorithminc\sort\sort_main.cpp
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
