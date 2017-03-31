@@ -16,6 +16,7 @@
 #include <vector>
 #include <list>
 #include <set>
+#include <stack>
 #include <algorithm>
 
 inline void swapInt(int* a,int* b) {

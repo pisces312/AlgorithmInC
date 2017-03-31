@@ -1,6 +1,6 @@
 #ifndef SORT_H_INCLUDED
 #define SORT_H_INCLUDED
-#include "../common.h"
+
 
 //Test
 int testSortMain();
@@ -21,13 +21,15 @@ void quickSortLomuto2(int* x,int n);
 void quickSortForDup(int* a,int n);
 void quickSortSedgewick(int* x,int n);
 void quickSortTwoWayPartition(int* x,int n);
+void quickSortTwoWayPartition2(int* x,int n);
+void quickSortTwoWayPartition3(int* x,int n);
 void _fastcall quickSortFinal(int* x,int n);
 int partition(int*x,int l,int u);
 void quickSortNonRecursive(int*x,int n);
 void quickSortNonRecursive2(int*x,int n);
 
 void selectSort(int* x,int n);
-
+void selectSortMinMax(int *r,int n);
 void heapSort1(int* x,int n);
 void heapSort2(int* x,int n);
 void heapSort3(int* x,int n);
@@ -44,11 +46,14 @@ int deletemax(int*h,int n);
 
 
 void shellSort(int* x,int n);
-
-
+void shellSort2(int* x,int n);
+void shellSort3(int* x,int n);
 
 void bubbleSort1(int* x,int n);
 void bubbleSortWithFlag(int* x,int n);
+void bubbleSortWithPos( int r[], int n) ;
+void bubbleSortWithTwoDirs( int r[], int n);
+void bubbleSortWithTwoDirsAndPos( int r[], int n);
 
 void mergeSort(int *x,int n);
 //void mergeSort2(int *x,int n);

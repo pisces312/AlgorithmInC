@@ -1,4 +1,5 @@
 #include "sort.h"
+#include "../common.h"
 #include "../random/random.h"
 
 
@@ -90,10 +91,9 @@ QUICKSORTS
 快速排序
 */
 
-/* Simplest version, Lomuto partitioning
-递归
-分治策略
-*/
+//Simplest version, Lomuto partitioning
+//!By default stack size, n>=50000 will lead stackoverflow
+//Set "-Wl,--stack,268435456" to "Other linker setting" of build option
 void qsortLomuto(int* x,int l, int u) {
     if (l >= u)
         return;
@@ -143,13 +143,12 @@ void quickSortLomuto2(int* x,const int n) {
     qsortLomuto2(x,0,n-1);
 }
 
-
-//!???incorrect
+//!TODO incorrect
 void qsortForDup(int* x,int l,int u) {
     if(l>=u)
         return;
 
-    int m=u+1;//用于--操作
+    int m=u+1;//for --
     int n=m;
     int pivot = x[l];
     for(int i=u; i>=l; i--) {
@@ -185,15 +184,12 @@ void quickSortForDup(int* a,int n) {
 }
 
 
-/* Sedgewick's version of Lomuto, with sentinel
-使用哨卫
-Start from right
-*/
+//Sedgewick's version of Lomuto, with sentinel
 void qsortSedgewick(int* x,int l, int u) {
     if (l >= u)
         return;
     int i, m;
-    m = i = u+1;
+    m = i = u+1; //sentinel
     do {
         do i--;
         while (x[i] < x[l]);
@@ -209,19 +205,51 @@ void quickSortSedgewick(int* x,int n) {
 void qsortTwoWayPartition(int* x,const int l, const int u) {
     int mid=partition(x,l,u);
     if(mid<0) return;
+//    printf("partition = %d\n",mid);
     qsortTwoWayPartition(x,l, mid-1);
     qsortTwoWayPartition(x,mid+1, u);
 }
 void quickSortTwoWayPartition(int* x,int n) {
     qsortTwoWayPartition(x,0,n-1);
 }
+
+
+//Randomly choose pivot
+int partitionFinal(int*x,const int l,const int u) {
+    if (l >= u)
+        return -1;
+    swap(x,l, randint(l, u));//optimize
+    int pivot = x[l]; //l stands for pivot's index
+    int i = l;
+    int j = u+1; //Reduce compare operation in the loop
+    while (true) {
+//Must do i++ before while. So even all values are the same,
+//it will choose a middle place for partition
+        do i++; //i must >= l+1
+        while (i <= u && x[i] < pivot);
+        //i may > u after loop, so the final pivot place cannot use i
+
+        //no need check left border j>=l, because x[l]=pivot as guard
+        do j--;
+        while (x[j] > pivot);
+        if (i >= j) //The minimal j=l, and now x[j]==pivot; so j==l<i
+            break;
+        swap(x,i, j);
+    }
+//Place pivot to the write place
+//if j==l, no need to swap, pivot is already in the correct place
+    if(l!=j)
+        swap(x,l, j);
+    return j;
+}
+
 /* qsort3 + randomization + isort small subarrays + swap inline */
 
 void qsortFinal(int* x,int l, int u) {
     static const int cutoff=50;
     if (u - l < cutoff)//小于时直接退出！！
         return;
-    int mid=partition(x,l,u);
+    int mid=partitionFinal(x,l,u);
     qsortFinal(x,l, mid-1);
     qsortFinal(x,mid+1, u);
 }
@@ -232,27 +260,121 @@ void _fastcall quickSortFinal(int* x,int n) {
     insertSort3(x,n);
 }
 
-int partition(int*x,int l,int u) {
+
+
+
+
+int partition(int*x,const int l,const int u) {
     if (l >= u)
         return -1;
-    //Use first element as pivot
-    swap(x,l, randint(l, u));//optimize
-    int pivot = x[l];
-    int i = l,j = u+1;
+    int pivot = x[l]; //l stands for pivot's index
+    int i = l;
+    int j = u+1; //Reduce compare operation in the loop
     while (true) {
+//Must do i++ before while. So even all values are the same,
+//it will choose a middle place for partition
         do i++;
         while (i <= u && x[i] < pivot);
+        //no need to check left border j>=l, because x[l]=pivot
         do j--;
-        //don't need check j>=l, because x[l]=pivot
         while (x[j] > pivot);
         if (i >= j)
             break;
         swap(x,i, j);
     }
-    if(l!=j)//can not use i here, because i may equal to u
+//Place pivot to the write place
+//if j==l, no need to swap, pivot is already in the correct place
+    if(l!=j)
         swap(x,l, j);
     return j;
 }
+
+//Not use swap func, but use x[i] as dynamic tmp var
+int partition3(int*x,const int l,const int u) {
+    if (l >= u)
+        return -1;
+    const int pivot = x[l]; //l stands for pivot's index
+    int i = l;
+    int j = u+1;
+    while (true) {
+        do j--;
+        while (x[j] > pivot);
+        //Must check
+        if(i>=j)
+            break;
+        x[i]=x[j];
+
+        //Must check i<=u
+        do i++;
+        while (i <= u && x[i] < pivot);
+        if(i>=j)
+            break;
+        x[j]=x[i];
+    }
+//Place pivot to the right place
+    x[j]=pivot;
+    return j;
+}
+
+void qsortTwoWayPartition3(int* x,const int l, const int u) {
+    int p=partition3(x,l,u);
+    if(p<0)
+        return;
+    printf("partition = %d\n",p);
+    qsortTwoWayPartition3(x,l, p-1);
+    qsortTwoWayPartition3(x,p+1, u);
+}
+void quickSortTwoWayPartition3(int* x,int n) {
+    qsortTwoWayPartition3(x,0,n-1);
+}
+
+
+int partition2(int*x,int low,int high) {
+    if (low >= high)
+        return -1;
+//Backup first x[low]
+    int pivot = x[low];
+    while(low < high) {
+//1) Must consider right pointer first
+//
+//2) "=" will cause bad partition (worst case: all values are the same),
+//but still have to use it.
+//If only "<", right pointer will not move when
+//the first value equals to pivot (worst case: all values are the same),
+//so the "while(low<hight)" loop cannot exit
+        while(low < high && pivot <= x[high]) {
+            --high;
+        }
+//As tmp variable, x[low] stores current element which <=pivot
+//worst case, high=low
+        x[low] = x[high];
+//Have to use "=". Same reason
+//worst case, high=low, the loop will not be executed
+        while(low < high && x[low] <= pivot) {
+            ++low;
+        }
+//As tmp, x[high] stores current element which >=pivot
+        x[high] = x[low];
+    }
+//Place pivot to correct place
+    x[low] = pivot;
+    return low;
+}
+
+
+void qsortTwoWayPartition2(int* x,const int l, const int u) {
+    int p=partition2(x,l,u);
+    if(p<0)
+        return;
+    printf("partition = %d\n",p);
+    qsortTwoWayPartition2(x,l, p-1);
+    qsortTwoWayPartition2(x,p+1, u);
+}
+void quickSortTwoWayPartition2(int* x,int n) {
+    qsortTwoWayPartition2(x,0,n-1);
+}
+
+
 //worst case, need 2*(n-1) partitions
 void quickSortNonRecursive(int*x,int n) {
 //    int c=2;
@@ -332,13 +454,46 @@ void quickSortNonRecursive2(int*x,int n) {
 
 /* selection 选择排序*/
 void selectSort(int* x,int n) {
-    int i, j;
-    for (i = 0; i < n-1; i++)
-        for (j = i; j < n; j++)
-            if (x[j] < x[i])
-                swap(x,i, j);
+    int i, j, m;
+    for (i = 0; i < n; i++) {
+        m=i;
+        for (j = i+1; j < n; j++)
+            if (x[j] < x[m])
+                m=j;
+        if(i!=m)
+            swap(x,i, m);
+    }
 }
 
+void selectSortMinMax(int *r,int n) {
+    int i,j, minIdx,maxIdx;
+    for (i=0 ; i <n/2; i++) {
+        minIdx = i;
+        maxIdx = i;
+        for (j= i+1; j< n-i; j++) {
+            if (r[j] > r[maxIdx]) {
+                maxIdx = j ;
+            }  else if (r[j]< r[minIdx]) {
+                minIdx = j ;
+            }
+        }
+//        printf("i=%d,min=%d,max=%d\n",i,minIdx,maxIdx);
+
+        if(minIdx!=i) {
+            swap(r,minIdx,i);
+            //The first swap may affect the second swap
+            if(maxIdx==i) {
+                maxIdx=minIdx;
+            }
+        }
+//        printArray(r,n);
+
+        if(maxIdx!=(n-i-1)) {
+            swap(r,maxIdx,n-i-1);
+        }
+//        printArray(r,n);
+    }
+}
 
 /*希尔排序*/
 void shellSort(int* x,int n) {
@@ -359,7 +514,31 @@ void shellSort(int* x,int n) {
     }
 }
 
+void shellSort2(int* x,int n) {
+    int i, j, d;
+//calc max delta
+    for (d = 1; d < n; d *=2);
 
+    do { //i starts from delta(d)
+        for (i = d; i < n; i++)
+            for (j = i; j >= d&&x[j-d] > x[j]; j -= d) //j-d, so j>=d
+                swap(x,j-d, j);
+        d/=2;
+    } while(d>0);
+}
+
+void shellSort3(int* x,int n) {
+    int i, j, d, t;
+    for (d = 1; d < n; d *=2);
+    do {
+        for (i = d; i < n; i++) {
+            for (j = i,t = x[i];  j>=d&&x[j-d]>t;  j-=d)
+                x[j]=x[j-d];
+            x[j]=t;
+        }
+        d/=2;
+    } while(d>0);
+}
 
 /*
 HEAP SORTS
@@ -623,6 +802,58 @@ void bubbleSortWithFlag(int* x,int n) {
         }
     }
 }
+void bubbleSortWithPos( int r[], int n) {
+    int i= n-1;  //初始时,最后位置保持不变
+    while ( i>0) {
+        int pos=0; //每趟开始时,无记录交换
+        for (int j=0; j<i; j++)
+            if (r[j]> r[j+1]) {
+                pos= j; //记录交换的位置
+                swap(r,j,j+1);
+            }
+        i= pos; //为下一趟排序作准备
+    }
+}
+void bubbleSortWithTwoDirs( int r[], int n) {
+    int low = 0;
+    int high= n-1;
+    int i;
+    while (low < high) {
+        for (i=low; i< high; ++i) //正向冒泡,找到最大者
+            if (r[i]> r[i+1])
+                swap(r,i,i+1);
+        --high;					//Modify right border
+        for (i=high; i>low; --i) //反向冒泡,找到最小者
+            if (r[i]<r[i-1])
+                swap(r,i,i-1);
+        ++low;					//Modify left border
+    }
+}
+void bubbleSortWithTwoDirsAndPos( int r[], int n) {
+    int low = 0;
+    int high= n-1;
+    int i,lPos,rPos;
+    while (low < high) {
+        rPos=0;
+//        rPos=high-1; //make sure it will move
+        for (i=low; i< high; ++i) //正向冒泡,找到最大者
+            if (r[i]> r[i+1]) {
+                rPos=i;
+                swap(r,i,i+1);
+            }
+        high=rPos; //Modify right border
+        lPos=n-1;
+//        lPos=low+1; //make sure it will move
+        for (i=high; i>low; --i) //反向冒泡,找到最小者
+            if (r[i]<r[i-1]) {
+                lPos=i;
+                swap(r,i,i-1);
+            }
+        low=lPos; //Modify left border
+//        printf("low=%d,high=%d\n",low,high);
+    }
+}
+
 /**
 归并排序
 **/

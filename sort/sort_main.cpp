@@ -1,15 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <assert.h>
-#include <memory.h>
-
-#include <iostream>
-//for cpp sort
-#include <algorithm>
-//using namespace std;
-
-#include "Sort.h"
+#include "sort.h"
+#include "../common.h"
 
 
 /**
@@ -227,6 +217,9 @@ void testDriverCore(int* keys,unsigned int n) {
         TEST(selectSort);
         TEST(bubbleSort1);
         TEST(bubbleSortWithFlag);
+        TEST(bubbleSortWithPos);
+        TEST(bubbleSortWithTwoDirs);
+        TEST(bubbleSortWithTwoDirsAndPos);
     } else {
         printf("Ignore the slow algs when %d>=%d",n,88888);
     }
@@ -336,7 +329,7 @@ void testHeapSort() {
 }
 
 
-void testQuickSortLomuto2(){
+void testQuickSortForDup() {
     int* ptr=NULL;
     int n=0;
 
@@ -344,7 +337,7 @@ void testQuickSortLomuto2(){
     ptr=a;
     n=sizeof(a)/sizeof(int);
     printArray(ptr,n);
-    quickSortLomuto2(ptr,n);
+    quickSortForDup(ptr,n);
     printArray(ptr,n);
     printf("\n");
 
@@ -352,44 +345,100 @@ void testQuickSortLomuto2(){
     ptr=b;
     n=sizeof(b)/sizeof(int);
     printArray(ptr,n);
-    quickSortLomuto2(ptr,n);
+    quickSortForDup(ptr,n);
     printArray(ptr,n);
     printf("\n");
 
 }
 
-void testQuickSortForDup(){
+//Test sort with well-prepared data
+void testSortFunc(SortFunc func) {
     int* ptr=NULL;
     int n=0;
 
+    //case 1
     int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
     ptr=a;
     n=sizeof(a)/sizeof(int);
     printArray(ptr,n);
-    quickSortForDup(ptr,n);
+    func(ptr,n);
     printArray(ptr,n);
     printf("\n");
+    assertSorted(ptr,n);
 
+    //case 2
+    //The case that most values are the same
     int b[]= {2,1,1,1,1,1,1};
     ptr=b;
     n=sizeof(b)/sizeof(int);
     printArray(ptr,n);
-    quickSortForDup(ptr,n);
+    func(ptr,n);
     printArray(ptr,n);
     printf("\n");
+    assertSorted(ptr,n);
+
+
+    //case 3
+    //One element
+    int c[]= {0};
+    ptr=c;
+    n=sizeof(c)/sizeof(int);
+    printArray(ptr,n);
+    func(ptr,n);
+    printArray(ptr,n);
+    printf("\n");
+    assertSorted(ptr,n);
+
+
+
+    //Random case
+    testSort(func,99);
+
+    //Sorted data
+    n=50000;
+//    n=100;
+    int* sorted=(int*)malloc(n*sizeof(int));
+    for(int i=0; i<n; ++i)
+        sorted[i]=i;
+    func(sorted,n);
+
 
 }
 
 
 int testSortMain() {
-//    int n=10;
+
+
+//!incorrect
+//    testSortFunc(quickSortForDup);
+
+testSortFunc(quickSortLomuto);
+//testSortFunc(bubbleSortWithTwoDirsAndPos);
+//testSortFunc(bubbleSortWithTwoDirs);
+//testSortFunc(bubbleSortWithPos);
+//testSortFunc(selectSortMinMax);
+//testSortFunc(selectSort);
+//testSortFunc(shellSort3);
+//testSortFunc(shellSort2);
+//testSortFunc(quickSortNonRecursive);
+//    testSortFunc(quickSortTwoWayPartition3);
+
+//    testSortFunc(quickSortTwoWayPartition2);
+
+//    testSortFunc(quickSortTwoWayPartition);
+//    testSortFunc(quickSortLomuto2);
+
+
+
 //    int n=100;
+//int n=123456;
+//int n=50000;
 //    int n=12345;
+
 //    testDriver(n);
 
 
-testQuickSortForDup();
-//    testQuickSortLomuto2();
+
 
 //
 //    int* keys=new int[n];
