@@ -1,15 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <assert.h>
-#include <memory.h>
-
-#include <iostream>
-//for cpp sort
-#include <algorithm>
-//using namespace std;
-
-#include "Sort.h"
+#include "sort.h"
+#include "../common.h"
 
 
 /**

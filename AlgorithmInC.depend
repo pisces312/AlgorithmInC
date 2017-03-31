@@ -2,7 +2,7 @@
 1488812499 source:c:\nili\mygitprojects\algorithminc\common.cpp
 	"common.h"
 
-1488812499 c:\nili\mygitprojects\algorithminc\common.h
+1490963381 c:\nili\mygitprojects\algorithminc\common.h
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
@@ -17,6 +17,7 @@
 	<vector>
 	<list>
 	<set>
+	<stack>
 	<algorithm>
 
 1488812510 source:c:\nili\mygitprojects\algorithminc\graph\graph.cpp
@@ -27,8 +28,7 @@
 1488812507 c:\nili\mygitprojects\algorithminc\graph\graph.h
 	"../common.h"
 
-1489329412 c:\nili\mygitprojects\algorithminc\sort\sort.h
-	"../common.h"
+1490958943 c:\nili\mygitprojects\algorithminc\sort\sort.h
 
 1488812500 c:\nili\mygitprojects\algorithminc\tree\tree.h
 	"../common.h"
@@ -55,7 +55,7 @@
 
 1488812524 c:\nili\mygitprojects\algorithminc\linkedlist\带头结点的单链表\slink.h
 
-1489315104 source:c:\nili\mygitprojects\algorithminc\main.cpp
+1490963409 source:c:\nili\mygitprojects\algorithminc\main.cpp
 	"common.h"
 	"prime.h"
 	"Search/search.h"
@@ -94,19 +94,14 @@
 1488812504 source:c:\nili\mygitprojects\algorithminc\search\permutation.cpp
 	"search.h"
 
-1489333129 source:c:\nili\mygitprojects\algorithminc\sort\sort.cpp
+1490958953 source:c:\nili\mygitprojects\algorithminc\sort\sort.cpp
 	"sort.h"
+	"../common.h"
 	"../random/random.h"
 
-1489331300 source:c:\nili\mygitprojects\algorithminc\sort\sort_main.cpp
-	<stdio.h>
-	<stdlib.h>
-	<time.h>
-	<assert.h>
-	<memory.h>
-	<iostream>
-	<algorithm>
-	"Sort.h"
+1490959303 source:c:\nili\mygitprojects\algorithminc\sort\sort_main.cpp
+	"sort.h"
+	"../common.h"
 
 1488812503 source:c:\nili\mygitprojects\algorithminc\string\stringalg.cpp
 	"stringalg.h"
@@ -114,14 +109,14 @@
 1488812502 c:\nili\mygitprojects\algorithminc\string\stringalg.h
 	"../common.h"
 
-1488812502 source:c:\nili\mygitprojects\algorithminc\tree\binarytree.cpp
+1490968782 source:c:\nili\mygitprojects\algorithminc\tree\binarytree.cpp
 	<stdio.h>
 	<stdlib.h>
 	"BinaryTree.h"
 	<stack>
 	<iostream>
 
-1488812501 source:c:\nili\mygitprojects\algorithminc\tree\binarytreewithparent.cpp
+1490968806 source:c:\nili\mygitprojects\algorithminc\tree\binarytreewithparent.cpp
 	<stdio.h>
 	<stdlib.h>
 	"BinaryTreeWithParent.h"
@@ -130,7 +125,7 @@
 
 1488812502 c:\nili\mygitprojects\algorithminc\tree\binarytreewithparent.h
 
-1488812501 source:c:\nili\mygitprojects\algorithminc\tree\main.cpp
+1490966934 source:c:\nili\mygitprojects\algorithminc\tree\main.cpp
 	<iostream>
 	"BinaryTree.h"
 	"BinaryTreeWithParent.h"
@@ -441,4 +436,23 @@
 	<iostream>
 	<algorithm>
 	"Sort.h"
+
+1490957446 source:c:\nili\mygitprojects\algorithminc\bitree\bitree.c
+	"bitree.h"
+	<stdlib.h>
+
+1490969269 c:\nili\mygitprojects\algorithminc\bitree\bitree.h
+
+1490959187 source:c:\nili\mygitprojects\algorithminc\bitree\bitree_test.c
+	"bitree_test.h"
+
+1490959780 c:\nili\mygitprojects\algorithminc\bitree\bitree_test.h
+
+1490969282 source:c:\nili\mygitprojects\algorithminc\bitree\bitree_test.cpp
+	"bitree.h"
+	"../common.h"
+
+1490968925 source:c:\nili\mygitprojects\algorithminc\bitree\bitree.cpp
+	"bitree.h"
+	"../common.h"
 

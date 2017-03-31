@@ -61,6 +61,13 @@
 		<Unit filename="Search/maze.cpp" />
 		<Unit filename="Search/permutation.cpp" />
 		<Unit filename="Search/search.h" />
+		<Unit filename="bitree/bitree.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bitree/bitree.h" />
+		<Unit filename="bitree/bitree_test.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="common.cpp" />
 		<Unit filename="common.h" />
 		<Unit filename="graph/graph.cpp" />

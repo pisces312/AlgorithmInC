@@ -186,8 +186,13 @@ int testOneLink() {
     return 0;
 }
 
-
+extern void testTree();
 int main() {
+
+    testTree();
+//       testSortMain();
+
+
 //    testOneLink();
 //   Cutedge::testCutedge();
 //    Cutpoint2::testCutpoint();
@@ -225,7 +230,7 @@ int main() {
 
 //    hanoi2(3,'a','b','c');
 //    hanoi('a','b','c',3);
-   testSortMain();
+
 //    mstByPrim();
 //    test2();
 //    mstByKruskal();
