@@ -35,3 +35,7 @@ obj/
 # Debug files
 *.dSYM/
 *.su
+
+# Misc
+*.layout
+*.depend

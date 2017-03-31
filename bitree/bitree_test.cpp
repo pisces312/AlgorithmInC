@@ -100,6 +100,8 @@ void testTreeTraverseStack() {
     printf("\n");
     postOrderTraverseStackWithFlag2(root2);
     printf("\n");
+    postOrderTraverseStackWithFlag3(root2);
+    printf("\n");
 
 }
 

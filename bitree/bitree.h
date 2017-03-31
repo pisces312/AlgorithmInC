@@ -37,5 +37,6 @@ void postOrderTraverseStack(BiTNode* p);
 void postOrderTraverseStack2(BiTNode* p);
 void postOrderTraverseStackWithFlag1(BiTNodeWithFlag* p);
 void postOrderTraverseStackWithFlag2(BiTNodeWithFlag* p);
+void postOrderTraverseStackWithFlag3(BiTNodeWithFlag* p);
 
 #endif // BITREE_H_INCLUDED

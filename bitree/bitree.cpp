@@ -236,9 +236,33 @@ void postOrderTraverseStack2(BiTNode* p) {
     }
 }
 
+//Avoid set p=NULL and push back
+void postOrderTraverseStackWithFlag1(BiTNodeWithFlag* p) {
+    std::stack<BiTNodeWithFlag*> s;
+    while(true) {
+        while(p) {
+            p->flag=false;
+            s.push(p);
+            p=p->lchild;
+        }
+        if(!s.empty()) {
+            if(s.top()->flag) {
+                //!Not change p here
+                //!Still use s.top()
+                printf("%c ",s.top()->data);
+                s.pop();
+            } else {
+                p=s.top();
+                p->flag=true;
+                p=p->rchild;
+            }
+        } else
+            break;
+    }
+}
 
 //Not recommended
-void postOrderTraverseStackWithFlag1(BiTNodeWithFlag* p) {
+void postOrderTraverseStackWithFlag2(BiTNodeWithFlag* p) {
     std::stack<BiTNodeWithFlag*> s;
     while(true) {
         while(p) {
@@ -263,8 +287,11 @@ void postOrderTraverseStackWithFlag1(BiTNodeWithFlag* p) {
     }
 }
 
-//Avoid set p=NULL
-void postOrderTraverseStackWithFlag2(BiTNodeWithFlag* p) {
+
+
+//Pop and push back
+//Not recommended
+void postOrderTraverseStackWithFlag3(BiTNodeWithFlag* p) {
     std::stack<BiTNodeWithFlag*> s;
     while(true) {
         while(p) {
@@ -273,18 +300,18 @@ void postOrderTraverseStackWithFlag2(BiTNodeWithFlag* p) {
             p=p->lchild;
         }
         if(!s.empty()) {
-            if(s.top()->flag) {
-                //!Not change p here
-                //!Still use s.top()
-                printf("%c ",s.top()->data);
-                s.pop();
+            //Pop, no matter the flag
+            p=s.top();
+            s.pop();
+            if(p->flag) {
+                printf("%c ",p->data);
+                p=NULL; //Set back to NULL
             } else {
-                p=s.top();
                 p->flag=true;
+                s.push(p); //Push back
                 p=p->rchild;
             }
         } else
             break;
     }
 }
-
