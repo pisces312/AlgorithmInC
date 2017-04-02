@@ -412,12 +412,13 @@ int testSortMain() {
 //!incorrect
 //    testSortFunc(quickSortForDup);
 
-testSortFunc(quickSortLomuto);
+//testSortFunc(quickSortLomuto);
 //testSortFunc(bubbleSortWithTwoDirsAndPos);
 //testSortFunc(bubbleSortWithTwoDirs);
 //testSortFunc(bubbleSortWithPos);
 //testSortFunc(selectSortMinMax);
 //testSortFunc(selectSort);
+testSortFunc(shellSort4);
 //testSortFunc(shellSort3);
 //testSortFunc(shellSort2);
 //testSortFunc(quickSortNonRecursive);

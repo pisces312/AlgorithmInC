@@ -11,8 +11,10 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-msse4.2" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -70,13 +72,21 @@
 		</Unit>
 		<Unit filename="common.cpp" />
 		<Unit filename="common.h" />
+		<Unit filename="dp/dp.cpp" />
+		<Unit filename="dp/dp.h" />
+		<Unit filename="dp/dp_test.cpp" />
 		<Unit filename="graph/graph.cpp" />
 		<Unit filename="graph/graph.h" />
 		<Unit filename="graph/shortestpath.cpp" />
 		<Unit filename="list.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="prime.cpp" />
-		<Unit filename="prime.h" />
+		<Unit filename="quitz/bitcount.cpp" />
+		<Unit filename="quitz/bitcount.h" />
+		<Unit filename="quitz/max_seq_sum.cpp" />
+		<Unit filename="quitz/max_seq_sum.h" />
+		<Unit filename="quitz/max_seq_sum_test.cpp" />
+		<Unit filename="quitz/prime.cpp" />
+		<Unit filename="quitz/prime.h" />
 		<Unit filename="random/random.cpp" />
 		<Unit filename="random/random.h" />
 		<Unit filename="sort/sort.cpp" />
@@ -88,6 +98,7 @@
 		<Unit filename="tree/BinaryTree.h" />
 		<Unit filename="tree/BinaryTreeWithParent.cpp" />
 		<Unit filename="tree/BinaryTreeWithParent.h" />
+		<Unit filename="tree/dp.h" />
 		<Unit filename="tree/main.cpp" />
 		<Unit filename="tree/tree.cpp" />
 		<Unit filename="tree/tree.h" />

@@ -1,6 +1,6 @@
 #include "common.h"
 //#include"LinearList/LinearList.h"
-#include "prime.h"
+#include "quitz/prime.h"
 #include "Search/search.h"
 #include "graph/graph.h"
 #include "tree/BinaryTree.h"
@@ -187,9 +187,12 @@ int testOneLink() {
 }
 
 extern void testTree();
+extern void testMaxContinuousSeqSum();
+extern void testBitCount();
 int main() {
-
-    testTree();
+testBitCount();
+//testMaxContinuousSeqSum();
+//    testTree();
 //       testSortMain();
 
 
