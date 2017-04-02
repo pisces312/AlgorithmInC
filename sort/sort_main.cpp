@@ -181,18 +181,19 @@ void testDriverCore(int* keys,unsigned int n) {
     }
 
 
-////slow???
+//!slower than recursive because stack is set manually
     TEST(quickSortNonRecursive);
     TEST(quickSortNonRecursive2);
 
-    TEST(heapSort1);
+    TEST(heapSort);
     TEST(heapSort2);
+    TEST(heapSortIdxFromOne);
+    TEST(heapSortIdxFromOne2);
     TEST(heapSort3);
     TEST(heapSort4);
-    TEST(heapSortByMaxHeap);
 
-    TEST(mergeSort);
-//    TEST(mergeSort2);
+    TEST(mergeSortTopDown);
+    TEST(mergeSortBottomUp);
 
     {
         memcpy(keys,org,sizeof(int)*n);
@@ -287,48 +288,6 @@ void testShowingDetail(int n=100) {
     delete[] org;
 }
 
-void testCreateHeap1() {
-    const int n=14;
-    int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
-//    int a[]= {99,5,36,7,22,17,92,12,2,19,25,28,1,46};
-    int h[n];
-    int i;
-    for(i=0; i<n; ++i) {
-        h[i]=a[i];
-        siftupMinHeap(h,i);
-    }
-    printArray(h,n);
-}
-void testCreateHeap2() {
-    const int n=14;
-    int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
-//    int a[]= {99,5,36,7,22,17,92,12,2,19,25,28,1,46};
-    int h[n];
-    int i;
-    memcpy(h,a,sizeof(int)*n);
-    for(i=n/2-1; i>=0; --i)
-        siftdownMinHeap(h,i,n);
-    printArray(h,n);
-}
-void testHeapSort() {
-    int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
-    const int n=sizeof(a)/sizeof(int);
-    int bak[n];
-    memcpy(bak,a,sizeof(int)*n);
-
-    printf("n=%d\n",n);
-    heapSortByMinHeap(a,n);
-
-
-    memcpy(a,bak,sizeof(int)*n);
-    heapSortByMaxHeap(a,n);
-    printArray(a,n);
-
-//    heapSort2(a,n);
-//    printArray(a,n);
-}
-
-
 void testQuickSortForDup() {
     int* ptr=NULL;
     int n=0;
@@ -412,13 +371,17 @@ int testSortMain() {
 //!incorrect
 //    testSortFunc(quickSortForDup);
 
+testSortFunc(mergeSortTopDown);
+testSortFunc(mergeSortBottomUp);
+//    testSortFunc(heapSort2);
+//testSortFunc(heapSort);
 //testSortFunc(quickSortLomuto);
 //testSortFunc(bubbleSortWithTwoDirsAndPos);
 //testSortFunc(bubbleSortWithTwoDirs);
 //testSortFunc(bubbleSortWithPos);
 //testSortFunc(selectSortMinMax);
 //testSortFunc(selectSort);
-testSortFunc(shellSort4);
+//testSortFunc(shellSort4);
 //testSortFunc(shellSort3);
 //testSortFunc(shellSort2);
 //testSortFunc(quickSortNonRecursive);

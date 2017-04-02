@@ -25,9 +25,18 @@ int bitCountByBitOp(unsigned int n) {
 }
 
 int bitCountByBitOp2(unsigned int n) {
-    unsigned int c = 0 ; // 计数器
-    for(c = 0; n>0 ; n >>= 1)  // 循环移位
-        c += n & 1 ; // 如果当前位是1，则计数器加1
+    unsigned int c = 0 ;
+    for(c = 0; n>0 ; n >>= 1)
+        c += n & 1 ;
+    return c ;
+}
+
+int bitCountByBitOp3(unsigned int n) {
+    unsigned int c = 0 ;
+    while(n>0) {
+        n-=n&(-n);
+        ++c;
+    }
     return c ;
 }
 
@@ -218,11 +227,13 @@ N: number
            1e9*clicks/((float) CLOCKS_PER_SEC)); \
     assert(c==bitCountByRemainder(N));}
 
-//Add different algorithm
+//Add different algorithms
 void testBitCountCore(unsigned int n) {
+//    printf("Input: %x\n",n);
     assertBitCount(bitCountByRemainder,n);
     assertBitCount(bitCountByBitOp,n);
     assertBitCount(bitCountByBitOp2,n);
+    assertBitCount(bitCountByBitOp3,n);
     assertBitCount(bitCountFast,n);
     assertBitCount(bitCountByDynamicTable,n);
     assertBitCount(bitCountStatic4bitTable,n);
@@ -232,13 +243,22 @@ void testBitCountCore(unsigned int n) {
     assertBitCount(bitCountParalell2,n);
     assertBitCount(bitCountByByteStruct,n);
     assertBitCount(bitCountByCPU,n);
+    printf("\n\n");
 }
 
-//Add different input
+//Add different inputs
 void testBitCount() {
     testBitCountCore(65535);
     testBitCountCore(42235);
     testBitCountCore(19283);
+    unsigned int n=1;
+    printf("Dec:%d, Hex:%x, Hex(-n):%x, n&(-n):%x\n",n,n,-n,n&(-n));
+    n=3;//11->1
+    printf("Dec:%d, Hex:%x, Hex(-n):%x, n&(-n):%x\n",n,n,-n,n&(-n));
+    n=15;//1111->1
+    printf("Dec:%d, Hex:%x, Hex(-n):%x, n&(-n):%x\n",n,n,-n,n&(-n));
+    n=12;//1100->100
+    printf("Dec:%d, Hex:%x, Hex(-n):%x, n&(-n):%x\n",n,n,-n,n&(-n));
 //    printf("%d\n",((1+64+64*64+64*64*64)%63));
 
 }

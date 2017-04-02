@@ -4,6 +4,7 @@
 int bitCountByRemainder(unsigned int);
 int bitCountByBitOp(unsigned int);
 int bitCountByBitOp2(unsigned int);
+int bitCountByBitOp3(unsigned int);
 int bitCountFast(unsigned int);
 int bitCountByDynamicTable(unsigned int);
 int bitCountStatic4bitTable(unsigned int);

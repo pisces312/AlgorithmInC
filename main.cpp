@@ -60,17 +60,21 @@ void testFibonacci() {
     printf("%ld\n",fibonacci(10));
 }
 ////////////////////////////////////////////////////////////
-
+//½×³Ë
+int factorial(int n) {
+    if(n==1) return 1;
+    return factorial(n-1)*n;
+}
 
 
 ////////////////////////////////////////////////////////////
 
 void permutation(char *s, int start, int end) {
-    if (start == end) {
+    if(start == end) {
         printf("%s\n", s);
         return;
     }
-    for (int i = start; i < end; i++) {
+    for(int i = start; i < end; i++) {
         std::swap(s[start],s[i]);
         permutation(s, start + 1, end);
         std::swap(s[start],s[i]);
@@ -89,7 +93,7 @@ void testPermutation() {
 int hasLoop(Node *node) {
     Node *pFast=node;
     Node *pSlow=node;
-    if (pFast == NULL || pFast->next == NULL)
+    if(pFast == NULL || pFast->next == NULL)
         return 0;
     do {
         pFast = pFast->next->next;
@@ -101,7 +105,7 @@ int hasLoop(Node *node) {
 //            printf("slow=%d",pSlow->element);
 //        }
 //        printf("\n");
-    } while (pFast != pSlow &&pFast != NULL && pFast->next != NULL ) ;
+    } while(pFast != pSlow &&pFast != NULL && pFast->next != NULL) ;
     return (pFast == pSlow);
 }
 
@@ -190,10 +194,10 @@ extern void testTree();
 extern void testMaxContinuousSeqSum();
 extern void testBitCount();
 int main() {
-testBitCount();
+//testBitCount();
 //testMaxContinuousSeqSum();
 //    testTree();
-//       testSortMain();
+    testSortMain();
 
 
 //    testOneLink();

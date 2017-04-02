@@ -328,7 +328,7 @@ void quickSortTwoWayPartition3(int* x,int n) {
     qsortTwoWayPartition3(x,0,n-1);
 }
 
-
+//!Easy to understand and implement
 int partition2(int*x,int low,int high) {
     if(low >= high)
         return -1;
@@ -342,17 +342,13 @@ int partition2(int*x,int low,int high) {
 //If only "<", right pointer will not move when
 //the first value equals to pivot (worst case: all values are the same),
 //so the "while(low<hight)" loop cannot exit
-        while(low < high && pivot <= x[high]) {
-            --high;
-        }
+        while(low < high && pivot <= x[high]) --high;
 //As tmp variable, x[low] stores current element which <=pivot
 //worst case, high=low
         x[low] = x[high];
 //Have to use "=". Same reason
 //worst case, high=low, the loop will not be executed
-        while(low < high && x[low] <= pivot) {
-            ++low;
-        }
+        while(low < high && x[low] <= pivot) ++low;
 //As tmp, x[high] stores current element which >=pivot
         x[high] = x[low];
     }
@@ -554,8 +550,68 @@ void shellSort4(int* x,int n) {
 HEAP SORTS
 
 */
-//自底向上
-void siftup(int* x,int u) {
+
+//Top down
+//index starts from 0
+//2*i+1, 2*i+2
+//n is total nodes of current heap
+void siftdown(int* x,int i, int n) {
+    int c=2*i+1; //left child
+    while(c<n) {
+        if(c+1 <n && x[c+1] > x[c])//Find the larger one of children
+            c++;
+        if(x[i] > x[c]) //如果大于大的也退出
+            break;
+        swap(x,i, c);
+        i = c;
+        c = 2*i+1;
+    }
+}
+//Place max value as the last element of current heap
+void siftdown2(int a[], int i, int n) {
+    int temp = a[i];
+    int j = 2 * i + 1;
+    while(j < n) {
+        if(j + 1 < n && a[j + 1] > a[j])
+            j++;
+
+        if(a[j] <= temp)
+            break;
+
+        a[i] = a[j];     //把较小的子结点往上移动,替换它的父结点
+        i = j;
+        j = 2 * i + 1;
+    }
+    a[i] = temp; //move to final place
+}
+void heapSort(int* x,int n) {
+    int i;
+    for(i = n/2-1; i >= 0; i--)
+        siftdown(x,i, n); //Top down, not consider leaf, faster
+    for(i = n-1; i >= 1; i--) { //current heap nodes to adjust
+        swap(x,0,i); //swap with first element in array
+        siftdown(x,0,i);
+    }
+}
+
+void heapSort2(int* x,int n) {
+    int i;
+    for(i = n/2-1; i >= 0; i--)
+        siftdown2(x,i, n); //Top down, not consider leaf, faster
+    for(i = n-1; i >= 1; i--) { //current heap nodes to adjust
+        swap(x,0,i); //swap with first element in array
+        siftdown2(x,0,i);
+    }
+}
+
+
+
+
+
+
+////////////////////////////////////////
+//Bottom up
+void siftupIdxFromOne(int* x,int u) {
     int i=u, p;
     for(;;) {
         if(i == 1) //1表示根，浪费一个0位置的元素
@@ -567,24 +623,7 @@ void siftup(int* x,int u) {
         i = p;
     }
 }
-//自顶向下
-void siftdown1(int* x,int l, int u) {
-    int i=l, c;
-    for(;;) {
-        c = 2*i;
-        if(c > u) //没有子节点
-            break;
-        if(c+1 <= u && x[c+1] > x[c]) //找出两个孩子中大的
-            c++;
-        if(x[i] > x[c]) //如果大于大的也退出
-            break;
-        //
-        swap(x,i, c);
-        i = c;
-    }
-}
-
-void siftdown1b(int* x,int l, int u) { /* More C-ish version of 1 */
+void siftdownIdxFromOne2(int* x,int l, int u) { /* More C-ish version of 1 */
     int i, c;
     for(i = l; (c = 2*i) <= u; i = c) {
         if(c+1 <= u && x[c+1] > x[c])
@@ -594,32 +633,75 @@ void siftdown1b(int* x,int l, int u) { /* More C-ish version of 1 */
         swap(x,i, c);
     }
 }
-
-void heapSort1(int* x,int n) {
-    int i;
-    x--;//!使得x'[1]=x[0]，节省了一个空间
-    //自底向上建堆
-    for(i = 2; i <= n; i++)
-        siftup(x,i);
-    //
-    for(i = n; i >= 2; i--) {
-        swap(x,1, i);
-        siftdown1(x,1, i-1);
+//Top down
+//index starts from 1
+//2*i, 2*i+1
+//r is rightmost index
+void siftdownIdxFromOne(int* x,int i, int n) {
+    int c=2*i; //left child
+    while(c<=n) {
+//        printf("<%d> has left child <%d>\n",i,c);
+        if(c+1 <= n && x[c+1] > x[c]) {//Find the larger one of children
+//            printf("<%d> is larger than <%d>\n",c+1,c);
+            c++;
+        }
+        if(x[i] > x[c]) //如果大于大的也退出
+            break;
+//        printf("Swap <%d> with <%d>\n",i,c);
+        swap(x,i, c);
+//        printArray(x,n+1);
+        i = c;
+        c = 2*i;
     }
-    x++;
 }
-
-void heapSort2(int* x,int n) {
+void heapSortIdxFromOne2(int* x,int n) {
     int i;
-    x--;
-    //自顶向下建堆，不考虑叶节点，速度更快！！
-    for(i = n/2; i >= 1; i--)
-        siftdown1(x,i, n);
+    for(i = 2; i <= n; i++)
+        siftupIdxFromOne(x,i);
     for(i = n; i >= 2; i--) {
         swap(x,1, i);
-        siftdown1(x,1, i-1);
+        siftdownIdxFromOne(x,1, i);
     }
-    x++;
+}
+//index starts from 1, so x-- first
+void heapSortIdxFromOne(int* x,int n) {
+    int i;
+    --x;
+    //Top down, not consider leaf, faster
+    for(i = n/2; i >= 1; i--)
+        siftdownIdxFromOne(x,i, n);
+    for(i = n; i >= 2; i--) {
+        swap(x,1, i);
+        siftdownIdxFromOne(x,1, i-1);
+    }
+    ++x;
+}
+void siftdown4(int* x,int l, int u) { /* replace swap with assignments */
+    int i, c, p;
+    int t;
+    t = x[l];
+    i = l;
+    for(;;) {
+        c = 2*i;
+        if(c > u)
+            break;
+        if(c+1 <= u && x[c+1] > x[c])
+            c++;
+        x[i] = x[c];
+        i = c;
+    }
+    x[i] = t;
+    for(;;) {
+        p = i/2;
+        if(p < l)
+            break;
+        if(x[p] > x[i])
+            break;
+        t=x[i];
+        x[i]=x[p];
+        x[p]=t;
+        i = p;
+    }
 }
 ///////////////////////////////////////
 
@@ -661,33 +743,6 @@ void heapSort3(int* x,int n) {
     x++;
 }
 
-void siftdown4(int* x,int l, int u) { /* replace swap with assignments */
-    int i, c, p;
-    int t;
-    t = x[l];
-    i = l;
-    for(;;) {
-        c = 2*i;
-        if(c > u)
-            break;
-        if(c+1 <= u && x[c+1] > x[c])
-            c++;
-        x[i] = x[c];
-        i = c;
-    }
-    x[i] = t;
-    for(;;) {
-        p = i/2;
-        if(p < l)
-            break;
-        if(x[p] > x[i])
-            break;
-        t=x[i];
-        x[i]=x[p];
-        x[p]=t;
-        i = p;
-    }
-}
 
 void heapSort4(int* x,int n) {
     int i;
@@ -699,92 +754,6 @@ void heapSort4(int* x,int n) {
         siftdown4(x,1, i-1);
     }
     x++;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-//
-// Heap Sort, start from index 0
-void siftdownMinHeap(int *h,int i,int n) {
-    int t;
-    while(i*2+1<n) {
-        if(h[i]>h[i*2+1])//choose the min of parent and left child
-            t=i*2+1;
-        else
-            t=i;
-        if(i*2+2<n&&h[t]>h[i*2+2])
-            t=i*2+2;
-        if(t!=i) {
-            swapInt(&h[t],&h[i]);
-            i=t;
-        } else break;
-    }
-}
-void siftupMinHeap(int*h,int i) { //bottom-up, only compare with parent
-    while(i)
-        if(h[i]<h[(i-1)/2]) {
-            swapInt(&h[i],&h[(i-1)/2]);
-            i=(i-1)/2;
-        } else
-            break;
-}
-
-void siftdownMaxHeap(int *h,int i,int n) {
-    int t;
-    while(i*2+1<n) {
-        if(h[i]<h[i*2+1])//choose the min of parent and left child
-            t=i*2+1;
-        else
-            t=i;
-        if(i*2+2<n&&h[t]<h[i*2+2])
-            t=i*2+2;
-        if(t!=i) {
-            swapInt(&h[t],&h[i]);
-            i=t;
-        } else break;
-    }
-}
-void siftupMaxHeap(int*h,int i) { //bottom-up, only compare with parent
-    while(i)
-        if(h[i]>h[(i-1)/2]) {
-            swapInt(&h[i],&h[(i-1)/2]);
-            i=(i-1)/2;
-        } else
-            break;
-}
-
-
-int deletemax(int*h,int n) {
-    int v=h[0];
-    h[0]=h[n-1];
-//    printf("[%d %d], ",v,h[0]);
-    siftdownMinHeap(h,0,n-1);
-    return v;
-}
-//void deletemax2(int*h,int n) {
-//    swapInt(&h[0],&h[n-1]);
-//    siftdown(h,0,--n);
-//}
-void heapSortByMinHeap(int*h,int n) {
-    int i;
-    for(i=n/2-1; i>=0; --i)
-        siftdownMinHeap(h,i,n);
-    for(i=n-1; i>=0; --i) {
-        printf("%d ",h[0]);
-        h[0]=h[i];
-        siftdownMinHeap(h,0,i);
-    }
-//        printf("%d ",deletemax(h,i));
-    printf("\n");
-}
-void heapSortByMaxHeap(int*h,int n) {
-    int i;
-    for(i=n/2-1; i>=0; --i)
-        siftdownMaxHeap(h,i,n);
-    while(n>1) {
-        swapInt(&h[0],&h[n-1]);
-        siftdownMaxHeap(h,0,--n);
-    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -867,65 +836,85 @@ void bubbleSortWithTwoDirsAndPos(int r[], int n) {
 /**
 归并排序
 **/
-void merge(int* array, int* array2, int low, int mid, int high) {
-    int i = low; // i是第一段序列的下标
+void mergeSortedArray(int* a, int first, int mid, int last, int* tmp) {
+    int i = first; // i是第一段序列的下标
     int j = mid + 1; // j是第二段序列的下标
-    int k = low; // k是临时存放合并序列的下标
+    int k = first; // k是临时存放合并序列的下标
     // 扫描第一段和第二段序列，直到有一个扫描结束
-    while(i <= mid && j <= high)
+    while(i <= mid && j <= last)
         // 判断第一段和第二段取出的数哪个更小，将其存入合并序列，并继续向下扫描
-        if(array[i] <= array[j])
-            array2[k++] = array[i++];
+        if(a[i] <= a[j])
+            tmp[k++] = a[i++];
         else
-            array2[k++] = array[j++];
+            tmp[k++] = a[j++];
 
     // 若第一段序列还没扫描完，将其全部复制到合并序列
-    while(i <= mid) array2[k++] = array[i++];
+    while(i <= mid) tmp[k++] = a[i++];
 
     // 若第二段序列还没扫描完，将其全部复制到合并序列
-    while(j <= high) array2[k++] = array[j++];
+    while(j <= last) tmp[k++] = a[j++];
 
     // 将合并序列复制到原始序列中
-    for(k = low; k<= high; k++)
-        array[k] = array2[k];
+    for(k = first; k<= last; k++)
+        a[k] = tmp[k];
 
-//    printArray(array,high-low+1);
+//    printArray(array,last-first+1);
 }
 
-void mergePass(int* array, int* array2, int gap, int length) {
+//Bottom up, from 1 to n/2
+void mergeBottomUp(int* a, int gap, int length, int* tmp) {
     int i = 0;
-
     // 归并gap长度的两个相邻子表
-    for(i = 0; i + 2 * gap - 1 < length; i = i + 2 * gap)
-        merge(array,array2, i, i + gap - 1, i + 2 * gap - 1);
+    for(i = 0; i + 2 * gap - 1 < length; i += 2 * gap)
+        mergeSortedArray(a, i, i + gap - 1, i + 2 * gap - 1, tmp);
 
-    // 余下两个子表，后者长度小于gap
+    // 余下的两个子表，其中一个长度小于gap
     if(i + gap - 1 < length)
-        merge(array,array2, i, i + gap - 1, length - 1);
+        mergeSortedArray(a, i, i + gap - 1, length - 1, tmp);
 }
 
-void mergeSort(int* list,int n) {
+void mergeSortBottomUp(int* a,int n) {
     int* result=(int*)calloc(n,sizeof(int));
     for(int gap = 1; gap < n; gap = 2 * gap)
-        mergePass(list,result, gap, n);
+        mergeBottomUp(a, gap, n, result);
     free(result);
 }
 
-//void mergeSort2(int *x,int n) {
-//    int* res=new int[n];
-//    for(int len=1; len<=n; len<<=1) {
-//        mergePass(x,res,n,len);
-////        printArray(res,n);
-//        len<<=1;
-//        mergePass(res,x,n,len);
-////        printArray(x,n);
-//    }
-//    delete[] res;
-//}
+//Top down, recursive
+//From n/2 to 1
+void mergeSortTopDownCore(int a[], int first, int last, int temp[]) {
+    if(first < last) {
+        int mid = (first + last) / 2;
+        mergeSortTopDownCore(a, first, mid, temp);    //左边有序
+        mergeSortTopDownCore(a, mid + 1, last, temp); //右边有序
+        mergeSortedArray(a, first, mid, last, temp); //再将二个有序数列合并
+    }
+}
 
-//void mergeTwoSortedArray(int*x,int xn,int*y,int yn,int*res) {
-//
-//}
+void mergeSortTopDown(int* a, int n) {
+    int *p = new int[n];
+    mergeSortTopDownCore(a, 0, n - 1, p);
+    delete[] p;
+}
+
+//将有序数组a[]和b[]合并到c[]中
+//O(n)
+void mergeSortedArray2(int a[], int n, int b[], int m, int c[]) {
+    int i, j, k;
+    i = j = k = 0;
+    while(i < n && j < m)
+        if(a[i] < b[j])
+            c[k++] = a[i++];
+        else
+            c[k++] = b[j++];
+    while(i < n)
+        c[k++] = a[i++];
+    while(j < m)
+        c[k++] = b[j++];
+}
+
+
+
 /**
 位图排序
 用于非负、非重复整数，分布广，数量大的情况
@@ -1048,6 +1037,10 @@ void radixSort(radixNode* a[],int size) {
     for(i=0; i<sum; i++)
         radixPass(a,size,i);
 }
+
+
+//////////////////////////////////////////
+//Show details
 void createHeap(int* a,int n,int h,int &compare,int &move) {
     int i=h,j=2*h+1;
     int temp=a[h];

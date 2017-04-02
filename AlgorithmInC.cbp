@@ -57,8 +57,6 @@
 		<Unit filename="LinkedList/Singly/OneLink.cpp" />
 		<Unit filename="LinkedList/Singly/OneLink.h" />
 		<Unit filename="LinkedList/Singly/OneLinkNode.h" />
-		<Unit filename="LinkedList/单链表/OneLink.h" />
-		<Unit filename="LinkedList/单链表/OneLinkNode.h" />
 		<Unit filename="Search/floodfill.cpp" />
 		<Unit filename="Search/maze.cpp" />
 		<Unit filename="Search/permutation.cpp" />
@@ -98,7 +96,6 @@
 		<Unit filename="tree/BinaryTree.h" />
 		<Unit filename="tree/BinaryTreeWithParent.cpp" />
 		<Unit filename="tree/BinaryTreeWithParent.h" />
-		<Unit filename="tree/dp.h" />
 		<Unit filename="tree/main.cpp" />
 		<Unit filename="tree/tree.cpp" />
 		<Unit filename="tree/tree.h" />

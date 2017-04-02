@@ -46,6 +46,10 @@ inline void swap(int* x,const int i, const int j) {
 }
 void printArray(int*a,int n) ;
 
+/* getbits:  get n bits from position p */
+inline unsigned getbits(unsigned x, int p, int n) {
+    return (x >> (p+1-n)) & ~(~0 << n);
+}
 
 //template<class T>
 //void display(T a[],int n) {
