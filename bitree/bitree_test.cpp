@@ -24,6 +24,7 @@
 //    pre: h d b e i a f c g k j
 //    in:  h d b e i a f c g k j
 //    post:h d i e b f k j g c a
+//  layer: a b c d e f g h i j k
 BiTNode* testTreeCreationByPreAndIn() {
     int pre[]= {'a','b','d','h','e','i','c','f','g','j','k'};
     int in[]= {'h','d','b','e','i','a','f','c','g','k','j'};
@@ -100,11 +101,44 @@ void testTreeTraverseStack() {
     printf("\n");
     postOrderTraverseStackWithFlag2(root2);
     printf("\n");
+    postOrderTraverseStackWithFlag3(root2);
+    printf("\n");
 
 }
 
+void testLayerTraverse() {
+    BiTNode* root= testTreeCreationByPreAndIn();
+    layerTraverseByBFS(root);
+    printf("\n");
+    layerTraverseByOneQueue(root);
+    printf("\n");
+    layerTraverseRecursive(root);
+    printf("\n");
+    layerTraverseByArray(root);
+    printf("\n");
+    layerTraverseByTwoQueue(root);
+    printf("\n");
+
+    //Right to left
+    layerTraverseByQueueR2L(root);
+    printf("\n");
+    layerTraverseByQueueR2L2(root);
+    printf("\n");
+    //
+    layerTraBottomUpAndR2L(root);
+    printf("\n");
+    layerTraBottomUpAndR2L2(root);
+    printf("\n");
+
+    //
+    int v=getKthValueOfLevel(root,2,2);
+    printf("%c\n",v);
+    v=getKthValueOfLevel2(root,2,2);
+    printf("%c\n",v);
+}
 void testTree() {
-    testTreeTraverseStack();
+    testLayerTraverse();
+//    testTreeTraverseStack();
 //    testTreeTraverse();
 //    testTreeCreationByPostAndIn();
 //    testTreeCreationByPreAndIn();

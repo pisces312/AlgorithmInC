@@ -1,11 +1,6 @@
 #ifndef PRIME_H_INCLUDED
 #define PRIME_H_INCLUDED
 
-#include "common.h"
-
-void testPrime();
-
-
 bool isPrime(unsigned long long n);
 bool isPrime2(unsigned long long n) ;
 bool isPrime64(const unsigned long long n);

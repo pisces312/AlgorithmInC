@@ -24,30 +24,28 @@ void quickSortTwoWayPartition(int* x,int n);
 void quickSortTwoWayPartition2(int* x,int n);
 void quickSortTwoWayPartition3(int* x,int n);
 void _fastcall quickSortFinal(int* x,int n);
-int partition(int*x,int l,int u);
+int partition(int*x,const int l,const int u);
 void quickSortNonRecursive(int*x,int n);
 void quickSortNonRecursive2(int*x,int n);
 
 void selectSort(int* x,int n);
 void selectSortMinMax(int *r,int n);
-void heapSort1(int* x,int n);
+
+//index from 0
+void heapSort(int* x,int n);
 void heapSort2(int* x,int n);
+
+//index from 1
+void heapSortIdxFromOne(int* x,int n);
+void heapSortIdxFromOne2(int* x,int n);
 void heapSort3(int* x,int n);
 void heapSort4(int* x,int n);
-
-
-void siftdownMinHeap(int *h,int i,int n);
-void siftupMinHeap(int*h,int i);
-void siftdownMaxHeap(int *h,int i,int n);
-void siftupMaxHeap(int*h,int i);
-void heapSortByMinHeap(int*h,int n);
-void heapSortByMaxHeap(int*h,int n);
-int deletemax(int*h,int n);
 
 
 void shellSort(int* x,int n);
 void shellSort2(int* x,int n);
 void shellSort3(int* x,int n);
+void shellSort4(int* x,int n);
 
 void bubbleSort1(int* x,int n);
 void bubbleSortWithFlag(int* x,int n);
@@ -55,8 +53,8 @@ void bubbleSortWithPos( int r[], int n) ;
 void bubbleSortWithTwoDirs( int r[], int n);
 void bubbleSortWithTwoDirsAndPos( int r[], int n);
 
-void mergeSort(int *x,int n);
-//void mergeSort2(int *x,int n);
+void mergeSortBottomUp(int *x,int n);
+void mergeSortTopDown(int *x,int n);
 
 
 void bitSortNoDuplicatePositiveInteger(int *x,int n,int max);

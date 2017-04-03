@@ -236,9 +236,33 @@ void postOrderTraverseStack2(BiTNode* p) {
     }
 }
 
+//Avoid set p=NULL and push back
+void postOrderTraverseStackWithFlag1(BiTNodeWithFlag* p) {
+    std::stack<BiTNodeWithFlag*> s;
+    while(true) {
+        while(p) {
+            p->flag=false;
+            s.push(p);
+            p=p->lchild;
+        }
+        if(!s.empty()) {
+            if(s.top()->flag) {
+                //!Not change p here
+                //!Still use s.top()
+                printf("%c ",s.top()->data);
+                s.pop();
+            } else {
+                p=s.top();
+                p->flag=true;
+                p=p->rchild;
+            }
+        } else
+            break;
+    }
+}
 
 //Not recommended
-void postOrderTraverseStackWithFlag1(BiTNodeWithFlag* p) {
+void postOrderTraverseStackWithFlag2(BiTNodeWithFlag* p) {
     std::stack<BiTNodeWithFlag*> s;
     while(true) {
         while(p) {
@@ -263,8 +287,11 @@ void postOrderTraverseStackWithFlag1(BiTNodeWithFlag* p) {
     }
 }
 
-//Avoid set p=NULL
-void postOrderTraverseStackWithFlag2(BiTNodeWithFlag* p) {
+
+
+//Pop and push back
+//Not recommended
+void postOrderTraverseStackWithFlag3(BiTNodeWithFlag* p) {
     std::stack<BiTNodeWithFlag*> s;
     while(true) {
         while(p) {
@@ -273,14 +300,15 @@ void postOrderTraverseStackWithFlag2(BiTNodeWithFlag* p) {
             p=p->lchild;
         }
         if(!s.empty()) {
-            if(s.top()->flag) {
-                //!Not change p here
-                //!Still use s.top()
-                printf("%c ",s.top()->data);
-                s.pop();
+            //Pop, no matter the flag
+            p=s.top();
+            s.pop();
+            if(p->flag) {
+                printf("%c ",p->data);
+                p=NULL; //Set back to NULL
             } else {
-                p=s.top();
                 p->flag=true;
+                s.push(p); //Push back
                 p=p->rchild;
             }
         } else
@@ -288,3 +316,336 @@ void postOrderTraverseStackWithFlag2(BiTNodeWithFlag* p) {
     }
 }
 
+
+//////////////////////////////////////////////
+//
+//Layer traverse
+//
+/////////////////////////////////////////////
+
+////////////////////////////
+//Top down and left to right
+//!Use queue, not distinguish each level
+void layerTraverseByBFS(BiTNode* p) {
+    if(p==NULL)
+        return;
+    std::queue<BiTNode*> q;
+    q.push(p);
+    while(!q.empty()) {
+        p=q.front();
+        q.pop();
+        printf("%c ",p->data);
+        if(p->lchild) q.push(p->lchild);
+        if(p->rchild) q.push(p->rchild);
+    }
+}
+
+
+//root is on level 0
+//recursive version
+//void traverseOneLevel(BiTNode* root,int level) {
+//    if(!root||level<0)
+//        return;
+//    if(level==0) {
+//        printf("%c ",root->data);
+//        return;
+//    }
+//    traverseOneLevel(root->lchild,level-1);
+//    traverseOneLevel(root->rchild,level-1);
+//}
+//!
+int traverseOneLevel(BiTNode* root,int level) {
+    if(!root||level<0)
+        return 0;
+    if(level==0) {
+        printf("%c ",root->data);
+        return 1;
+    }
+    return traverseOneLevel(root->lchild,level-1)+
+           traverseOneLevel(root->rchild,level-1);
+}
+
+
+
+//Have redundant traverse
+void layerTraverseRecursive(BiTNode* p) {
+    int level=0;
+    while(traverseOneLevel(p,level)) {
+        ++level;
+        printf("\n");
+    }
+}
+
+//Not know the number of tree, use vector
+//similar as layerTraverseByArray2
+//void layerTraverseByArray(BiTNode* p) {
+//    if(p==NULL)
+//        return;
+//    std::vector<BiTNode*> arr;
+//    arr.push_back(p);
+//    //[first,last)
+//    int cur=0;//index
+//    int last=1;//index
+//    int i=0;//backup previous "last"
+//    while(cur<last) {
+//        for(i=last; cur<last; ++cur) { //print by level
+//            printf("%c ",arr[cur]->data);
+//            if(arr[cur]->lchild) {
+//                arr.push_back(arr[cur]->lchild);
+//                ++i;
+//            }
+//            if(arr[cur]->rchild) {
+//                arr.push_back(arr[cur]->rchild);
+//                ++i;
+//            }
+//        }
+//        last=i;
+//        printf("\n");
+////        printf("first:%d,last:%d\n",first,last);
+//    }
+//}
+//!Use two indexes
+//Drawback: use vector
+void layerTraverseByArray(BiTNode* p) {
+    if(p==NULL)
+        return;
+    std::vector<BiTNode*> vec;
+    vec.push_back(p);
+    int cur=0;
+    while(cur<vec.size()) { //cur<totalSize
+        //the next pos of last element
+        //store the previous "vec.size()"
+        //because vec will bi changed in the loop
+        int last=vec.size();
+        while(cur<last) {
+            printf("%c ",vec[cur]->data);
+            if(vec[cur]->lchild)
+                vec.push_back(vec[cur]->lchild);
+            if(vec[cur]->rchild)
+                vec.push_back(vec[cur]->rchild);
+            ++cur;
+        }
+        printf("\n");
+    }
+}
+
+//!!Use two queues
+void layerTraverseByTwoQueue(BiTNode* p) {
+    if(p==NULL)
+        return;
+    std::deque<BiTNode*> q1,q2;//q1 for current level, q2 for next level
+    q1.push_back(p);
+    do {
+        do {
+            p=q1.front();
+            q1.pop_front();
+            printf("%c ",p->data);
+            if(p->lchild)
+                q2.push_back(p->lchild);
+            if(p->rchild)
+                q2.push_back(p->rchild);
+        } while(!q1.empty());
+        q1.swap(q2);//swap two queues
+        printf("\n");
+    } while(!q1.empty());
+}
+
+//!Better than layerTraverseByArray2,
+//no need "vector" to store all nodes
+//Can distinguish each level
+void layerTraverseByOneQueue(BiTNode* p) {
+    if(p==NULL)
+        return;
+    std::queue<BiTNode*> q;
+    q.push(p);
+    int len=1;//for each level
+    int i=0; //for iterate current level
+    int j=0; //remember current len
+    while(len) { //if next level has nodes, can use "!q.empty()" instead
+        //current level loop
+        for(i=0,j=len,len=0; i<j; ++i) {//len is reset to 0 for next level
+            p= q.front();
+            q.pop();
+            printf("%c ",p->data);
+            if(p->lchild) {
+                q.push(p->lchild);
+                ++len;
+            }
+            if(p->rchild) {
+                q.push(p->rchild);
+                ++len;
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+////////////////////////////
+//Top down and right to left
+
+int traverseFromR2L(BiTNode* root,int level) {
+    if(!root||level<0)
+        return 0;
+    if(level==0) {
+        printf("%c ",root->data);
+        return 1;
+    }
+    return traverseFromR2L(root->rchild,level-1)+
+           traverseFromR2L(root->lchild,level-1);
+}
+
+//swap the visit order for two children
+//first right, then left
+void layerTraverseByQueueR2L(BiTNode* p) {
+    if(p==NULL)
+        return;
+    std::queue<BiTNode*> q;
+    q.push(p);
+    while(!q.empty()) {
+        p=q.front();
+        q.pop();
+        printf("%c ",p->data);
+        if(p->rchild) q.push(p->rchild);
+        if(p->lchild) q.push(p->lchild);
+    }
+}
+
+void layerTraverseByQueueR2L2(BiTNode* p) {
+    if(p==NULL)
+        return;
+    std::queue<BiTNode*> q;
+    q.push(p);
+    int len=1;//for each level
+    int i=0; //for iterate current level
+    int j=0; //remember current len
+    while(len) { //if next level has nodes, can use "!q.empty()" instead
+        //current level loop
+        for(i=0,j=len,len=0; i<j; ++i) {//len is reset to 0 for next level
+            p= q.front();
+            q.pop();
+            printf("%c ",p->data);
+            if(p->rchild) {
+                q.push(p->rchild);
+                ++len;
+            }
+            if(p->lchild) {
+                q.push(p->lchild);
+                ++len;
+            }
+        }
+        printf("\n");
+    }
+}
+////////////////////////////
+//Bottom up and right to left
+void layerTraBottomUpAndR2L(BiTNode* p) {
+    if(p==NULL)
+        return;
+    std::vector<BiTNode*> vec;
+    vec.push_back(p);
+    int cur=0;
+    int last=1;
+    while(cur<vec.size()) {
+        last=vec.size();
+        while(cur<last) {
+            if(vec[cur]->lchild)
+                vec.push_back(vec[cur]->lchild);
+            if(vec[cur]->rchild)
+                vec.push_back(vec[cur]->rchild);
+            ++cur;
+        }
+    }
+    //Reserve output
+    for(cur=vec.size()-1; cur>=0; --cur)
+        printf("%c ",vec[cur]->data);
+}
+
+
+void layerTraBottomUpAndR2L2(BiTNode* p) {
+    if(p==NULL)
+        return;
+    std::vector<BiTNode*> vec;
+    vec.push_back(p);
+    std::stack<int> level;
+    level.push(0);
+    int cur=0;
+    int last=1;
+    while(cur<vec.size()) {
+        last=vec.size();
+        level.push(last);//save last of current level
+        while(cur<last) {
+            if(vec[cur]->lchild)
+                vec.push_back(vec[cur]->lchild);
+            if(vec[cur]->rchild)
+                vec.push_back(vec[cur]->rchild);
+            ++cur;
+        }
+    }
+    //Reserve output
+    int preLast=vec.size();
+    while(!level.empty()) {
+        last=level.top();
+        level.pop();
+        for(cur=preLast-1; cur>=last; --cur)
+            printf("%c ",vec[cur]->data);
+        preLast=last;
+        printf("\n");
+    }
+}
+//////////////////////////////////////
+//k>=0,m>=0
+BiTNode* getKthValueOfLevelCore(BiTNode* root,int m,int k,int*c) {
+    if(!root||m<0)
+        return NULL;
+    if(m==0) {
+        if(*c==k)
+            return root;
+        ++(*c);
+        return NULL;
+    }
+    BiTNode* node=getKthValueOfLevelCore(root->lchild,m-1,k,c);
+    if(node)
+        return node;
+    return getKthValueOfLevelCore(root->rchild,m-1,k,c);
+}
+
+int getKthValueOfLevel(BiTNode* root,int m,int k) {
+    int c=0;
+    BiTNode* node= getKthValueOfLevelCore(root,m,k,&c);
+    if(node)
+        return node->data;
+    return 0;
+}
+
+
+int getKthValueOfLevel2(BiTNode* p,int m,int k)  {
+    if(p==NULL)
+        return 0;
+    std::queue<BiTNode*> q;
+    q.push(p);
+    int level=0;
+    int len=1;//for each level
+    int i=0; //for iterate current level
+    int j=0; //remember current len
+    while(len) { //if next level has nodes, can use "!q.empty()" instead
+        //current level loop
+        for(i=0,j=len,len=0; i<j; ++i) {//len is reset to 0 for next level
+            p= q.front();
+            q.pop();
+
+            if(level==m&&i==k)
+                return p->data;
+
+            if(p->lchild) {
+                q.push(p->lchild);
+                ++len;
+            }
+            if(p->rchild) {
+                q.push(p->rchild);
+                ++len;
+            }
+        }
+        ++level;
+    }
+}

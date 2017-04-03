@@ -1,4 +1,5 @@
 #include "prime.h"
+#include "../common.h"
 //求素数
 //平方根方法判断素数
 bool isPrime(unsigned long long n) {

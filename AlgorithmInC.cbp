@@ -11,8 +11,10 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-msse4.2" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -55,8 +57,6 @@
 		<Unit filename="LinkedList/Singly/OneLink.cpp" />
 		<Unit filename="LinkedList/Singly/OneLink.h" />
 		<Unit filename="LinkedList/Singly/OneLinkNode.h" />
-		<Unit filename="LinkedList/单链表/OneLink.h" />
-		<Unit filename="LinkedList/单链表/OneLinkNode.h" />
 		<Unit filename="Search/floodfill.cpp" />
 		<Unit filename="Search/maze.cpp" />
 		<Unit filename="Search/permutation.cpp" />
@@ -70,25 +70,36 @@
 		</Unit>
 		<Unit filename="common.cpp" />
 		<Unit filename="common.h" />
+		<Unit filename="dp/dp.cpp" />
+		<Unit filename="dp/dp.h" />
+		<Unit filename="dp/dp_test.cpp" />
 		<Unit filename="graph/graph.cpp" />
 		<Unit filename="graph/graph.h" />
 		<Unit filename="graph/shortestpath.cpp" />
 		<Unit filename="list.h" />
+		<Unit filename="list/search_mid_list.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="prime.cpp" />
-		<Unit filename="prime.h" />
+		<Unit filename="quitz/bitcount.cpp" />
+		<Unit filename="quitz/bitcount.h" />
+		<Unit filename="quitz/fibonacci.cpp" />
+		<Unit filename="quitz/greatest_common_divisor.cpp" />
+		<Unit filename="quitz/least_common_mutiple.cpp" />
+		<Unit filename="quitz/max_subarray_sum.cpp" />
+		<Unit filename="quitz/max_subarray_sum.h" />
+		<Unit filename="quitz/max_subarray_sum_test.cpp" />
+		<Unit filename="quitz/prime.cpp" />
+		<Unit filename="quitz/prime.h" />
 		<Unit filename="random/random.cpp" />
 		<Unit filename="random/random.h" />
 		<Unit filename="sort/sort.cpp" />
 		<Unit filename="sort/sort.h" />
 		<Unit filename="sort/sort_main.cpp" />
+		<Unit filename="string/kmp.cpp" />
 		<Unit filename="string/stringalg.cpp" />
-		<Unit filename="string/stringalg.h" />
 		<Unit filename="tree/BinaryTree.cpp" />
 		<Unit filename="tree/BinaryTree.h" />
 		<Unit filename="tree/BinaryTreeWithParent.cpp" />
 		<Unit filename="tree/BinaryTreeWithParent.h" />
-		<Unit filename="tree/main.cpp" />
 		<Unit filename="tree/tree.cpp" />
 		<Unit filename="tree/tree.h" />
 		<Extensions>
