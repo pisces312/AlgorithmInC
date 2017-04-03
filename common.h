@@ -50,7 +50,9 @@ void printArray(int*a,int n) ;
 inline unsigned getbits(unsigned x, int p, int n) {
     return (x >> (p+1-n)) & ~(~0 << n);
 }
-
+inline int isEven(int n) {
+    return !(n&0x1);
+}
 //template<class T>
 //void display(T a[],int n) {
 //    for(int i=0; i<n; i++)

@@ -8,59 +8,7 @@
 #include "list.h"
 #include "LinkedList/Singly/OneLink.h"
 
-////////////////////////////////////////////////////////////
-/**
-0,1,2,3,4,5,6, 7, 8, 9,10
-0,1,1,2,3,5,8,13,21,34,55
-f(0)=0,f(1)=1
-**/
-long fibonacci(long n) {
-    if(n<0) {
-        return -1;
-    }
-    if(n==0) {
-        return 0;
-    }
-    if(n==1) {
-        return 1;
-    }
-    return fibonacci(n-1)+fibonacci(n-2);
-}
 
-long fibonacci2(long n) {
-    int pre=0,pre2=1,s=0;
-    if(n<0) {
-        return -1;
-    }
-    if(n==0) {
-        return 0;
-    }
-    if(n==1) {
-        return 1;
-    }
-    for(int i=2; i<=n; ++i) {
-        s=pre+pre2;
-        pre=pre2;
-        pre2=s;
-    }
-    return s;
-}
-
-void testFibonacci() {
-    printf("%ld\n",fibonacci2(-1));
-    printf("%ld\n",fibonacci2(0));
-    printf("%ld\n",fibonacci2(1));
-    printf("%ld\n",fibonacci2(2));
-    printf("%ld\n",fibonacci2(10));
-
-    printf("%ld\n",fibonacci(-1));
-    printf("%ld\n",fibonacci(0));
-    printf("%ld\n",fibonacci(1));
-    printf("%ld\n",fibonacci(2));
-    printf("%ld\n",fibonacci(10));
-}
-////////////////////////////////////////////////////////////
-//½×³Ë
 int factorial(int n) {
     if(n==1) return 1;
     return factorial(n-1)*n;
@@ -153,16 +101,6 @@ void testLoop() {
 
 }
 ////////////////////////////////////////////////////////////
-
-//void test2() {
-//    int a[]= {2,1,6,9,5,8,7};
-//    int n=sizeof(a)/sizeof(int);
-////    int m=partition(a,0,n-1);
-////    printf("%d\n",m);
-//    quickSortNonRecursive(a,n);
-//    printArray(a,n);
-//}
-//////////////////////////////////////////////////////////////////////
 void hanoi(int n,char A,char B,char C) {
     if(n==1) {
         printf("Move disk %d from %c to %c\n",n,A,C);
@@ -193,11 +131,17 @@ int testOneLink() {
 extern void testTree();
 extern void testMaxContinuousSeqSum();
 extern void testBitCount();
+extern void testGCD();
+extern void testLCM();
+extern void testStringAlg();
 int main() {
+//    testStringAlg();
+//    testLCM();
+//    testGCD();
 //testBitCount();
 //testMaxContinuousSeqSum();
-//    testTree();
-    testSortMain();
+    testTree();
+//    testSortMain();
 
 
 //    testOneLink();
@@ -206,31 +150,6 @@ int main() {
 //    Cutpoint::testCutpoint();
 //    testList();
 //    testLoop();
-
-
-//
-//    typedef struct Node {
-//        struct Node* next;
-//        int data;
-//    } Node;
-//List list;
-//    Node* list=(Node*)malloc(sizeof(Node));
-
-
-
-
-//typedef struct ListNode{
-//    struct ListNode* next;
-//    int data;
-//}*List;
-////List list;
-//List list=(List)malloc(sizeof(struct ListNode));
-//struct List* list=(struct List*)malloc(sizeof(struct List));
-
-//List* list=new List;
-
-
-
 
 //    LinkedList::testLoop();
 

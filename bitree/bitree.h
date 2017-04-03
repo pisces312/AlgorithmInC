@@ -39,4 +39,8 @@ void postOrderTraverseStackWithFlag1(BiTNodeWithFlag* p);
 void postOrderTraverseStackWithFlag2(BiTNodeWithFlag* p);
 void postOrderTraverseStackWithFlag3(BiTNodeWithFlag* p);
 
+void layerTraverseByQueue(BiTNode* p);
+void layerTraverse2(BiTNode* p);
+void traverseOneLevel(BiTNode* root,int level);
+int traverseOneLevel2(BiTNode* root,int level);
 #endif // BITREE_H_INCLUDED

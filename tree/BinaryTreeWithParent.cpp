@@ -22,70 +22,6 @@ void PrintString(const char* str,int len) {
     }
     printf("\n");
 }
-void BinaryTree::CreateFromPreAndIn(Node* pr,Node** root,const char* pre,const char* in,int treeLen) {
-    if(treeLen==0) return ;
-#ifdef TREE_DEBUG
-    printf("pre:");
-    PrintString(pre,treeLen);
-    printf("in:");
-    PrintString(in,treeLen);
-    printf("len:%d\n\n",treeLen);
-#endif
-
-    *root=new Node(*pre);//根
-    (*root)->parent=pr;
-
-    ++m_nodeNum;//计算节点数
-
-    if(treeLen==1) { //先序到底
-        return;
-    }
-
-    //在中序中找到根的位置
-    const char* p=in;
-    while(*p&&*p!=*pre) {
-        ++p;
-    }
-
-    int leftLen=p-in;
-    //left
-    CreateFromPreAndIn(*root,&(*root)->left,pre+1,in,leftLen);
-    int rightLen=treeLen-leftLen-1;
-    //right
-    CreateFromPreAndIn(*root,&(*root)->right,pre+1+leftLen,in+1+leftLen,rightLen);
-}
-Node* BinaryTree::CreateFromPreAndIn(const char* pre,const char* in) {
-    if(pre==NULL||in==NULL) return NULL;
-    int len=strlen(pre);
-    CreateFromPreAndIn(NULL,&root,pre,in,len);
-    return root;
-}
-
-
-Node** BinaryTree::ToArray(int& n) {
-        Node** nodes=new Node*[m_nodeNum];
-        int i=0;
-        stack<Node*> s;
-        Node*p=root;
-        while(true) {
-            while(p) {
-                s.push(p);
-                p=p->left;
-            }
-            if(!s.empty()) {
-                p=s.top();
-                s.pop();
-                nodes[i++]=p;
-                p=p->right;
-            } else {
-                break;
-            }
-        }
-        n=m_nodeNum;
-        return nodes;
-
-    }
-
 
     //二叉树找任意两个节点的第一个祖先
     Node* BinaryTree::GetFirstAncestor(Node* n1, Node*n2) {
@@ -273,77 +209,6 @@ Node** BinaryTree::ToArray(int& n) {
 //    cout<<p->data<<endl;
 //    printTree(p->right,n+1);
 //}
-//void BTree::inpostInitiate(dataType *poststr,dataType *instr) {
-//    if(root!=NULL)
-//        destroyTree();
-//    root=inpostCreate(poststr,instr);
-//}
-//BTreeNode* BTree::inpostCreate(SSStr poststr,SSStr instr) {
-//    BTreeNode *p=NULL;
-//    int n=poststr.length();
-//    if(n>0) {
-//        char ch=poststr.GetChar(n);
-//        int k=instr.IndexChar(ch);
-//        if(k>0) {
-//            p=new BTreeNode(ch);
-//            SSStr postsub=poststr.GetSub(1,k-1);		//取左子树的后序串
-//            SSStr insub=instr.GetSub(1,k-1);		//取左子树的中序串
-//            p->left=inpostCreate(postsub,insub);		//建左子树
-//
-//            postsub=poststr.GetSub(k,n-k);
-//            insub=instr.GetSub(k+1,n-k);
-//            p->right=inpostCreate(postsub,insub);
-//        }
-//    }
-//    return p;
-//}
-//void BTree::preOrderStack() {
-//    LinkStack<BTreeNode*> s;
-//    BTreeNode *p=root;
-//    if(p==NULL) return;
-//    cout<<"非递归先序遍历二叉树: ";
-//    while(!(p==NULL&&s.isEmpty())) {
-//        while(p!=NULL) {
-//            cout<<p->data<<" ";
-//            s.push(p);
-//            p=p->left;
-//        }
-//        p=s.pop();
-//        p=p->right;
-//    }
-//    cout<<endl;
-//}
-//
-//void BTree::preinInitiate(dataType *str1,dataType *str2) {
-//    if(root!=NULL)
-//        destroyTree();
-//    root=preinCreate(str1,str2);
-//}
-//BTreeNode* BTree::preinCreate(SSStr prestr,SSStr instr) {
-//    BTreeNode *p=NULL;
-//    int n=prestr.length();
-//    if(n>0) {
-//        char ch=prestr.GetChar(1);
-//        int k=instr.IndexChar(ch);
-//        if(k>0) {
-//            p=new BTreeNode(ch);
-//            SSStr presub=prestr.GetSub(2,k-1);		//取左子树的先序串
-//            SSStr insub=instr.GetSub(1,k-1);		//取左子树的中序串
-//            p->left=preinCreate(presub,insub);		//建左子树
-//
-//            presub=prestr.GetSub(k+1,n-k);
-//            insub=instr.GetSub(k+1,n-k);
-//            p->right=preinCreate(presub,insub);
-//        }
-//    }
-//    return p;
-//}
-//
-//void BTree::layerInitiate(dataType *str) {
-//    if(root!=NULL)
-//        destroyTree(root);
-//    root=layerCreate(str);
-//}
 //BTreeNode* BTree::layerCreate(dataType *str,int i) {
 //    BTreeNode *p=NULL;
 //    static int len=strlen(str);
@@ -434,36 +299,7 @@ Node** BinaryTree::ToArray(int& n) {
 //        root=new BTreeNode(str);
 //}
 //
-//void BTree::InOrderStack() {
-//    cout<<"中序非递归遍厉二叉树: ";
-//    BTreeNode *p=root;
-//    LinkStack<BTreeNode*> s;
-//    while(p!=NULL||!s.isEmpty()) {
-//        if(p!=NULL) {
-//            s.push(p);
-//            p=p->left;
-//        } else {
-//            p=s.pop();
-//            cout<<p->data<<" ";
-//            p=p->right;
-//        }
-//    }
-//    cout<<endl;
-//}
-//void BTree::LayerOrder(BTreeNode *p) {
-//    cout<<"层次遍历二叉树: ";
-//    LQueue<BTreeNode*> q;
-//    q.enQueue(p);
-//    while(!q.isEmpty()) {
-//        p=q.deQueue();
-//        cout<<p->data<<" ";
-//        if(p->left!=NULL)
-//            q.enQueue(p->left);
-//        if(p->right!=NULL)
-//            q.enQueue(p->right);
-//    }
-//    cout<<endl;
-//}
+
 //void BTree::PrintTable2(BTreeNode *p) {
 //    static n=0;
 //    if(p==NULL) return;
@@ -615,28 +451,6 @@ Node** BinaryTree::ToArray(int& n) {
 //        i++;
 //    return p;
 //}
-//void BTree::tableInitiate(dataType *str) {
-//    destroyTree(root);
-//    if(str!="")
-//        root=tableCreate(str);
-//}
-//void BTree::preInitiate(dataType *str) {
-//    destroyTree(root);
-//    if(str!="")
-//        root=preCreate(str);
-//}
-//BTreeNode *BTree::preCreate(dataType *str) {
-//    BTreeNode *p=NULL;
-//    static int i=0;
-//    static int l=strlen(str);
-//    if(i>=l) i=0;					//防止第二次调用时i不用0开始增加
-//    if(str[i]!='.') {
-//        p=new BTreeNode(str[i++]);
-//        p->left=preCreate(str);
-//        p->right=preCreate(str);
-//    } else i++;
-//    return p;
-//}
 //void BTree::Property(BTreeNode *p,int &n0,int &n2) {
 //    if(root==NULL) {
 //        n0=-1;
@@ -667,21 +481,6 @@ Node** BinaryTree::ToArray(int& n) {
 //}
 //
 //
-//BTree::BTree(dataType *str) {
-//    root=NULL;						//?????
-//    if(str!="")
-//        root=preCreate(str);
-//}
-//BTree::BTree(BTreeNode *p) {
-//    root=p;
-//}
-//BTree::BTree(const BTree &t) {
-//    copyTree(t.root,root);
-//}
-//BTree::~BTree() {
-//    destroyTree(root);
-//    root=NULL;
-//}
 //void BTree::destroyTree(BTreeNode *p) {
 //    if(p!=NULL) {
 //        destroyTree(p->left);
@@ -691,24 +490,6 @@ Node** BinaryTree::ToArray(int& n) {
 //}
 //
 //
-//void BTree::PreOrder(BTreeNode *p) {
-//    if(p==NULL) p=root;
-//    cout<<"先序遍历二叉树: ";
-//    root->PreOrder(p);
-//    cout<<endl;
-//}
-//void BTree::InOrder(BTreeNode *p) {
-//    if(p==NULL) p=root;
-//    cout<<"中序遍历二叉树: ";
-//    root->InOrder(p);
-//    cout<<endl;
-//}
-//void BTree::PostOrder(BTreeNode *p) {
-//    if(p==NULL) p=root;
-//    cout<<"后序遍历二叉树: ";
-//    root->PostOrder(p);
-//    cout<<endl;
-//}
 
 
 }

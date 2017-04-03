@@ -315,3 +315,63 @@ void postOrderTraverseStackWithFlag3(BiTNodeWithFlag* p) {
             break;
     }
 }
+//!queue version
+void layerTraverseByQueue(BiTNode* p) {
+    std::queue<BiTNode*> q;
+    if(p==NULL) return;
+    q.push(p);
+    while(!q.empty()) {
+        BiTNode* p=q.front();
+        q.pop();
+        printf("%c ",p->data);
+        if(p->lchild) q.push(p->lchild);
+        if(p->rchild) q.push(p->rchild);
+    }
+}
+
+//root is on level 0
+//recursive version
+void traverseOneLevel(BiTNode* root,int level) {
+    if(!root||level<0)
+        return;
+    if(level==0) {
+        printf("%c ",root->data);
+        return;
+    }
+    traverseOneLevel(root->lchild,level-1);
+    traverseOneLevel(root->rchild,level-1);
+}
+
+int traverseOneLevel2(BiTNode* root,int level) {
+    if(!root||level<0)
+        return 0;
+    if(level==0) {
+        printf("%c ",root->data);
+        return 1;
+    }
+    return traverseOneLevel2(root->lchild,level-1)+
+           traverseOneLevel2(root->rchild,level-1);
+}
+//Have redundant traverse
+void layerTraverse2(BiTNode* p) {
+    int level=0;
+    while(traverseOneLevel2(p,level)) ++level;
+}
+
+//!TODO not know number
+//void layerTraverseByArray(BiTNode* p) {
+//    std::vector<BiTNode*> arr;
+//
+//    if(p==NULL) return;
+//
+//    BiTNode*
+//    q.push(p);
+//
+//    while(!q.empty()) {
+//        BiTNode* p=q.front();
+//        q.pop();
+//        printf("%c ",p->data);
+//        if(p->lchild) q.push(p->lchild);
+//        if(p->rchild) q.push(p->rchild);
+//    }
+//}

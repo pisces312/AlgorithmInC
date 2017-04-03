@@ -1,4 +1,4 @@
-#include "max_seq_sum.h"
+#include "max_subarray_sum.h"
 #include "../common.h"
 
 

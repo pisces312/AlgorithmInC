@@ -24,6 +24,7 @@
 //    pre: h d b e i a f c g k j
 //    in:  h d b e i a f c g k j
 //    post:h d i e b f k j g c a
+//  layer: a b c d e f g h i j k
 BiTNode* testTreeCreationByPreAndIn() {
     int pre[]= {'a','b','d','h','e','i','c','f','g','j','k'};
     int in[]= {'h','d','b','e','i','a','f','c','g','k','j'};
@@ -105,8 +106,18 @@ void testTreeTraverseStack() {
 
 }
 
+void testLayerTraverse() {
+    BiTNode* root= testTreeCreationByPreAndIn();
+    layerTraverseByQueue(root);
+    printf("\n");
+    traverseOneLevel(root,3);
+    printf("\n");
+    layerTraverse2(root);
+    printf("\n");
+}
 void testTree() {
-    testTreeTraverseStack();
+    testLayerTraverse();
+//    testTreeTraverseStack();
 //    testTreeTraverse();
 //    testTreeCreationByPostAndIn();
 //    testTreeCreationByPreAndIn();
