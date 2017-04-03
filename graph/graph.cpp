@@ -1,6 +1,7 @@
 #include "graph.h"
 #include "../sort/sort.h"
 #include "../tree/tree.h"
+#include "../common.h"
 namespace DFS {
 int book[100],sum,n,e[100][100];
 static void dfs(int cur) {

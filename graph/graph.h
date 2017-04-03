@@ -1,6 +1,6 @@
 #ifndef GRAPH_H_INCLUDED
 #define GRAPH_H_INCLUDED
-#include "../common.h"
+
 
 struct edge {
     int u;
