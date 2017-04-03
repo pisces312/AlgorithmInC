@@ -108,12 +108,33 @@ void testTreeTraverseStack() {
 
 void testLayerTraverse() {
     BiTNode* root= testTreeCreationByPreAndIn();
-    layerTraverseByQueue(root);
+    layerTraverseByBFS(root);
     printf("\n");
-    traverseOneLevel(root,3);
+    layerTraverseByOneQueue(root);
     printf("\n");
-    layerTraverse2(root);
+    layerTraverseRecursive(root);
     printf("\n");
+    layerTraverseByArray(root);
+    printf("\n");
+    layerTraverseByTwoQueue(root);
+    printf("\n");
+
+    //Right to left
+    layerTraverseByQueueR2L(root);
+    printf("\n");
+    layerTraverseByQueueR2L2(root);
+    printf("\n");
+    //
+    layerTraBottomUpAndR2L(root);
+    printf("\n");
+    layerTraBottomUpAndR2L2(root);
+    printf("\n");
+
+    //
+    int v=getKthValueOfLevel(root,2,2);
+    printf("%c\n",v);
+    v=getKthValueOfLevel2(root,2,2);
+    printf("%c\n",v);
 }
 void testTree() {
     testLayerTraverse();

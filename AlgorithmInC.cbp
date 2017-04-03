@@ -77,12 +77,16 @@
 		<Unit filename="graph/graph.h" />
 		<Unit filename="graph/shortestpath.cpp" />
 		<Unit filename="list.h" />
+		<Unit filename="list/search_mid_list.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="quitz/bitcount.cpp" />
 		<Unit filename="quitz/bitcount.h" />
-		<Unit filename="quitz/max_seq_sum.cpp" />
-		<Unit filename="quitz/max_seq_sum.h" />
-		<Unit filename="quitz/max_seq_sum_test.cpp" />
+		<Unit filename="quitz/fibonacci.cpp" />
+		<Unit filename="quitz/greatest_common_divisor.cpp" />
+		<Unit filename="quitz/least_common_mutiple.cpp" />
+		<Unit filename="quitz/max_subarray_sum.cpp" />
+		<Unit filename="quitz/max_subarray_sum.h" />
+		<Unit filename="quitz/max_subarray_sum_test.cpp" />
 		<Unit filename="quitz/prime.cpp" />
 		<Unit filename="quitz/prime.h" />
 		<Unit filename="random/random.cpp" />
@@ -90,13 +94,12 @@
 		<Unit filename="sort/sort.cpp" />
 		<Unit filename="sort/sort.h" />
 		<Unit filename="sort/sort_main.cpp" />
+		<Unit filename="string/kmp.cpp" />
 		<Unit filename="string/stringalg.cpp" />
-		<Unit filename="string/stringalg.h" />
 		<Unit filename="tree/BinaryTree.cpp" />
 		<Unit filename="tree/BinaryTree.h" />
 		<Unit filename="tree/BinaryTreeWithParent.cpp" />
 		<Unit filename="tree/BinaryTreeWithParent.h" />
-		<Unit filename="tree/main.cpp" />
 		<Unit filename="tree/tree.cpp" />
 		<Unit filename="tree/tree.h" />
 		<Extensions>
