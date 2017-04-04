@@ -128,19 +128,31 @@ int testOneLink() {
     return 0;
 }
 
+
+
 extern void testTree();
 extern void testMaxContinuousSeqSum();
 extern void testBitCount();
 extern void testGCD();
 extern void testLCM();
 extern void testStringAlg();
+
+namespace simplegraph{
+extern void testDFSGraph();
+}
+namespace graphmatrix{
+extern void testDFS();
+}
 int main() {
+    graphmatrix::testDFS();
+//simplegraph::testDFSGraph();
+//    test2DArray();
 //    testStringAlg();
 //    testLCM();
 //    testGCD();
 //testBitCount();
 //testMaxContinuousSeqSum();
-    testTree();
+//    testTree();
 //    testSortMain();
 
 

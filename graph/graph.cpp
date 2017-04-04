@@ -2,42 +2,289 @@
 #include "../sort/sort.h"
 #include "../tree/tree.h"
 #include "../common.h"
-namespace DFS {
-int book[100],sum,n,e[100][100];
-static void dfs(int cur) {
-    int i;
-    printf("%d ",cur);
-    if(++sum==n) return;
-    for(i=0; i<n; ++i)
-        if(e[cur][i]==1&&book[i]==0) {
-            book[i]=1;
-            dfs(i);
-        }
-}
-void dfsGraph() {
-    int i,j;
-    n=5;
-    sum=0;
-    int start=0;
-    for(i=0; i<n; ++i)
-        for(j=0; j<n; ++j)
-            if(i==j) e[i][j]=0;
-            else e[i][j]=INT_MAX;
 
-    //Graph data
+
+namespace graphmatrix {
+
+
+GraphMatrix* emptyUnweightedGraph(const int verNum) {
+    GraphMatrix* g=new GraphMatrix;
+    g->n=verNum;
+    g->arc=malloc_Array2D<int>(g->n,g->n);
+
+    for(int i=0; i<g->n; ++i)
+        for(int j=0; j<g->n; ++j)
+            g->arc[i][j]=0;
+//            if(i==j) g->arc[i][j]=0;
+//            else g->arc[i][j]=INT_MAX;
+    return g;
+}
+
+//arrSize is 2*arcNum
+GraphMatrix* createUnweightedGraph(int vertNum, int* arcs,int arrSize,int directed=0) {
+    GraphMatrix* g=emptyUnweightedGraph(vertNum);
+    for(int i=0; i<arrSize; i+=2)
+        g->arc[arcs[i]][arcs[i+1]]=1;
+    if(!directed)
+        for(int i=0; i<arrSize; i+=2)
+            g->arc[arcs[i+1]][arcs[i]]=1;
+    return g;
+}
+
+
+/*******************************************************************
+For unweighted, acyclic/cyclic, directed/undirected, connected/unconnected graph
+If i<->j, arc[i][j]=1, otherwise is 0
+*/
+static void dfsUnweightedCore(GraphMatrix* g,int cur,bool* visited) {
+    printf("%d ",cur);
+    visited[cur]=true;
+    for(int i=0; i<g->n; ++i)
+        //value!=0 means have an edge
+        if(g->arc[cur][i]&&!visited[i])
+            dfsUnweightedCore(g,i,visited);
+}
+void dfsOnlyConnected(GraphMatrix* g,int cur) {
+    //Set flag to 0
+    bool* visited=(bool*)calloc(g->n,sizeof(bool));
+    //Start from cur
+    dfsUnweightedCore(g,cur,visited);
+    free(visited);
+}
+void dfs(GraphMatrix* g,int cur) {
+    //Set flag to 0
+    bool* visited=(bool*)calloc(g->n,sizeof(bool));
+    //Start from cur
+    dfsUnweightedCore(g,cur,visited);
+    //!!Traverse unconnected parts.
+    for(int i=0; i<g->n; ++i)
+        if(!visited[i])
+            dfsUnweightedCore(g,i,visited);
+    free(visited);
+}
+
+/*******************************************************************/
+//!TODO iteration version dfs
+
+
+
+//bfs
+void bfsOnlyConnected(GraphMatrix* g,int cur) {
+    //Set flag to 0
+    bool* visited=(bool*)calloc(g->n,sizeof(bool));
+    //Start from cur
+    std::queue<int> q;
+    q.push(cur);
+    visited[cur]=true;
+    int i=0;
+    while(!q.empty()) {
+        cur=q.front();
+        q.pop();
+        printf("%d ",cur);
+        for(i=0; i<g->n; ++i)
+            if(g->arc[cur][i]&&!visited[i]) {
+                visited[i]=true; //must set before push to queue
+                q.push(i);
+            }
+    }
+    free(visited);
+}
+//!
+void bfsOnlyConnected2(GraphMatrix* g,int cur) {
+    //Set flag to 0
+    bool* visited=(bool*)calloc(g->n,sizeof(bool));
+    int* q=(int*)malloc(g->n*sizeof(int));
+    int front=0;
+    int last=1;
+    q[front]=cur;
+
+    visited[cur]=true;
+    int i=0;
+    while(front<last) {
+        cur=q[front++];
+        printf("%d ",cur);
+        for(i=0; i<g->n; ++i)
+            if(g->arc[cur][i]&&!visited[i]) {
+                visited[i]=true; //must set before push to queue
+                q[last++]=i;
+            }
+    }
+    free(visited);
+}
+
+void bfs(GraphMatrix* g,int cur) {
+    //Set flag to 0
+    bool* visited=(bool*)calloc(g->n,sizeof(bool));
+    //Start from cur
+    std::queue<int> q;
+    q.push(cur);
+    visited[cur]=true;
+    int i=0;
+    while(true) {
+        while(!q.empty()) {
+            cur=q.front();
+            q.pop();
+            printf("%d ",cur);
+            for(i=0; i<g->n; ++i)
+                if(g->arc[cur][i]&&!visited[i]) {
+                    visited[i]=true;
+                    q.push(i);
+                }
+        }
+        //For unconnected parts
+        //Every time, push one element
+        for(i=0; i<g->n; ++i)
+            if(!visited[i]) {
+                visited[i]=true;
+                q.push(i);
+                break;
+            }
+        if(i==g->n)//All visited
+            break;
+    }
+}
+
+
+
+
+
+//////////////////////////////////////
+//Test
+
+/**
+Connected, undirected, unweighted, acyclic graph
+
+0____
+|\   \
+1 2---4
+|
+3
+
+**/
+GraphMatrix* testGraph1() {
+    int arcs[]= {0,1,0,2,0,4,1,3,2,4};
+    return createUnweightedGraph(5,arcs,sizeof(arcs)/sizeof(int));
+}
+/**
+Connected, unweighted, acyclic graph
+    0
+   / \
+  1   2
+ / \  | \
+3  4  5  6
+ \  \/  /
+  --7---
+
+{0,1,0,2,1,3,1,4,2,5,2,6,3,7,4,7,5,7,6,7}
+
+DFS
+0 1 3 7 4 5 2 6
+1 0 2 5 7 3 4 6
+2 0 1 3 7 4 5 6
+3 1 0 2 5 7 4 6
+4 1 0 2 5 7 3 6
+5 2 0 1 3 7 4 6
+6 2 0 1 3 7 4 5
+7 3 1 0 2 5 6 4
+**/
+GraphMatrix* testGraph2() {
+    int arcs[]= {0,1,0,2,1,3,1,4,2,5,2,6,3,7,4,7,5,7,6,7};
+    return createUnweightedGraph(8,arcs,sizeof(arcs)/sizeof(int));
+}
+
+
+
+/**
+Unconnected, unweighted, acyclic graph
+      0
+      |
+  1   2
+ / \  | \
+3   4 5--6
+ \ /
+  7
+
+{0,2,1,3,1,4,2,5,2,6,3,7,4,7,5,6}
+
+DFS
+0 1 3 7 4 5 2 6
+1 0 2 5 7 3 4 6
+2 0 1 3 7 4 5 6
+3 1 0 2 5 7 4 6
+4 1 0 2 5 7 3 6
+5 2 0 1 3 7 4 6
+6 2 0 1 3 7 4 5
+7 3 1 0 2 5 6 4
+**/
+GraphMatrix* testGraph3() {
+    int arcs[]= {0,2,1,3,1,4,2,5,2,6,3,7,4,7,5,6};
+    return createUnweightedGraph(8,arcs,sizeof(arcs)/sizeof(int));
+}
+
+///////////////////////////
+typedef void(*GraphMatrixTraverseFunc)(GraphMatrix*,int);
+
+//test the traverse which starts from every nodes
+#define printGraphTraverse(G,F) { \
+    printf("\n<%s>\n", (#F)); \
+    for(int i=0; i<g->n; ++i) { \
+        F((G),i); \
+        printf("\n--------------------------\n"); \
+    } }
+//Add alg
+void testDFSDriver(GraphMatrix* g) {
+    printGraphTraverse(g,dfsOnlyConnected);
+    printGraphTraverse(g,dfs);
+    printGraphTraverse(g,bfsOnlyConnected);
+    printGraphTraverse(g,bfs);
+    printGraphTraverse(g,bfsOnlyConnected2);
+}
+//Add input
+void testDFS() {
+    GraphMatrix* g=NULL;
+
+    testDFSDriver(testGraph1());
+    testDFSDriver(testGraph2());
+    testDFSDriver(testGraph3());
+
+}
+
+}
+////////////////////////////////////////////
+
+
+
+
+namespace simplegraph {
+
+//Edge and actual number of vertex
+int n,e[100][100];
+//Flag
+int visited[100];
+
+static void dfs(int cur) {
+    printf("%d ",cur);
+    visited[cur]=1;
+    for(int i=0; i<n; ++i)
+        if(e[cur][i]&&!visited[i])
+            dfs(i);
+}
+
+void testDFSGraph() {
+    n=5;
+    for(int i=0; i<n; ++i)
+        for(int j=0; j<n; ++j)
+            e[i][j]=0;
     e[0][1]=1;
     e[0][2]=1;
     e[0][4]=1;
     e[1][3]=1;
     e[2][4]=1;
-
-
-    book[start]=1;
-    dfs(start);
+    dfs(0);
 }
-}
-////////////////////////////////////////////
 
+
+////////////////////////////////////
 void bfsGraph() {
     const int MAX_MATRIC_SIZE=50;
     int e[MAX_MATRIC_SIZE][MAX_MATRIC_SIZE]= {{0}};
@@ -84,8 +331,6 @@ void bfsGraph() {
     printf("\n");
 }
 
-////////////////////////////////////////////////////////////
-
 void swapEdge(struct edge* x,struct edge* y) {
     struct edge t=*x;
     *x=*y;
@@ -124,17 +369,17 @@ void printLinkedGraph(int n,int*first,int*next,struct edge* e) {
 
 
 void quickSortForEdge(struct edge* x,int l,int u) {
-    if (l >= u)  return;
+    if(l >= u)  return;
     int pivot = x[l].w;
     int i = l;
     int j = u+1;
-    while (true) {
+    while(true) {
         do i++;
-        while (i <= u && x[i].w < pivot);
+        while(i <= u && x[i].w < pivot);
         do j--;
         //don't need check j>=l, because x[l]=pivot
-        while (x[j].w > pivot);
-        if (i >= j)
+        while(x[j].w > pivot);
+        if(i >= j)
             break;
         swapEdge(&x[i], &x[j]);
     }
@@ -243,6 +488,13 @@ void mstByPrim() {
 
 }
 
+}
+
+
+////////////////////////////////////////////////////////////
+
+
+
 
 namespace Cutpoint {
 //void dfs(int cur, int** e,int* book,int n,int* sum) {
@@ -308,8 +560,8 @@ void testCutpoint() {
         {5,1,1},
         {5,4,1}
     };
-    buildLinkGraph(n,m,e,first,next);
-    printLinkedGraph(n,first,next,e);
+    simplegraph::buildLinkGraph(n,m,e,first,next);
+    simplegraph::printLinkedGraph(n,first,next,e);
     for(i=0; i<n; ++i) {
         flag=isCutpoint(i,n,e,first,next);
         printf("%d: %d\n",i,flag);
@@ -429,8 +681,8 @@ void testCutpoint() {
     m=sizeof(e2)/sizeof(edge);
     e=e2;
 
-    buildLinkGraph(n,m,e,first,next);
-    printLinkedGraph(n,first,next,e);
+    simplegraph::buildLinkGraph(n,m,e,first,next);
+    simplegraph::printLinkedGraph(n,first,next,e);
 
 
     index=0;
@@ -517,8 +769,8 @@ void testCutedge() {
     flags=(int*)calloc(m,sizeof(int));
     e=e2;
 
-    buildLinkGraph(n,m,e,first,next);
-    printLinkedGraph(n,first,next,e);
+    simplegraph::buildLinkGraph(n,m,e,first,next);
+    simplegraph::printLinkedGraph(n,first,next,e);
 
 
     index=0;
