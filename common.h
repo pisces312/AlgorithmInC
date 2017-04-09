@@ -45,6 +45,7 @@ inline void swap(int* x,const int i, const int j) {
     x[j] = t;
 }
 void printArray(int*a,int n) ;
+void printArray(int*a,int low,int high) ;
 
 /* getbits:  get n bits from position p */
 inline unsigned getbits(unsigned x, int p, int n) {

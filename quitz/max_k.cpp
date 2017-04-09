@@ -70,12 +70,12 @@ int* kMaxByPartition(int k,int* x,int n) {
 
 //////////////////////////////////////////////////////
 
-
 static void kMaxByPartition2(int k,int* x,int low,int high,int* result) {
     int p=partitionForKMax(x,low,high);
     if(p<0)
         return;
-
+//    printf("low=%d,p=%d,high=%d\n",low,p,high);
+//    printArray(x,low,high);
 //p divides result to two sets
 //[low,p],[p+1,high]
     if(p-low+1==k) {
@@ -93,13 +93,23 @@ static void kMaxByPartition2(int k,int* x,int low,int high,int* result) {
         printf("  [<k]: p=%d,k=%d, find[%d,%d]\n",p,k,low,p);
         for(int i=low; i<=p; ++i)
             result[i]=x[i];
-        kMaxByPartition2(k-p+low-1,x,p+1,high,result);
+        //Since result is set during recursive, it has to handle lower==right
+//because partition will ignore it and return -1
+        if(p+1==high) { //then k will be 1
+            result[p+1]=x[p+1];
+        } else {
+            kMaxByPartition2(k-p+low-1,x,p+1,high,result);
+        }
     } else {
         //|...,k-1|k,...|p|p+1,...|
         //p=8,k=3 |...,2|3,...|8|9,...|
         //Still find k max, right border decreased
         printf("  [>k]: p=%d,k=%d\n",p,k);
-        kMaxByPartition2(k,x,low,p-1,result);
+        if(low==p-1) {
+            result[p-1]=x[p-1];
+        } else {
+            kMaxByPartition2(k,x,low,p-1,result);
+        }
     }
 }
 int* kMaxByPartition2(int k,int* x,int n) {
@@ -209,76 +219,209 @@ int* kMaxBySearch(int k,int* x,int n) {
 }
 
 
+//////////////////////////////////////////////////////
+static int maxPowerOf2(const int n) {
+    int i=1;
+    int c=0;
+    while(i<n) {
+        i<<=1;
+        ++c;
+    }
+    return c;
+}
+static int findMax(int* x,int n) {
+//    if(n<=0)
+//        return INT_MIN;
+    int maxVal=INT_MIN;
+    for(int i=0; i<n; ++i)
+        if(x[i]>maxVal)
+            maxVal=x[i];
+    return maxVal;
+}
+
+
+static int countOnBit(int m,int* x,int n) {
+    int c=0;
+    for(int i=0,v=1<<m; i<n; ++i)
+        if(x[i]>=v)
+            ++c;
+    return c;
+}
+
+static int countIfLE(int val,int* x,int n) {
+    int c=0;
+    for(int i=0; i<n; ++i)
+        if(x[i]>=val)
+            ++c;
+    return c;
+}
+
+//static int cmpHighestBit(int k,int m,int* x,int n) {
+//    int c=0;
+//    for(int i=0,t=1<<m; i<n; ++i) {
+//        if(x[i]>=t) {
+//            ++c;
+//            if(c>k)
+//                break;
+//        }
+//
+//    }
+//    return c-k;
+//}
+
 //!TODO [0,2^(m-1)] [2^(m-1),2^m]
-int* kMaxBySearch2(int k,int* x,int n) {
+//int kMaxForPositiveIntByBit(int k,int* x,int n,int m) {
+//
+//    int c=countOnBit(m,x,n);
+//    if(c>=k) {
+//        return kMaxForPositiveIntByBit(k,x,n,m-1);
+//    }
+//
+//
+//
+//
+//
+//    int minVal;
+//    int midVal;
+//
+//
+//
+//    if(cmpHighestBit(k,m,x,n)>=0) {
+//        minVal=midVal;
+//    } else {
+//        maxVal=midVal;
+//    }
+//
+//
+//    return NULL;
+//}
+//!TODO
+//-1 means all elements larger than pivot
+//high+1 means
+static int partitionByBit(int m,int* x,int low,int high) {
+    if(low >= high)
+        return -1;
+    int pivot=(1<<m);
+    printf("2^%d=%d\n",m,(1<<m));
+//    int t;
+    while(low < high) {
+        while(low < high && pivot <= x[high]) --high;
+        if(low>high)
+            return -1;
+        if(low==high)
+            break;
+        while(low < high && x[low] <= pivot) ++low;
+        if(low<high)
+            swap(x,low,high);
+    }
+    return low;
+}
+
+//static int partitionByBit(int k,int m,int* x,int low,int high,int &c) {
+//    if(low >= high)
+//        return -1;
+//    int pivot=(1<<m);
+////    int t;
+//    while(low < high) {
+//        while(low < high && pivot >= x[high]) --high;
+//        if(low>=high) {
+//            break;
+//        }
+//        while(low < high && x[low] >= pivot) ++low;
+//        swap(x,low,high);
+//    }
+//    return low;
+//}
+
+//void kMaxForPositiveIntBySearch(int k,int m,int* x,int low,int high) {
+//    int p=partitionByBit(m,x,low,high);
+//    if(p<0) return;
+//    kMaxForPositiveIntBySearch()
+//}
+
+
+
+int* kMaxForPositiveIntBySearch(int k,int* x,int n) {
+    //Calc m
+    int maxVal=findMax(x,n);
+    int m=maxPowerOf2(maxVal);
+    printf("max=%d,2^%d=%d\n",maxVal,m,(1<<m));
+
+
+    int p=partitionByBit(m-1,x,0,n-1);
+    if(p>=0) {
+        printArray(x,0,p);
+        printf("\n");
+        printArray(x,p+1,n-1);
+    }
+    //!TODO count number
+//    int l
+
+    //    int b=(1<<m);
+//    int c=0;
+//    while(true) {
+//        --m;
+//        c=countIfLE(b,x,n);
+//        if(c>=k) {
+//            b+=(1<<m);
+//        }
+//    }
+
+
+
     return NULL;
 }
 
 //!TODO Use heap
 int* kMaxByHeap(int k,int* x,int n) {
+
     return NULL;
 }
 
 
-void testKMax() {
+typedef int*(*KMaxFunc)(int,int*,int);
+void testKMax(KMaxFunc func) {
+
     //
     int* keys=NULL;
     int k=3;
+    int n;
+    int * result;
     int a[]= {99,5,36,2,19,1,46,12,7,22,25,28,17,92};
-    int n=sizeof(a)/sizeof(int);
-    int * result=kMaxBySort(k,a,n);
+    n=sizeof(a)/sizeof(int);
+    result=func(k,a,n);
     printArray(result,k);
     printf("\n");
 
-    result=kMaxByPartition(k,a,n);
-    printArray(result,k);
-    printf("\n");
 
-    result=kMaxByPartition2(k,a,n);
-    printArray(result,k);
-    printf("\n");
-
-    result=kMaxBySearch(k,a,n);
-    printArray(result,k);
-    printf("\n");
-//
     int b[]= {2,1,1,1,1,1,1};
     n=sizeof(b)/sizeof(int);
-    result=kMaxBySort(k,b,n);
+    result=func(k,b,n);
     printArray(result,k);
     printf("\n");
 
-    result=kMaxByPartition(k,b,n);
-    printArray(result,k);
-    printf("\n");
 
-    result=kMaxByPartition2(k,b,n);
-    printArray(result,k);
-    printf("\n");
-
-    result=kMaxBySearch(k,b,n);
-    printArray(result,k);
-    printf("\n");
-
-    //
     n=100;
     k=10;
     keys=new int[n];
     createRandomData(keys,n);
-    result=kMaxBySort(k,keys,n);
-    printArray(result,k);
-    printf("\n");
-
-    result=kMaxByPartition(k,keys,n);
-    printArray(result,k);
-    printf("\n");
-
-    result=kMaxByPartition2(k,keys,n);
-    printArray(result,k);
-    printf("\n");
-
-    result=kMaxBySearch(k,keys,n);
+    result=func(k,keys,n);
     printArray(result,k);
     printf("\n");
     delete[] keys;
+
+    printf("====================================\n");
+
+}
+
+void testKMax() {
+
+
+    testKMax(kMaxBySort);
+    testKMax(kMaxByPartition);
+    testKMax(kMaxByPartition2);
+    testKMax(kMaxBySearch);
+    testKMax(kMaxForPositiveIntBySearch);
+
+
 }

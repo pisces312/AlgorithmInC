@@ -95,7 +95,7 @@ void testRadixSort(int n=10) {
     int start = clock();\
     (F)((K),(N));\
     int clicks = clock() - start;\
-    printf("%-16.16s\tn=%d\tclicks=%d\ttime=%gns\n",\
+    printf("%-32.32s\tn=%d\tclicks=%d\ttime=%gns\n",\
            (S),(N), clicks,\
            1e9*clicks/((float) CLOCKS_PER_SEC));\
     if((N)<100) printArray((K),(N));\
@@ -154,7 +154,7 @@ void testDriverCore(int* keys,unsigned int n) {
     TEST(heapSort);
     TEST(heapSort2);
     TEST(heapSortIdxFromOne);
-    TEST(heapSortIdxFromOne2);
+//    TEST(heapSortIdxFromOne2);
     TEST(heapSort3);
     TEST(heapSort4);
 
@@ -337,8 +337,8 @@ int testSortMain() {
 //!incorrect
 //    testSortFunc(quickSortForDup);
 
-testSortFunc(mergeSortTopDown);
-testSortFunc(mergeSortBottomUp);
+//testSortFunc(mergeSortTopDown);
+//testSortFunc(mergeSortBottomUp);
 //    testSortFunc(heapSort2);
 //testSortFunc(heapSort);
 //testSortFunc(quickSortLomuto);
@@ -360,12 +360,12 @@ testSortFunc(mergeSortBottomUp);
 
 
 
-//    int n=100;
+    int n=100;
 //int n=123456;
 //int n=50000;
 //    int n=12345;
 
-//    testDriver(n);
+    testDriver(n);
 
 
 

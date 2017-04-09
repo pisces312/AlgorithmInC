@@ -1,11 +1,15 @@
 #include "common.h"
-void printArray(int*a,int n) {
-    int i;
+
+void printArray(int*a,int low,int high) {
     if(!a) return;
-    if(n<1) return;
-    for(i=0; i<n; ++i)
+    if(low<0) return;
+    for(int i=low; i<=high; ++i)
         printf("%d ",a[i]);
     printf("\n");
+}
+
+void printArray(int*a,int n) {
+    printArray(a,0,n-1);
 }
 //释放二维数组
 void free_Array2D(void **arr) {

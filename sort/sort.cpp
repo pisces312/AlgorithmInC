@@ -215,6 +215,7 @@ void quickSortTwoWayPartition(int* x,int n) {
 
 
 //Randomly choose pivot
+//not found or no need to swap, return -1
 int partitionFinal(int*x,const int l,const int u) {
     if(l >= u)
         return -1;
@@ -263,7 +264,7 @@ void _fastcall quickSortFinal(int* x,int n) {
 
 
 
-
+//not found or no need to swap, return -1
 int partition(int*x,const int l,const int u) {
     if(l >= u)
         return -1;
@@ -290,6 +291,7 @@ int partition(int*x,const int l,const int u) {
 }
 
 //Not use swap func, but use x[i] as dynamic tmp var
+//not found or no need to swap, return -1
 int partition3(int*x,const int l,const int u) {
     if(l >= u)
         return -1;
@@ -329,6 +331,7 @@ void quickSortTwoWayPartition3(int* x,int n) {
 }
 
 //!Easy to understand and implement
+//not found or no need to swap, return -1
 int partition2(int*x,int low,int high) {
     if(low >= high)
         return -1;
@@ -611,18 +614,18 @@ void heapSort2(int* x,int n) {
 
 ////////////////////////////////////////
 //Bottom up
-void siftupIdxFromOne(int* x,int u) {
-    int i=u, p;
-    for(;;) {
-        if(i == 1) //1表示根，浪费一个0位置的元素
-            break;
-        p = i / 2;
-        if(x[p] >= x[i])
-            break;
-        swap(x,p, i);
-        i = p;
-    }
-}
+//void siftupIdxFromOne(int* x,int u) {
+//    int i=u, p;
+//    for(;;) {
+//        if(i == 1) //1表示根，浪费一个0位置的元素
+//            break;
+//        p = i / 2;
+//        if(x[p] >= x[i])
+//            break;
+//        swap(x,p, i);
+//        i = p;
+//    }
+//}
 void siftdownIdxFromOne2(int* x,int l, int u) { /* More C-ish version of 1 */
     int i, c;
     for(i = l; (c = 2*i) <= u; i = c) {
@@ -654,15 +657,17 @@ void siftdownIdxFromOne(int* x,int i, int n) {
         c = 2*i;
     }
 }
-void heapSortIdxFromOne2(int* x,int n) {
-    int i;
-    for(i = 2; i <= n; i++)
-        siftupIdxFromOne(x,i);
-    for(i = n; i >= 2; i--) {
-        swap(x,1, i);
-        siftdownIdxFromOne(x,1, i);
-    }
-}
+
+//!TODO Not pass testSortMain
+//void heapSortIdxFromOne2(int* x,int n) {
+//    int i;
+//    for(i = 2; i <= n; i++)
+//        siftupIdxFromOne(x,i);
+//    for(i = n; i >= 2; i--) {
+//        swap(x,1, i);
+//        siftdownIdxFromOne(x,1, i);
+//    }
+//}
 //index starts from 1, so x-- first
 void heapSortIdxFromOne(int* x,int n) {
     int i;
