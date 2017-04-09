@@ -143,8 +143,11 @@ extern void testDFSGraph();
 namespace graphmatrix{
 extern void testDFS();
 }
+extern void testKMax();
 int main() {
-    graphmatrix::testDFS();
+    testKMax();
+
+//    graphmatrix::testDFS();
 //simplegraph::testDFSGraph();
 //    test2DArray();
 //    testStringAlg();

@@ -31,40 +31,6 @@ int getIntegerDigit(int t) {
 typedef void (*SortFunc)(int* keys,int n);
 //typedef int (*SortFunc)(int* keys,int b,int e);
 //typedef int (*SearchFixedFunc)(int* keys, const int key);
-inline int compareInt(const void* x,const void* y) {
-    return *(int*)x-*(int*)y;
-}
-
-void assertSorted(int *x,int n) {
-    for(int i=1; i<n; ++i) {
-        if(x[i-1]>x[i]) {
-            assert(false);
-        }
-    }
-
-}
-void createRandomData(int* keys,int n) {
-    time_t seed;
-    time(&seed);
-    srand(seed);
-    for(int i=0; i<n; ++i) {
-        keys[i]=rand()%n;
-    }
-}
-void createRandomUniqPostiveData(int* keys,int n) {
-    time_t seed;
-    time(&seed);
-    srand(seed);
-    for(int i=0; i<n; ++i) {
-        keys[i]=i;
-    }
-    int a=0,b=0;
-    for(int i=0; i<n; ++i) {
-        a=rand()%n;
-        b=rand()%n;
-        swap(keys,a,b);
-    }
-}
 
 //C++ sort
 void testCPPLibSort(int n=10) {

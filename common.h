@@ -72,6 +72,14 @@ T** malloc_Array2D(int row, int col) {
 }
 //释放二维数组
 void free_Array2D(void **arr);
+
+inline int compareInt(const void* x,const void* y) {
+    return *(int*)x-*(int*)y;
+}
+
+void assertSorted(int *x,int n) ;
+void createRandomData(int* keys,int n);
+void createRandomUniqPostiveData(int* keys,int n);
 //template<class T>
 //void display(T a[],int n) {
 //    for(int i=0; i<n; i++)
