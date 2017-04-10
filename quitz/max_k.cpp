@@ -3,8 +3,29 @@
 /**
 Just get K max, no need to sort the k elements!!
 
+k<n
 
 **/
+
+
+int* kMaxNormal(int k,int* x,int n) {
+    int* result=new int[k];
+    for(int i=0; i<k; ++i)
+        result[i]=x[i];
+    for(int i=k; i<n; ++i) {
+        int minIdx=0;
+        for(int j=1; j<k; ++j)
+            if(result[j]<result[minIdx])
+                minIdx=j;
+        if(x[i]>result[minIdx])
+            result[minIdx]=x[i];
+    }
+
+    return result;
+}
+
+
+
 inline int compareIntDecr(const void* x,const void* y) {
     return *(int*)y-*(int*)x;
 }
@@ -123,14 +144,12 @@ int* kMaxByPartition2(int k,int* x,int n) {
 
 static int compareToK(int k,int*x,int n,int midVal) {
     int c=0;
-    for(int i=0; i<n; ++i) {
+    for(int i=0; i<n; ++i)
         if(x[i]>=midVal) {
             ++c;
-            if(c>k)    {
+            if(c>k)
                 break;
-            }
         }
-    }
     return c-k;
 }
 
@@ -144,19 +163,15 @@ static void findMinMax(int *x, int n, int& minVal,int& maxVal) {
     maxVal=x[0];
     for(int i=0; i<n-1; i+=2) {
         if(x[i]<=x[i+1]) {
-            if(x[i]<minVal) {
+            if(x[i]<minVal)
                 minVal=x[i];
-            }
-            if(x[i+1]>maxVal) {
+            if(x[i+1]>maxVal)
                 maxVal=x[i+1];
-            }
         } else {
-            if(x[i+1]<minVal) {
+            if(x[i+1]<minVal)
                 minVal=x[i+1];
-            }
-            if(x[i]>maxVal) {
+            if(x[i]>maxVal)
                 maxVal=x[i];
-            }
         }
     }
 
@@ -173,12 +188,6 @@ static void findMinMax(int *x, int n, int& minVal,int& maxVal) {
 //For data that distributed in a large range
 int* kMaxBySearch(int k,int* x,int n) {
     int* result=new int[k];
-//    double d=0.5;
-//    double maxVal=INT_MAX;
-//    double minVal=INT_MIN;
-//    int d=1;
-//    int maxVal=INT_MAX;
-//    int minVal=INT_MIN;
 
     int maxVal;
     int minVal;
@@ -186,6 +195,7 @@ int* kMaxBySearch(int k,int* x,int n) {
     int preMidVal=INT_MAX;
     findMinMax(x,n,minVal,maxVal);
 
+    //Calculate min value
     while(maxVal>minVal) { //cannot use maxVal-minVal
         preMidVal=midVal;
         //!!cannot add directly, exceed max value of int
@@ -194,24 +204,24 @@ int* kMaxBySearch(int k,int* x,int n) {
         //if max-min=1, next mid will not change, need exit
         if(preMidVal==midVal)
             break;
-
         printf("[%d,%d]\n",minVal,maxVal);
-        if(compareToK(k,x,n,midVal)>=0) {
+        if(compareToK(k,x,n,midVal)>=0)
             minVal=midVal;
-        } else {
+        else
             maxVal=midVal;
-        }
     }
 //    printf("%d\n",minVal);
 
     //Set result
     int j=0;
-    for(int i=0; i<n; ++i)
+    //may get enough k here, must check j
+    for(int i=0; i<n&&j<k; ++i)
         if(x[i]>minVal) {
             result[j]=x[i];
             ++j;
         }
-    //x>min are counted, add same min value at last
+    //x>min are counted
+    //add multiple same min values at last
     for(; j<k; ++j)
         result[j]=minVal;
 
@@ -243,8 +253,7 @@ static int findMax(int* x,int n) {
 static int countOnBit(int m,int* x,int n) {
     int c=0;
     for(int i=0,v=1<<m; i<n; ++i)
-        if(x[i]>=v)
-            ++c;
+        if(x[i]>=v) ++c;
     return c;
 }
 
@@ -303,7 +312,6 @@ static int partitionByBit(int m,int* x,int low,int high) {
         return -1;
     int pivot=(1<<m);
     printf("2^%d=%d\n",m,(1<<m));
-//    int t;
     while(low < high) {
         while(low < high && pivot <= x[high]) --high;
         if(low>high)
@@ -372,17 +380,53 @@ int* kMaxForPositiveIntBySearch(int k,int* x,int n) {
     return NULL;
 }
 
-//!TODO Use heap
+//Use heap
+//Best option
 int* kMaxByHeap(int k,int* x,int n) {
-
-    return NULL;
+    int* result=new int[k];
+    //Create heap
+    for(int i=0; i<k; ++i)
+        result[i]=x[i];
+    for(int i = k/2-1; i >= 0; i--)
+        siftdownMin(result,i,k);
+    //Iterate all elements
+    for(int i = k; i <n; ++i)
+        if(x[i]>result[0]) {
+            result[0]=x[i];
+            siftdownMin(result,0,k);
+        }
+    return result;
 }
 
 
+
+int* kMaxPosIntByCount(int k,int* x,int n,int minVal, int maxVal) {
+    int* result=new int[k];
+//    printf("minVal=%d,maxVal=%d\n",minVal,maxVal);
+    //alloc maxVal+1 for random access
+    int* count=(int*)calloc(maxVal+1,sizeof(int));
+    for(int i=0; i<n; ++i)
+        ++count[x[i]];
+    for(int v=maxVal,i=0,sumCount=0; v >=minVal&&sumCount<k; v--) {
+        sumCount += count[v];
+        for(int j=0; j<count[v]&&i<k; ++j,++i)
+            result[i]=v;//set output
+    }
+    free(count);
+
+    return result;
+}
+
+//Only support positive integer
+int* kMaxPosIntByCount(int k,int* x,int n) {
+    int maxVal=0;
+    int minVal=0;
+    findMinMax(x,n,minVal,maxVal);
+    return kMaxPosIntByCount(k,x,n,minVal,maxVal);
+}
+
 typedef int*(*KMaxFunc)(int,int*,int);
 void testKMax(KMaxFunc func) {
-
-    //
     int* keys=NULL;
     int k=3;
     int n;
@@ -416,12 +460,16 @@ void testKMax(KMaxFunc func) {
 
 void testKMax() {
 
-
+    testKMax(kMaxNormal);
     testKMax(kMaxBySort);
     testKMax(kMaxByPartition);
     testKMax(kMaxByPartition2);
     testKMax(kMaxBySearch);
-    testKMax(kMaxForPositiveIntBySearch);
+    //!TODO
+//    testKMax(kMaxForPositiveIntBySearch);
+
+    testKMax(kMaxPosIntByCount);
+    testKMax(kMaxByHeap);
 
 
 }

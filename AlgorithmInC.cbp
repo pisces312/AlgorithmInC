@@ -84,6 +84,7 @@
 		<Unit filename="quitz/fibonacci.cpp" />
 		<Unit filename="quitz/greatest_common_divisor.cpp" />
 		<Unit filename="quitz/least_common_mutiple.cpp" />
+		<Unit filename="quitz/max_k.cpp" />
 		<Unit filename="quitz/max_min_in_array.cpp" />
 		<Unit filename="quitz/max_subarray_sum.cpp" />
 		<Unit filename="quitz/max_subarray_sum.h" />

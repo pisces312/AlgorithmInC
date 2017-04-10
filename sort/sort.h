@@ -32,6 +32,8 @@ void selectSort(int* x,int n);
 void selectSortMinMax(int *r,int n);
 
 //index from 0
+void siftdown(int* x,int i, int n);
+void siftdownMin(int* x,int i, int n);
 void heapSort(int* x,int n);
 void heapSort2(int* x,int n);
 

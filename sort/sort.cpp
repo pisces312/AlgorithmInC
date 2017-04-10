@@ -570,6 +570,18 @@ void siftdown(int* x,int i, int n) {
         c = 2*i+1;
     }
 }
+void siftdownMin(int* x,int i, int n) {
+    int c=2*i+1; //left child
+    while(c<n) {
+        if(c+1 <n && x[c+1] < x[c])
+            c++;
+        if(x[i] < x[c])
+            break;
+        swap(x,i, c);
+        i = c;
+        c = 2*i+1;
+    }
+}
 //Place max value as the last element of current heap
 void siftdown2(int a[], int i, int n) {
     int temp = a[i];
