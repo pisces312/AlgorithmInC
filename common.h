@@ -18,6 +18,7 @@
 #include <set>
 #include <stack>
 #include <algorithm>
+#include <numeric>
 
 //定义打印宏，并在打印信息前加入文件名、行号、函数名
 #define PRINTFUNC() \

@@ -142,11 +142,15 @@ extern void testDFSGraph();
 }
 namespace graphmatrix{
 extern void testDFS();
+extern void testPrim();
 }
 extern void testKMax();
 int main() {
-    testKMax();
 
+
+//    testKMax();
+
+graphmatrix::testPrim();
 //    graphmatrix::testDFS();
 //simplegraph::testDFSGraph();
 //    test2DArray();

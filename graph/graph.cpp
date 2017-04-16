@@ -31,6 +31,33 @@ GraphMatrix* createUnweightedGraph(int vertNum, int* arcs,int arrSize,int direct
     return g;
 }
 
+/*
+Network, weighted graph
+*/
+
+//INT_MAX means no edge for weighted graph
+GraphMatrix* emptyNetwork(const int verNum) {
+    GraphMatrix* g=new GraphMatrix;
+    g->n=verNum;
+    g->arc=malloc_Array2D<int>(g->n,g->n);
+
+    for(int i=0; i<g->n; ++i)
+        for(int j=0; j<g->n; ++j)
+            g->arc[i][j]=INT_MAX;
+    return g;
+}
+
+
+GraphMatrix* createNetwork(int vertNum, int* arcs,int arrSize,int directed=0) {
+    GraphMatrix* g=emptyNetwork(vertNum);
+    for(int i=0; i<arrSize; i+=3)
+        g->arc[arcs[i]][arcs[i+1]]=arcs[i+2];
+    if(!directed)
+        for(int i=0; i<arrSize; i+=3)
+            g->arc[arcs[i+1]][arcs[i]]=arcs[i+2];
+    return g;
+}
+
 
 /*******************************************************************
 For unweighted, acyclic/cyclic, directed/undirected, connected/unconnected graph
@@ -144,8 +171,175 @@ void bfs(GraphMatrix* g,int cur) {
     }
 }
 
+//Graph should contain weight
+//visited maintains MST node set
+//Return edge <i,j>
+int* mstByPrim(GraphMatrix* g,int cur, bool* visited) {
+    const int n=g->n;
+
+    //store previous node
+    int *pre=(int *)malloc(n*sizeof(int));
+    //store result. n-1 edges
+    int *edges=(int *)malloc(2*(n-1)*sizeof(int));
+
+    int minVal;
+    int minIdx;
+    int i,j;
+    int *dis=(int *)malloc(n*sizeof(int));
+
+    for(i=0; i<n; ++i) {//if no edge, INT_MAX
+        dis[i]=g->arc[cur][i];
+        if(dis[i]==INT_MAX)
+            pre[i]=-1;
+        else
+            pre[i]=cur;
+    }
+    visited[cur]=true;
 
 
+    for(i=0; i<n-1; ++i) { //at most n-1 edges
+//1. Find the min of v->vi
+        minVal=INT_MAX;
+        for(j=0; j<n; ++j) {
+            if(!visited[j]&&dis[j]<minVal) {
+                minVal=dis[j];
+                minIdx=j;
+            }
+        }
+        visited[minIdx]=true;
+        printf("add edge<%d,%d> with weight %d\n",pre[minIdx],minIdx,minVal);
+
+//2. Update dis according to new added node j
+        for(j=0; j<n; ++j)
+            if(!visited[j]&&dis[j]>g->arc[minIdx][j]) {
+                dis[j]=g->arc[minIdx][j];
+                pre[j]=minIdx;
+            }
+    }
+
+    //prepare resut
+    for(i=0,j=0; i<n; ++i) {
+        if(i!=cur) {
+            edges[j++]=pre[i];
+            edges[j++]=i;
+        }
+    }
+
+    free(pre);
+    free(dis);
+    return edges;
+}
+
+
+int* mstByPrim(GraphMatrix* g,int cur) {
+    bool *visited=(bool *)calloc(g->n,sizeof(bool));
+    int* edges= mstByPrim(g,cur,visited);
+    free(visited);
+    return edges;
+}
+
+//////////////////////////
+
+int* mstByPrim2(GraphMatrix* g,int cur, bool* visited) {
+    const int n=g->n;
+
+    //store previous node
+    int *pre=(int *)malloc(n*sizeof(int));
+    //store result. n-1 edges
+    int *edges=(int *)malloc(2*(n-1)*sizeof(int));
+
+    int minVal;
+    int i,k;
+    int *dis=(int *)malloc(n*sizeof(int));
+
+    //Initialize, all INT_MAX
+    for(i=0; i<n; ++i)
+        dis[i]=INT_MAX;
+
+
+    visited[cur]=true;
+    int c=1;
+    int j=cur;
+
+    while(c<n) { //at most n-1 edges
+//Update dis according to new added node
+        for(k=0; k<n; ++k)
+            if(!visited[k]&&dis[k]>g->arc[j][k]) {
+                dis[k]=g->arc[j][k];
+                pre[k]=j;
+            }
+
+        //Find the min of v->vi
+        minVal=INT_MAX;
+        for(i=0; i<n; ++i) {
+            if(!visited[i]&&dis[i]<minVal) {
+                minVal=dis[i];
+                j=i;
+            }
+        }
+        visited[j]=true;
+        printf("add edge<%d,%d> with weight %d\n",pre[j],j,minVal);
+        ++c;
+    }
+
+    //prepare resut
+    for(i=0,j=0; i<n; ++i) {
+        if(i!=cur) {
+            edges[j++]=pre[i];
+            edges[j++]=i;
+        }
+    }
+
+    free(pre);
+    free(dis);
+    return edges;
+}
+
+
+int* mstByPrim2(GraphMatrix* g,int cur) {
+    bool *visited=(bool *)calloc(g->n,sizeof(bool));
+    int* edges= mstByPrim2(g,cur,visited);
+    free(visited);
+    return edges;
+}
+
+
+//static bool cmp(int* px, int* py) {
+//    return *px < *py;
+//}
+unsigned long mstByPrimCPP(GraphMatrix* g) {
+    int i = g->n;
+    int* D=new int[g->n];
+    int** Q=g->arc;
+
+
+    std::list<int> L;
+    for(memcpy(D, Q[0], g->n*sizeof(D)); --i; L.push_back(i));  //以0号点为基准,L为还未进入最小生成树的点之集合
+    while(!L.empty()) {
+        int minVal=INT_MAX;
+        std::list<int>::iterator p;
+        std::list<int>::iterator minItr;
+        for(p=L.begin(); L.end()!=p; ++p) {
+            if(D[*p]<minVal) {
+                minVal=D[*p];
+                minItr=p;
+            }
+        }
+//找到能见到的最短边,将新点从L中除去,然后以新点为基准,更新L中剩余点,直到L为空
+        for(i = *minItr, L.erase(minItr), p=L.begin(); L.end()!=p; ++p) {
+            if(D[*p] >= Q[i][*p]) {
+                D[*p] = Q[i][*p];
+            }
+        }
+
+//        for(i=0; i<g->n; ++i) {
+//            printf("%d ",D[i]);
+//        }
+//        printf("---------\n");
+    }
+
+    return std::accumulate(1 + D, g->n + D, 0LU); //对D求和,即为最小生成树总长
+}
 
 
 //////////////////////////////////////
@@ -221,6 +415,32 @@ GraphMatrix* testGraph3() {
     return createUnweightedGraph(8,arcs,sizeof(arcs)/sizeof(int));
 }
 
+/**
+    1     11     3
+(0)---(1)----(3)----(5)
+ \     |     /|     /
+  \    |   9/ |    /
+   \  6|   /  |   /
+   2\  |  /  7|  / 4
+     \ | /    | /
+      \|/  13 |/
+      (2)----(4)
+
+**/
+GraphMatrix* testNetwork1() {
+    int arcs[]= {1,3,11,
+                 2,4,13,
+                 3,5,3,
+                 4,5,4,
+                 1,2,6,
+                 3,4,7,
+                 0,1,1,
+                 2,3,9,
+                 0,2,2
+                };
+    return createNetwork(6,arcs,sizeof(arcs)/sizeof(int));
+}
+
 ///////////////////////////
 typedef void(*GraphMatrixTraverseFunc)(GraphMatrix*,int);
 
@@ -247,6 +467,26 @@ void testDFS() {
     testDFSDriver(testGraph2());
     testDFSDriver(testGraph3());
 
+}
+
+typedef int*(*PrimFunc)(GraphMatrix*,int);
+void testPrimDriver(PrimFunc func,GraphMatrix* g) {
+    for(int start=0; start<g->n; ++start) {
+        int* edges=func(g,start);
+        for(int i=0; i<2*(g->n-1); i+=2)
+            printf("MST edge<%d,%d>=%d\n",edges[i],edges[i+1],g->arc[edges[i]][edges[i+1]]);
+        printf("---------------------------\n");
+    }
+}
+
+void testPrim() {
+
+    GraphMatrix* g=testNetwork1();
+    testPrimDriver(mstByPrim,g);
+    testPrimDriver(mstByPrim2,g);
+
+    unsigned long sum=mstByPrimCPP(g);
+    printf("%lu\n",sum);
 }
 
 }
@@ -428,65 +668,7 @@ void mstByKruskal() {
     printf("sum=%d\n",sum);
 }
 
-void mstByPrim() {
-    const int n=6;
-    int e[n][n],dis[n],book[n]= {0};
-    int count=0,sum=0;
-    int minValue;
-    int i,j,k;
-    int start=0;
 
-    for(i=0; i<n; ++i)
-        for(j=0; j<n; ++j)
-            if(i==j) e[i][j]=0;
-            else e[i][j]=INT_MAX;
-
-
-    e[1][3]=11;
-    e[2][4]=13;
-    e[3][5]=3;
-    e[4][5]=4;
-    e[1][2]=6;
-    e[3][4]=7;
-    e[0][1]=1;
-    e[2][3]=9;
-    e[0][2]=2;
-
-    e[3][1]=11;
-    e[4][2]=13;
-    e[5][3]=3;
-    e[5][4]=4;
-    e[2][1]=6;
-    e[4][3]=7;
-    e[1][0]=1;
-    e[3][2]=9;
-    e[2][0]=2;
-
-    for(i=0; i<n; ++i)
-        dis[i]=e[start][i];
-
-    book[start]=1;
-    ++count;
-    printf("add node %d\n",start);
-    while(count<n) {
-        minValue=INT_MAX;
-        for(i=0; i<n; ++i) {
-            if(book[i]==0&&dis[i]<minValue) {
-                minValue=dis[i];
-                j=i;
-            }
-        }
-        book[j]=1;
-        printf("add node %d with weight %d\n",j,minValue);
-        ++count;
-        sum+=dis[j];
-        for(k=0; k<n; ++k) //Update dis according to new added node
-            if(book[k]==0&&dis[k]>e[j][k])
-                dis[k]=e[j][k];
-    }
-    printf("sum=%d\n",sum);
-
-}
 
 }
 

@@ -1,6 +1,6 @@
 #ifndef GRAPH_H_INCLUDED
 #define GRAPH_H_INCLUDED
-
+//#include"../bitree/bitree.h"
 
 
 namespace graphmatrix {
@@ -15,18 +15,22 @@ typedef struct GraphMatrix {
 GraphMatrix* emptyUnweightedGraph(const int verNum);
 GraphMatrix* createUnweightedGraph(int vertNum, int* arcs,int arrSize,int directed);
 
-void dfsOnlyConnected(GraphMatrix* g,int cur) ;
+void dfsOnlyConnected(GraphMatrix* g,int cur);
 void dfs(GraphMatrix* g,int cur);
 
-void bfsOnlyConnected(GraphMatrix* g,int cur) ;
-void bfsOnlyConnected2(GraphMatrix* g,int cur) ;
-void bfs(GraphMatrix* g,int cur) ;
+void bfsOnlyConnected(GraphMatrix* g,int cur);
+void bfsOnlyConnected2(GraphMatrix* g,int cur);
+void bfs(GraphMatrix* g,int cur);
 
 
 GraphMatrix* emptyNetwork(const int verNum);
 //Each arc is triple <i,j,w>
 GraphMatrix* createNetwork(int vertNum, int* arcsValue,int arrSize,int directed);
 
+
+int* mstByPrim(GraphMatrix* g,int cur);
+int* mstByPrim2(GraphMatrix* g,int cur);
+unsigned long mstByPrimCPP(GraphMatrix* g);
 
 }
 
