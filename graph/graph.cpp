@@ -174,7 +174,7 @@ void bfs(GraphMatrix* g,int cur) {
 //Graph should contain weight
 //visited maintains MST node set
 //Return edge <i,j>
-int* mstByPrim(GraphMatrix* g,int cur, bool* visited) {
+int* mstByPrim(GraphMatrix* g,int cur, bool* mstNodeSet) {
     const int n=g->n;
 
     //store previous node
@@ -190,28 +190,29 @@ int* mstByPrim(GraphMatrix* g,int cur, bool* visited) {
     for(i=0; i<n; ++i) {//if no edge, INT_MAX
         dis[i]=g->arc[cur][i];
         if(dis[i]==INT_MAX)
-            pre[i]=-1;
+            pre[i]=-1;//No pre node for tree root
         else
             pre[i]=cur;
     }
-    visited[cur]=true;
+    mstNodeSet[cur]=true;
 
 
     for(i=0; i<n-1; ++i) { //at most n-1 edges
 //1. Find the min of v->vi
         minVal=INT_MAX;
         for(j=0; j<n; ++j) {
-            if(!visited[j]&&dis[j]<minVal) {
+            if(!mstNodeSet[j]&&dis[j]<minVal) {
                 minVal=dis[j];
                 minIdx=j;
             }
         }
-        visited[minIdx]=true;
+        //Add the node to MST
+        mstNodeSet[minIdx]=true;
         printf("add edge<%d,%d> with weight %d\n",pre[minIdx],minIdx,minVal);
 
 //2. Update dis according to new added node j
         for(j=0; j<n; ++j)
-            if(!visited[j]&&dis[j]>g->arc[minIdx][j]) {
+            if(!mstNodeSet[j]&&dis[j]>g->arc[minIdx][j]) {
                 dis[j]=g->arc[minIdx][j];
                 pre[j]=minIdx;
             }
