@@ -174,7 +174,7 @@ void bfs(GraphMatrix* g,int cur) {
 //Graph should contain weight
 //visited maintains MST node set
 //Return edge <i,j>
-int* mstByPrim(GraphMatrix* g,int cur, bool* mstNodeSet) {
+int* mstByPrim(GraphMatrix* g,int cur) {
     const int n=g->n;
 
     //store previous node
@@ -182,10 +182,14 @@ int* mstByPrim(GraphMatrix* g,int cur, bool* mstNodeSet) {
     //store result. n-1 edges
     int *edges=(int *)malloc(2*(n-1)*sizeof(int));
 
+    bool *mstNodeSet=(bool *)calloc(n,sizeof(bool));
+
     int minVal;
     int minIdx;
     int i,j;
     int *dis=(int *)malloc(n*sizeof(int));
+
+
 
     for(i=0; i<n; ++i) {//if no edge, INT_MAX
         dis[i]=g->arc[cur][i];
@@ -228,26 +232,22 @@ int* mstByPrim(GraphMatrix* g,int cur, bool* mstNodeSet) {
 
     free(pre);
     free(dis);
+    free(mstNodeSet);
     return edges;
 }
 
-
-int* mstByPrim(GraphMatrix* g,int cur) {
-    bool *visited=(bool *)calloc(g->n,sizeof(bool));
-    int* edges= mstByPrim(g,cur,visited);
-    free(visited);
-    return edges;
-}
 
 //////////////////////////
 
-int* mstByPrim2(GraphMatrix* g,int cur, bool* visited) {
+int* mstByPrim2(GraphMatrix* g,int cur) {
     const int n=g->n;
 
     //store previous node
     int *pre=(int *)malloc(n*sizeof(int));
     //store result. n-1 edges
     int *edges=(int *)malloc(2*(n-1)*sizeof(int));
+
+    bool *visited=(bool *)calloc(g->n,sizeof(bool));
 
     int minVal;
     int i,k;
@@ -293,16 +293,10 @@ int* mstByPrim2(GraphMatrix* g,int cur, bool* visited) {
 
     free(pre);
     free(dis);
-    return edges;
-}
-
-
-int* mstByPrim2(GraphMatrix* g,int cur) {
-    bool *visited=(bool *)calloc(g->n,sizeof(bool));
-    int* edges= mstByPrim2(g,cur,visited);
     free(visited);
     return edges;
 }
+
 
 
 //static bool cmp(int* px, int* py) {
@@ -340,6 +334,60 @@ unsigned long mstByPrimCPP(GraphMatrix* g) {
     }
 
     return std::accumulate(1 + D, g->n + D, 0LU); //对D求和,即为最小生成树总长
+}
+
+
+
+
+////////////////////////////////////////////////////////////
+//# Shortest path
+
+// <i,i>=0
+// No edge between i and j, dis=INT_MAX
+// Return path array
+//!TODO test
+int* shortestPathByDijkstra(graphmatrix::GraphMatrix* g,int src) {
+
+    int i,j,u,v,minDis;
+
+    int n=g->n;
+    int **e=g->arc;
+
+    int *dis=(int *)malloc(n*sizeof(int));
+
+    //Already set false here
+    bool *visited=(bool *)calloc(n,sizeof(bool));
+
+    //dis[i] can be INT_MAX
+    for(i=0; i<n; ++i)
+        dis[i]=e[src][i];
+    visited[src]=true;//Add src to set P
+
+    for(i=0; i<n-1; ++i) {
+        minDis=INT_MAX;
+        for(j=0; j<n; ++j)
+            if(visited[j]==0&&dis[j]<minDis) {
+                minDis=dis[j];//Find u with min dis
+                u=j;
+            }
+        visited[u]=1;//Add to set P
+
+        for(v=0; v<n; ++v)
+            //Implement level: need to check each element
+            //To make sure no overflow
+            if(e[u][v]<INT_MAX
+                    &&dis[u]<INT_MAX
+                    &&dis[v]>dis[u]+e[u][v])
+                dis[v]=dis[u]+e[u][v];
+    }
+
+    for(i=0; i<n; ++i)//Result
+        printf("%d ",dis[i]);
+    printf("\n");
+    free(visited);
+
+    return NULL;
+
 }
 
 
@@ -675,8 +723,6 @@ void mstByKruskal() {
 
 
 ////////////////////////////////////////////////////////////
-
-
 
 
 namespace Cutpoint {
