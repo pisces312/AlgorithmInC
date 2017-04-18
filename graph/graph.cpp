@@ -36,6 +36,7 @@ Network, weighted graph
 */
 
 //INT_MAX means no edge for weighted graph
+//<i,i>=0
 GraphMatrix* emptyNetwork(const int verNum) {
     GraphMatrix* g=new GraphMatrix;
     g->n=verNum;
@@ -43,7 +44,10 @@ GraphMatrix* emptyNetwork(const int verNum) {
 
     for(int i=0; i<g->n; ++i)
         for(int j=0; j<g->n; ++j)
-            g->arc[i][j]=INT_MAX;
+            if(i==j)
+                g->arc[i][j]=0;
+            else
+                g->arc[i][j]=INT_MAX;
     return g;
 }
 
@@ -342,29 +346,59 @@ unsigned long mstByPrimCPP(GraphMatrix* g) {
 ////////////////////////////////////////////////////////////
 //# Shortest path
 
-// <i,i>=0
-// No edge between i and j, dis=INT_MAX
+// Precondition: all weight must be non-negative values
+// Edge:
+//     <i,i>=0
+//     No edge between i and j, dis=INT_MAX
 // Return path array
 //!TODO test
-int* shortestPathByDijkstra(graphmatrix::GraphMatrix* g,int src) {
-
+int* shortestPathByDijkstra(GraphMatrix* g,int v0) {
     int i,j,u,v,minDis;
 
     int n=g->n;
     int **e=g->arc;
 
+    //dis[i]: Store path weight from v0 to i
     int *dis=(int *)malloc(n*sizeof(int));
 
-    //Already set false here
-    bool *visited=(bool *)calloc(n,sizeof(bool));
+    //Store all paths
+    //record the previous node of path(v0->i)
+    int *path=(int *)malloc(n*sizeof(int));
 
-    //dis[i] can be INT_MAX
-    for(i=0; i<n; ++i)
-        dis[i]=e[src][i];
-    visited[src]=true;//Add src to set P
+    bool *visited=(bool *)malloc(n*sizeof(bool));
 
-    for(i=0; i<n-1; ++i) {
+    int c=0;//count for node that not connected
+    //initialization
+    for(i=0; i<n; ++i) {
+        dis[i]=e[v0][i]; //dis[i] can be INT_MAX if no edge
+        if(dis[i]==INT_MAX) {
+            ++c;
+            path[i]=-1;
+        } else
+            //v0 and i are directly connected
+            //So v0 is pre node of i
+            path[i]=v0;
+        visited[i]=false;
+    }
+    dis[v0]=0;
+    visited[v0]=true;
+
+
+    if(c==n-1) {
+        free(visited);
+        free(dis);
+        printf("The graph is not connected.\n");
+        return path;
+    }
+
+
+//    for(i=0; i<n; ++i)
+//        dis[i]=e[v0][i];
+//    visited[v0]=true;//Add v0 to set P
+
+    for(i=0; i<n-1; ++i) { //n-1 nodes
         minDis=INT_MAX;
+        //For connected graph, at least one edge
         for(j=0; j<n; ++j)
             if(visited[j]==0&&dis[j]<minDis) {
                 minDis=dis[j];//Find u with min dis
@@ -373,21 +407,61 @@ int* shortestPathByDijkstra(graphmatrix::GraphMatrix* g,int src) {
         visited[u]=1;//Add to set P
 
         for(v=0; v<n; ++v)
-            //Implement level: need to check each element
-            //To make sure no overflow
+            //Check whether each element is overflow
+            //make sure no overflow for add operation
             if(e[u][v]<INT_MAX
                     &&dis[u]<INT_MAX
-                    &&dis[v]>dis[u]+e[u][v])
+                    &&dis[v]>dis[u]+e[u][v]) {
                 dis[v]=dis[u]+e[u][v];
+                path[v]=u;
+            }
     }
 
-    for(i=0; i<n; ++i)//Result
-        printf("%d ",dis[i]);
+
+    //Result
+//    for(i=0; i<n; ++i)
+//        printf("%d ",dis[i]);
+//    printf("\n");
+    for(i=0; i<n; ++i)
+        printf("%d ",path[i]);
     printf("\n");
+
+
     free(visited);
+    free(dis);
 
-    return NULL;
+    return path;
 
+}
+
+//v0->v
+void showSingleShortestPath(GraphMatrix* g,int *path,int v0,int v) {
+    int* st=(int *)malloc(g->n*sizeof(int));
+    int top=-1;
+    int total=0;
+
+    //Use a stack to reserve path
+    while(v!=v0&&path[v]!=-1) {
+        total+=g->arc[path[v]][v];
+        st[++top]=v;
+        v=path[v];
+    }
+
+    if(path[v]==-1) {
+        printf("No shortest path from %d to %d\n",v0,v);
+    } else {
+        st[++top]=v0;
+//        printf("top:%d\n",top);
+        //Output from stack
+        printf("%d (",total);
+        while(top>=0) {
+            printf("%d ",st[top]);
+            --top;
+        }
+        printf(")\n");
+    }
+
+    free(st);
 }
 
 
@@ -489,6 +563,30 @@ GraphMatrix* testNetwork1() {
                 };
     return createNetwork(6,arcs,sizeof(arcs)/sizeof(int));
 }
+/**
+          30
+ +--------------------------+
+ |  100          60         |
+(0)------>(1)<------(2)<----+
+ |         |         |
+ |         |         |
+ | 10      |         |
+ +--->(4)--+--->(3)<-+
+
+
+**/
+GraphMatrix* testDirectedNetwork1() {
+    int arcs[]= {0,1,100,
+                 0,2,30,
+                 0,4,10,
+                 2,1,60,
+                 2,3,60,
+                 3,1,10,
+                 4,3,50
+                };
+    return createNetwork(5,arcs,sizeof(arcs)/sizeof(int),1);
+}
+
 
 ///////////////////////////
 typedef void(*GraphMatrixTraverseFunc)(GraphMatrix*,int);
@@ -537,6 +635,30 @@ void testPrim() {
     unsigned long sum=mstByPrimCPP(g);
     printf("%lu\n",sum);
 }
+
+void testDijkstra() {
+//0->1: 0,4,3,1
+//0->2: 0,2
+//0->3: 0,4,3 (Part of 0->1)
+//0->4: 0,4 (Part of 0->1)
+    GraphMatrix* g= testDirectedNetwork1();
+//    int* path=shortestPathByDijkstra(g,0);
+//    showSingleShortestPath(g,path,0,1);
+//Print all shortest path
+    for(int i=0; i<g->n; ++i) {
+        int* path=shortestPathByDijkstra(g,i);
+        for(int j=0; j<g->n; ++j) {
+            printf("%d->%d\n",i,j);
+            showSingleShortestPath(g,path,i,j);
+            printf("------------------------------\n");
+        }
+        free(path);
+        printf("==============================\n");
+    }
+}
+
+
+
 
 }
 ////////////////////////////////////////////
