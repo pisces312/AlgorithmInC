@@ -1,12 +1,12 @@
 #include "common.h"
 //#include"LinearList/LinearList.h"
-#include "quitz/prime.h"
-#include "Search/search.h"
+#include "quiz/prime.h"
+#include "search/search.h"
 #include "graph/graph.h"
 #include "tree/BinaryTree.h"
 #include "sort/sort.h"
 #include "list.h"
-#include "LinkedList/Singly/OneLink.h"
+#include "linked_list/Singly/OneLink.h"
 
 
 int factorial(int n) {
@@ -128,20 +128,44 @@ int testOneLink() {
     return 0;
 }
 
+
+
 extern void testTree();
 extern void testMaxContinuousSeqSum();
 extern void testBitCount();
 extern void testGCD();
 extern void testLCM();
 extern void testStringAlg();
+
+namespace simplegraph {
+extern void testDFSGraph();
+}
+namespace graphmatrix {
+extern void testDFS();
+extern void testPrim();
+extern void testDijkstra();
+}
+extern void testKMax();
+namespace UnionFind {
+extern void testUnionFind();
+}
 int main() {
-//    testStringAlg();
-//    testLCM();
-//    testGCD();
-//testBitCount();
-//testMaxContinuousSeqSum();
+
+    UnionFind::testUnionFind();
+
+    testKMax();
+
+    graphmatrix::testDijkstra();
+    graphmatrix::testPrim();
+    graphmatrix::testDFS();
+    simplegraph::testDFSGraph();
+    testStringAlg();
+    testLCM();
+    testGCD();
+    testBitCount();
+    testMaxContinuousSeqSum();
     testTree();
-//    testSortMain();
+    testSortMain();
 
 
 //    testOneLink();
@@ -151,17 +175,9 @@ int main() {
 //    testList();
 //    testLoop();
 
-//    LinkedList::testLoop();
-
 
 //    hanoi2(3,'a','b','c');
 //    hanoi('a','b','c',3);
-
-//    mstByPrim();
-//    test2();
-//    mstByKruskal();
-//testSortMain();
-//    UnionFind::testUnionFind();
 //    testHeapSort();
 //    createHeap1();
 //    createHeap2();

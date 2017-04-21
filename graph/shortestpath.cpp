@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "../common.h"
 namespace ShortestPathByDFS {
 static const int MAX_DIS=INT_MAX;
 static int e[100][100];//Store distance

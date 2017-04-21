@@ -31,40 +31,6 @@ int getIntegerDigit(int t) {
 typedef void (*SortFunc)(int* keys,int n);
 //typedef int (*SortFunc)(int* keys,int b,int e);
 //typedef int (*SearchFixedFunc)(int* keys, const int key);
-inline int compareInt(const void* x,const void* y) {
-    return *(int*)x-*(int*)y;
-}
-
-void assertSorted(int *x,int n) {
-    for(int i=1; i<n; ++i) {
-        if(x[i-1]>x[i]) {
-            assert(false);
-        }
-    }
-
-}
-void createRandomData(int* keys,int n) {
-    time_t seed;
-    time(&seed);
-    srand(seed);
-    for(int i=0; i<n; ++i) {
-        keys[i]=rand()%n;
-    }
-}
-void createRandomUniqPostiveData(int* keys,int n) {
-    time_t seed;
-    time(&seed);
-    srand(seed);
-    for(int i=0; i<n; ++i) {
-        keys[i]=i;
-    }
-    int a=0,b=0;
-    for(int i=0; i<n; ++i) {
-        a=rand()%n;
-        b=rand()%n;
-        swap(keys,a,b);
-    }
-}
 
 //C++ sort
 void testCPPLibSort(int n=10) {
@@ -129,7 +95,7 @@ void testRadixSort(int n=10) {
     int start = clock();\
     (F)((K),(N));\
     int clicks = clock() - start;\
-    printf("%-16.16s\tn=%d\tclicks=%d\ttime=%gns\n",\
+    printf("%-32.32s\tn=%d\tclicks=%d\ttime=%gns\n",\
            (S),(N), clicks,\
            1e9*clicks/((float) CLOCKS_PER_SEC));\
     if((N)<100) printArray((K),(N));\
@@ -188,7 +154,7 @@ void testDriverCore(int* keys,unsigned int n) {
     TEST(heapSort);
     TEST(heapSort2);
     TEST(heapSortIdxFromOne);
-    TEST(heapSortIdxFromOne2);
+//    TEST(heapSortIdxFromOne2);
     TEST(heapSort3);
     TEST(heapSort4);
 
@@ -211,9 +177,8 @@ void testDriverCore(int* keys,unsigned int n) {
 
     if(n<88888) {
         TEST(shellSort);
-        TEST(insertSort1);
+        TEST(insertSort);
         TEST(insertSort2);
-        TEST(insertSort3);
         TEST(insertSortWithBisearch);
         TEST(selectSort);
         TEST(bubbleSort1);
@@ -371,8 +336,8 @@ int testSortMain() {
 //!incorrect
 //    testSortFunc(quickSortForDup);
 
-testSortFunc(mergeSortTopDown);
-testSortFunc(mergeSortBottomUp);
+//testSortFunc(mergeSortTopDown);
+//testSortFunc(mergeSortBottomUp);
 //    testSortFunc(heapSort2);
 //testSortFunc(heapSort);
 //testSortFunc(quickSortLomuto);
@@ -394,12 +359,12 @@ testSortFunc(mergeSortBottomUp);
 
 
 
-//    int n=100;
+    int n=100;
 //int n=123456;
 //int n=50000;
 //    int n=12345;
 
-//    testDriver(n);
+    testDriver(n);
 
 
 

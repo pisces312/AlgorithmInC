@@ -18,6 +18,7 @@
 #include <set>
 #include <stack>
 #include <algorithm>
+#include <numeric>
 
 //定义打印宏，并在打印信息前加入文件名、行号、函数名
 #define PRINTFUNC() \
@@ -45,6 +46,7 @@ inline void swap(int* x,const int i, const int j) {
     x[j] = t;
 }
 void printArray(int*a,int n) ;
+void printArray(int*a,int low,int high) ;
 
 /* getbits:  get n bits from position p */
 inline unsigned getbits(unsigned x, int p, int n) {
@@ -53,6 +55,33 @@ inline unsigned getbits(unsigned x, int p, int n) {
 inline int isEven(int n) {
     return !(n&0x1);
 }
+
+//template <typename T>
+//T** malloc_Array2D(int row, int col);
+template <typename T>
+T** malloc_Array2D(int row, int col) {
+    int size = sizeof(T);
+    int point_size = sizeof(T*);
+    //先申请内存，其中point_size * row表示存放row个行指针
+    T **arr = (T **) malloc(point_size * row + size * row * col);
+    if(arr != NULL) {
+        memset(arr, 0, point_size * row + size * row * col);
+        T *head = (T*)((int)arr + point_size * row);
+        while(row--)
+            arr[row] = (T*)((int)head + row * col * size);
+    }
+    return (T**)arr;
+}
+//释放二维数组
+void free_Array2D(void **arr);
+
+inline int compareInt(const void* x,const void* y) {
+    return *(int*)x-*(int*)y;
+}
+
+void assertSorted(int *x,int n) ;
+void createRandomData(int* keys,int n);
+void createRandomUniqPostiveData(int* keys,int n);
 //template<class T>
 //void display(T a[],int n) {
 //    for(int i=0; i<n; i++)
