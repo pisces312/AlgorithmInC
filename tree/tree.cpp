@@ -10,10 +10,11 @@ void makeSet(int *f,int n) {
 }
 
 /////////////////////////
-//Find
+//Find - Get father
 //It ends when the father is itself
 
 //Basic, recursive
+//No path compression, the tree may be very high
 int findSet(int*f,int v) {
     if(f[v]==v) return v;
     return findSet(f,f[v]);
@@ -58,10 +59,18 @@ void unionSet(int*f,int v,int u) {
     if(t1!=t2) f[t2]=t1;
 }
 
+////////////////////////////////
+//Count set number
+int countSet(int* f,int n) {
+    int c=0;
+    for(int i=0; i<n; ++i)
+        if(f[i]==i) ++c;
+    return c;
+}
 
 
 ///////////////////////////////////
-//Optimize by rank
+//Optimized by rank
 
 void makeSetWithRank(int *f,int n,int* rank) {
     for(int i=0; i<n; ++i) {
@@ -71,20 +80,62 @@ void makeSetWithRank(int *f,int n,int* rank) {
 }
 //Attach shorter tree as the child of taller one
 void unionSetWithRank(int*f,int v,int u,int *rank) {
-    int t1=findSetByCompress(f,v);
-    int t2=findSetByCompress(f,u);
+    int t1=findSet(f,v); //No need path compression
+    int t2=findSet(f,u);
     if(t1==t2) return;
-    if(rank[t1]<rank[t2]) {
-        f[t1]=t2;
-        ++rank[t1];
-    } else {
-        f[t2]=t1;
-        ++rank[t2];
+    if(rank[t1]>rank[t2])//t1's height is not changed
+        f[t2]=t1; //t1 is root, attach t2
+    else {
+        f[t1]=t2;//t2 is root, attach t1
+        if(rank[t1]==rank[t2]) //!Only if original height are the same
+            ++rank[t2];//t2's height will be changed
     }
-
 }
 
 ///////////////////////////////////////
+//Optimized by number
+//Don't need rank array
+
+//The value for root is "-totalElementsNumberOfSet"
+void makeSetWithNum(int *f,int n) {
+    for(int i=0; i<n; ++i) f[i]=-1;
+}
+//With path compression
+int findSetWithNum1(int *f,int v) {
+    if(f[v] < 0) return v;
+    f[v] = findSetWithNum1(f,f[v]);
+    return f[v];
+}
+//With path compression
+int findSetWithNum2(int*f,int v) {
+    int t=v; //backup original v
+    while(f[v]>=0) v=f[v];//Cannot be "while(f[v])" -1 is not false
+    while(f[t]!=t) {
+        t=f[t];
+        f[t]=v;
+    }
+    return v;
+}
+//Consider element number
+void unionSetWithNum(int*f,int v,int u) {
+    int x=findSetWithNum1(f,v);
+    int y=findSetWithNum1(f,u);
+    if(x==y) return;
+    if(f[x] < f[y]) {//set x has more elements
+        f[x] += f[y];//update root's element
+        f[y] = x;//attach y to x, f[y] is not root now
+    } else {
+        f[y] += f[x];
+        f[x] = y;
+    }
+}
+int countSetWithNum(int* f,int n) {
+    int c=0;
+    for(int i=0; i<n; ++i)
+        if(f[i]<0) ++c;
+    return c;
+}
+
 
 
 /**
@@ -110,40 +161,56 @@ void testUnionFind() {
     for(i=0; i<m; ++i)
         unionSet(f,a[i][0],a[i][1]);
     //Count the number of set
-    for(i=0,sum=0; i<n; ++i)
-        if(f[i]==i) ++sum;
+    sum=countSet(f,n);
     printf("sum=%d\n",sum);
 
     for(i=0; i<m; ++i)
         unionSet(findSet,f,a[i][0],a[i][1]);
     //Count the number of set
-    for(i=0,sum=0; i<n; ++i)
-        if(f[i]==i) ++sum;
+    sum=countSet(f,n);
     printf("sum=%d\n",sum);
 
     for(i=0; i<m; ++i)
         unionSet(findSetByCompress,f,a[i][0],a[i][1]);
     //Count the number of set
-    for(i=0,sum=0; i<n; ++i)
-        if(f[i]==i) ++sum;
+    sum=countSet(f,n);
     printf("sum=%d\n",sum);
 
     for(i=0; i<m; ++i)
         unionSet(findSetNonRecursive,f,a[i][0],a[i][1]);
     //Count the number of set
-    for(i=0,sum=0; i<n; ++i)
-        if(f[i]==i) ++sum;
+    sum=countSet(f,n);
     printf("sum=%d\n",sum);
 
 
     makeSetWithRank(f,n,rank);
     for(i=0; i<m; ++i)
         unionSetWithRank(f,a[i][0],a[i][1],rank);
-    for(i=0; i<n; ++i)
-        printf("%d\n",rank[i]);
+    printArray(rank,n);
     //Count the number of set
-    for(i=0,sum=0; i<n; ++i)
-        if(f[i]==i) ++sum;
+    sum=countSet(f,n);
+    printf("sum=%d\n",sum);
+
+
+
+    int b[m][2]= {{0,1},{1,2},{2,3},{3,4},{4,5},{5,6},{3,6},{7,8},{0,2}};
+    makeSetWithRank(f,n,rank);
+    for(i=0; i<m; ++i)
+        unionSetWithRank(f,b[i][0],b[i][1],rank);
+    printArray(f,n);
+    printArray(rank,n);
+    //Count the number of set
+    sum=countSet(f,n);
+    printf("sum=%d\n",sum);
+
+
+
+    makeSetWithNum(f,n);
+    for(i=0; i<m; ++i)
+        unionSetWithNum(f,b[i][0],b[i][1]);
+    printArray(f,n);
+    //Count the number of set
+    sum=countSetWithNum(f,n);
     printf("sum=%d\n",sum);
 }
 }
