@@ -137,36 +137,35 @@ extern void testGCD();
 extern void testLCM();
 extern void testStringAlg();
 
-namespace simplegraph{
+namespace simplegraph {
 extern void testDFSGraph();
 }
-namespace graphmatrix{
+namespace graphmatrix {
 extern void testDFS();
 extern void testPrim();
 extern void testDijkstra();
 }
 extern void testKMax();
-namespace UnionFind{
+namespace UnionFind {
 extern void testUnionFind();
 }
 int main() {
 
-UnionFind::testUnionFind();
+    UnionFind::testUnionFind();
 
     testKMax();
 
-graphmatrix::testDijkstra();
-graphmatrix::testPrim();
+    graphmatrix::testDijkstra();
+    graphmatrix::testPrim();
     graphmatrix::testDFS();
-simplegraph::testDFSGraph();
-//    test2DArray();
-//    testStringAlg();
-//    testLCM();
-//    testGCD();
-//testBitCount();
-//testMaxContinuousSeqSum();
-//    testTree();
-//    testSortMain();
+    simplegraph::testDFSGraph();
+    testStringAlg();
+    testLCM();
+    testGCD();
+    testBitCount();
+    testMaxContinuousSeqSum();
+    testTree();
+    testSortMain();
 
 
 //    testOneLink();
@@ -176,14 +175,9 @@ simplegraph::testDFSGraph();
 //    testList();
 //    testLoop();
 
-//    LinkedList::testLoop();
-
 
 //    hanoi2(3,'a','b','c');
 //    hanoi('a','b','c',3);
-
-testSortMain();
-//    UnionFind::testUnionFind();
 //    testHeapSort();
 //    createHeap1();
 //    createHeap2();
