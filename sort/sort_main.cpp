@@ -177,9 +177,8 @@ void testDriverCore(int* keys,unsigned int n) {
 
     if(n<88888) {
         TEST(shellSort);
-        TEST(insertSort1);
+        TEST(insertSort);
         TEST(insertSort2);
-        TEST(insertSort3);
         TEST(insertSortWithBisearch);
         TEST(selectSort);
         TEST(bubbleSort1);

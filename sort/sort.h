@@ -6,12 +6,10 @@
 int testSortMain();
 
 /* Simplest insertion sort */
-void insertSort1(int* x,int n);
-/* Write swap function inline */
-void insertSort2(int* x,int n);
+void insertSort(int* x,int n);
 /* Move assignments to and from t out of loop */
-void insertSort3(int* x,int n);
-//改进：使用二分搜索找到插入的位置
+void insertSort2(int* x,int n);
+//Optimization: binary search
 void insertSortWithBisearch(int* x,int n);
 
 

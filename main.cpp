@@ -1,12 +1,12 @@
 #include "common.h"
 //#include"LinearList/LinearList.h"
-#include "quitz/prime.h"
-#include "Search/search.h"
+#include "quiz/prime.h"
+#include "search/search.h"
 #include "graph/graph.h"
 #include "tree/BinaryTree.h"
 #include "sort/sort.h"
 #include "list.h"
-#include "LinkedList/Singly/OneLink.h"
+#include "linked_list/Singly/OneLink.h"
 
 
 int factorial(int n) {
@@ -153,12 +153,12 @@ int main() {
 
 UnionFind::testUnionFind();
 
-//    testKMax();
+    testKMax();
 
-//graphmatrix::testDijkstra();
-//graphmatrix::testPrim();
-//    graphmatrix::testDFS();
-//simplegraph::testDFSGraph();
+graphmatrix::testDijkstra();
+graphmatrix::testPrim();
+    graphmatrix::testDFS();
+simplegraph::testDFSGraph();
 //    test2DArray();
 //    testStringAlg();
 //    testLCM();
@@ -182,10 +182,7 @@ UnionFind::testUnionFind();
 //    hanoi2(3,'a','b','c');
 //    hanoi('a','b','c',3);
 
-//    mstByPrim();
-//    test2();
-//    mstByKruskal();
-//testSortMain();
+testSortMain();
 //    UnionFind::testUnionFind();
 //    testHeapSort();
 //    createHeap1();

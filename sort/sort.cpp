@@ -5,26 +5,27 @@
 
 //最简单的插入排序
 /* Simplest insertion sort */
-void insertSort1(int* x,int n) {
+void insertSort(int* x,int n) {
     int i, j;
     for(i = 1; i < n; i++)
         for(j = i; j > 0 && x[j-1] > x[j]; j--)
             swap(x,j-1, j);
 }
-/* Write swap function inline */
+// Write swap function inline
+//void insertSort2(int* x,int n) {
+//    int i, j;
+//    int t;
+//    for(i = 1; i < n; i++)
+//        for(j = i; j > 0 && x[j-1] > x[j]; j--) {
+//            t = x[j];
+//            x[j] = x[j-1];
+//            x[j-1] = t;
+//        }
+//}
+//
+// Move assignments to and from t out of loop
+// Remove swap
 void insertSort2(int* x,int n) {
-    int i, j;
-    int t;
-    for(i = 1; i < n; i++)
-        for(j = i; j > 0 && x[j-1] > x[j]; j--) {
-            t = x[j];
-            x[j] = x[j-1];
-            x[j-1] = t;
-        }
-}
-//去除交换
-/* Move assignments to and from t out of loop */
-void insertSort3(int* x,int n) {
     int i, j;
     int t;
     for(i = 1; i < n; i++) {
@@ -258,7 +259,7 @@ void _fastcall quickSortFinal(int* x,int n) {
     //小于时直接退出！！
     qsortFinal(x,0,n-1);
     //小于一定数量时，使用插入排序
-    insertSort3(x,n);
+    insertSort2(x,n);
 }
 
 
