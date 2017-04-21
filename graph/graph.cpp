@@ -383,7 +383,7 @@ int* shortestPathByDijkstra(GraphMatrix* g,int v0) {
     dis[v0]=0;
     visited[v0]=true;
 
-
+    //Optional for connected graph
     if(c==n-1) {
         free(visited);
         free(dis);
@@ -814,28 +814,22 @@ void mstByKruskal() {
         {2,3,9},
         {0,2,2}
     };
-    const int n=6,m=9;
-    int f[n];
-    int i,c=0,sum=0;
-    int t1,t2;
-    quickSortForEdge(e,0,m-1);
 //    for(i=0; i<m; ++i) {
 //        printf("%d,%d,%d\n",e[i].u,e[i].v,e[i].w);
 //    }
 
+    const int n=6,m=9;
+    int f[n];
+    int i,c=0,sum=0;
+    quickSortForEdge(e,0,m-1);
 
-    for(i=0; i<n; ++i)f[i]=i;
+    UnionFind::makeSet(f,n);
     for(i=0; i<m&&c<n-1; ++i) {
-        t1=UnionFind::getParent(f,e[i].u);
-        t2=UnionFind::getParent(f,e[i].v);
-        if(t1!=t2) {
-            f[t2]=t1;
-            ++c;
-            sum+=e[i].w;
-            printf("add edge <%d,%d>\n",e[i].u,e[i].v);
-        }
+        UnionFind::unionSet(f,e[i].u,e[i].v);
+        ++c;
+        sum+=e[i].w;
+        printf("add edge <%d,%d>\n",e[i].u,e[i].v);
     }
-
     printf("sum=%d\n",sum);
 }
 

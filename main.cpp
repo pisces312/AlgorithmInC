@@ -146,12 +146,16 @@ extern void testPrim();
 extern void testDijkstra();
 }
 extern void testKMax();
+namespace UnionFind{
+extern void testUnionFind();
+}
 int main() {
 
+UnionFind::testUnionFind();
 
 //    testKMax();
 
-graphmatrix::testDijkstra();
+//graphmatrix::testDijkstra();
 //graphmatrix::testPrim();
 //    graphmatrix::testDFS();
 //simplegraph::testDFSGraph();
