@@ -1,6 +1,4 @@
 #include "common.h"
-//#include"LinearList/LinearList.h"
-#include "quiz/prime.h"
 #include "search/search.h"
 #include "graph/graph.h"
 #include "tree/BinaryTree.h"
@@ -137,10 +135,13 @@ extern void testUnionFind();
 namespace search_mid_node{
 extern void testSearchMidList();
 }
+namespace prime{
 extern void testPrime();
+}
 int main() {
 //printf("%lu\n",CLOCKS_PER_SEC );
-testPrime();
+//printf("%lu\n",sizeof(bool) );
+prime::testPrime();
 
 //search_mid_node::testSearchMidList();
 

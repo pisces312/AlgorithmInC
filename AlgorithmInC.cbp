@@ -73,7 +73,6 @@
 		<Unit filename="linked_list/Singly/OneLink.h" />
 		<Unit filename="linked_list/Singly/OneLinkNode.h" />
 		<Unit filename="list.h" />
-		<Unit filename="list/search_mid_list.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="quiz/bitcount.cpp" />
 		<Unit filename="quiz/bitcount.h" />
@@ -86,10 +85,9 @@
 		<Unit filename="quiz/max_subarray_sum.h" />
 		<Unit filename="quiz/max_subarray_sum_test.cpp" />
 		<Unit filename="quiz/prime.cpp" />
-		<Unit filename="quiz/prime.h" />
+		<Unit filename="quiz/search_mid_list.cpp" />
 		<Unit filename="random/random.cpp" />
 		<Unit filename="random/random.h" />
-		<Unit filename="search/floodfill.cpp" />
 		<Unit filename="search/maze.cpp" />
 		<Unit filename="search/permutation.cpp" />
 		<Unit filename="search/search.h" />

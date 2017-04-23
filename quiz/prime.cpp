@@ -1,42 +1,248 @@
-#include "prime.h"
 #include "../common.h"
 ////////////////////////////////////////
-//Check whetehr one number is prime
+//Check whether one number is prime
+
+
+namespace prime {
+//Basic version
+//According to concept
+//Time: O(n)
+bool isPrimeBasic(unsigned long long n) {
+    if(n<2) return false;
+    for (unsigned long long i=2; i<n; i++)
+        if (n%i==0)
+            return false;
+    return true;
+}
+
+//Narrow scope
+//Only handle odd divider
+//Time: O(n/2)
+bool isPrimeOnlyWithOdd(unsigned long long n) {
+    if(n<2) return false;
+    if(n==2) return true;
+    if(n%2==0) return false;
+    for (unsigned long long i=3; i<n; i+=2)
+        if (n%i==0) return false;
+    return true;
+}
+
+//Narrow scope
+//定理: 如果n不是素数, 则n有满足1<d<=sqrt(n)的一个因子d.
+//证明: 如果n不是素数, 则由定义n有一个因子d满足1<d<n.
+//如果d大于sqrt(n), 则n/d是满足1<n/d<=sqrt(n)的一个因子.
+//!Use i*i<=n
+bool isPrimeSqrt(const unsigned long long n) {
+    if(n<2) return false;
+    if(2==n) return true;
+    if(n%2==0) return false;
+    for (unsigned long long i = 3; i*i < n; i += 2)
+        if (!(n % i))
+            return false;
+    return true;
+}
+
 
 //Use sqrt
-bool isPrime(unsigned long long n) {
+//!Must use i<=sqrtN, otherwise 4,16 can be treated as prime
+bool isPrimeSqrt2(unsigned long long n) {
+    if(n < 2) return false;
     unsigned long long sqrtN=(unsigned long long)sqrt(n);
-    for (unsigned long long i=2; i<sqrtN; i++)
+    for (unsigned long long i=2; i<=sqrtN; i++)
         if (n%i==0)
             return false;
     return true;
 }
 //Use sqrt + optimization for even number
-bool isPrime2(unsigned long long n) {
-    unsigned long long sqrtN;
-    if(2==n) //Special for 2
-        return true;
-    if(!(n%2))
-        return false;
-    sqrtN=(unsigned long long)sqrt(n);
+bool isPrimeSqrt3(unsigned long long n) {
+    if(n<2) return false;
+    if(2==n) return true;
+    if(n%2==0) return false;
+    unsigned long long sqrtN=(unsigned long long)sqrt(n);
     //Start with odd and increase by 2
-    for (unsigned long long i=3; i<sqrtN; i+=2)
+    for (unsigned long long i=3; i<=sqrtN; i+=2)
         if (n%i==0)
             return false;
     return true;
 }
-//Use i*i<=n
-bool isPrime64(const unsigned long long n) {
-    unsigned long long i;
-    if(2==n)
-        return true;
-    if (!(n % 2))
-        return false;
-    for (i = 3; i*i <= n; i += 2)
-        if (!(n % i))
-            return false;
-    return true;
+
+////////////////////////////////////////////////
+// Filter
+
+//By default, all are prime
+//max n
+//print filter all
+
+bool* primeByFilter(unsigned long long n) {
+    if(n<2) return NULL;
+
+    bool* primes=(bool*)malloc((n+1)*sizeof(bool));
+    //By default, all are prime
+    memset(primes,1,(n+1)*sizeof(bool));
+    primes[0]=0;
+    primes[1]=0;
+
+    //Handle even number
+    for (unsigned long long i = 4; i <= n; primes[i]=0,i += 2);
+    //!Max divider is sqrtN
+    for (unsigned long long i = 3,rsqrt= (unsigned long long)sqrt(n); i <= rsqrt; i += 2)
+        //!Only consider prime, but will greatly enhance performance
+        if (primes[i])
+            for (unsigned long long j = 2*i; j <= n; j += i)
+                primes[j] = 0;
+    return primes;
 }
+
+//By default, all odd number are prime except 1
+bool* primeByFilter2(unsigned long long n) {
+    if(n<2) return NULL;
+
+    //By default, all are not prime
+    bool* primes=(bool*)calloc(n+1,sizeof(bool));
+    primes[2]=1;
+
+    //Handle odd number
+    for (unsigned long long i = 3; i <= n; primes[i]=1,i += 2);
+    //!Max divider is sqrtN
+    for (unsigned long long i = 3,rsqrt= (unsigned long long)sqrt(n); i <= rsqrt; i += 2)
+        if (primes[i]) //!Only consider prime
+            for (unsigned long long j = 2*i; j <= n; j += i)
+                primes[j] = 0;
+    return primes;
+}
+
+//Only care whether one element is prime, primes[n]
+//So just ignore all even numbers
+bool isPrimeByFilter(int n) {
+    if(n<2) return false;
+    if(2==n) return true;
+    if(n%2==0) return false;
+
+    bool* primes=(bool*)malloc((n+1)*sizeof(bool));
+    memset(primes,1,(n+1)*sizeof(bool));
+    primes[0]=0;
+    primes[1]=0;
+
+    //!Not handle even number here, it's handled in "if(n%2==0)"
+    for (int i = 3,rsqrt= (int)sqrt(n); i <= rsqrt; i += 2)
+        if (primes[i]) //!Only consider prime factor
+            for (int j = 2*i; j <= n; j += i)
+                primes[j] = 0;
+
+    bool result=primes[n];
+    free(primes);
+    return result;
+}
+
+static int showPrimeFromArrayMap(bool* arr, int len) {
+    int c=0;
+    for (int i=2; i<len; i++)
+        if (arr[i]) {
+            printf("%ld ",i);
+            ++c;
+        }
+    printf("\n");
+    return c;
+}
+static int countPrimeFromArrayMap(bool* arr, int len) {
+    int c=0;
+    for (int i=2; i<len; i++)
+        if (arr[i])
+            ++c;
+    return c;
+}
+
+/////////////////////////////////////////////////
+
+//!Output primes from [0,n] directly
+//定理: 如果n不是素数, 则n有满足1<d<=sqrt(n)的一个"素数"因子d.
+//证明: I1. 如果n不是素数, 则n有满足1<d<=sqrt(n)的一个因子d.
+//I2. 如果d是素数, 则定理得证, 算法终止.
+//I3. 令n=d, 并转到步骤I1
+unsigned long long* makePrimes(unsigned long long n,unsigned int* primeCnt) {
+
+    //n/2 means only odd number can be prime, the only exception is 2
+    //Store prime
+    unsigned long long* primes=(unsigned long long*)malloc((n/2+1)*sizeof(unsigned long long));
+
+    int cnt=2; //initial size of primes array
+    primes[0] = 2;
+    primes[1] = 3;
+
+    for(int i = 5; i<=n && cnt<n; i += 2) { //cnt will be changed dynamically
+        bool flag = true;
+        for(int j = 1; primes[j]*primes[j] <= i; ++j) {
+            if(i%primes[j] == 0) {
+                flag = false;
+                break;
+            }
+        }
+        if(flag) primes[cnt++] = i;
+    }
+
+    *primeCnt=cnt;
+    return primes;
+}
+
+typedef struct Node {
+    unsigned long long data;
+    Node* next;
+} Node;
+
+Node* makePrimesLinkedList2(unsigned long long n) {
+
+    Node* root=(Node*)malloc(sizeof(Node));
+    root->data=2;
+    Node* newNode=(Node*)malloc(sizeof(Node));
+    newNode->data=3;
+    newNode->next=NULL;
+    root->next=newNode;
+    Node* lastNode=newNode;
+
+    for(int i = 5; i<=n; i += 2) {
+        bool flag = true;
+        for(Node* p=root; (p->data)*(p->data)<=i; p=p->next) {
+            if(i%p->data == 0) {
+                flag = false;
+                break;
+            }
+        }
+        if(flag) {
+            newNode=(Node*)malloc(sizeof(Node));
+            newNode->data=i;
+            newNode->next=NULL;
+            lastNode->next=newNode;
+            lastNode=newNode;
+        }
+    }
+
+    return root;
+}
+
+
+
+
+std::list<unsigned long long>* makePrimesLinkedList(unsigned long long n) {
+
+    std::list<unsigned long long>* primes=new std::list<unsigned long long>();
+    primes->push_back(2);
+    primes->push_back(3);
+
+    for(int i = 5; i<=n; i += 2) {
+        bool flag = true;
+        for(std::list<unsigned long long>::iterator prime=primes->begin(); (*prime)*(*prime)<=i; ++prime) {
+            if(i%(*prime) == 0) {
+                flag = false;
+                break;
+            }
+        }
+        if(flag) primes->push_back(i);
+    }
+
+    return primes;
+}
+
+
 
 
 /////////////////////////////////////////////////
@@ -225,7 +431,8 @@ void primeUsingBit(unsigned long long capacity=100) {
     } while (i<square);
 
 
-    showPrimeFromBitMap(array,capacity,each);
+    int c=showPrimeFromBitMap(array,capacity,each);
+    printf("Count:%d\n",c);
 }
 //改进版
 //必须用unsigned long long 数据类型才能够表示大的数
@@ -283,89 +490,36 @@ void prime(int ordinal) {
 
 
 
-////////////////////////////////////////////////
-// Filter
-static int showPrimeFromArrayMap(bool* arr, int len) {
-    int c=0;
-    for (int i=2; i<len; i++)
-        if (arr[i]) {
-            printf("%ld ",i);
-            ++c;
-        }
-    printf("\n");
-    return c;
+typedef bool(*PrimeCheck)(unsigned long long);
+
+void testPrimeValidate(unsigned long long n) {
+    printf("--------%lu--------\n",n);
+    printf("%d\n",isPrimeBasic(n));
+    printf("%d\n",isPrimeOnlyWithOdd(n));
+    printf("%d\n",isPrimeSqrt(n));
+    printf("%d\n",isPrimeSqrt2(n));
+    printf("%d\n",isPrimeSqrt3(n));
+    printf("%d\n",isPrimeByFilter(n));
 }
-static int countPrimeFromArrayMap(bool* arr, int len) {
-    int c=0;
-    for (int i=2; i<len; i++)
-        if (arr[i])
-            ++c;
-    return c;
-}
-//Use array directly, more storage, but more faster
-bool* primes(unsigned long long size) {
-    //By default, false
-    bool* array=(bool*)calloc(size+1,sizeof(bool));
-    array[2]=true;
-    for (unsigned long long i=3ull; i<size; i+=2)
-        array[i]=true;
-    for (unsigned long long i=3ull; i<=size; i+=2) {
-        for (unsigned long long j=2*i; j<=size; j+=i)
-            array[j]=false;
-    }
-    return array;
-}
-
-bool isPrimeFilter(int n) {
-    char* primes;
-    int rsqrt;
-    int i,j;
-    char result;
-
-    if(n<2)
-        return false;
-    if(2==n)
-        return true;
-    if(!(n%2))
-        return false;
-
-    primes=(char*)malloc((n+1)*sizeof(char));
-    if(NULL==primes)
-        exit(-1);
-    memset(primes,1,(n+1)*sizeof(char));
-
-    rsqrt= (int)sqrt(n);
-    for (i = 3; i < rsqrt; i += 2)
-        if (primes[i])
-            for ( j = i; j <= n; j += i)
-                primes[j] = 0;
-    result=primes[n];
-    free(primes);
-    return result;
-}
-
-
-
 
 void testPrime() {
-    int n=1997;
-    printf("%d %d\n",n,isPrime(n));
-    printf("%d %d\n",n,isPrime2(n));
-    printf("%d %d\n",n,isPrime64(n));
-    printf("%d %d\n",n,isPrimeFilter(n));
+    testPrimeValidate(4);
+    testPrimeValidate(1997);
+
 
 
 
     primeUsingBit(100ull);
 
 
+//    unsigned long long  capacity=100ull;
     unsigned long long  capacity=1000000ull;
     int c=0;
     unsigned int* array=NULL;
     BEGIN_TIMING();
     array=primeUsingBit2(capacity);
     STOP_TIMING();
-    printf("Mem usage: %luKB\n",(sizeof(unsigned int)*capacity/32+1)/1024);
+    printf("Mem usage: %luKB\n",(sizeof(unsigned int)*(capacity/32+1))/1024);
     c=countPrimeFromBitMap(array,capacity,32);
     printf("Count:%d\n",c);
     if(capacity<=100) {
@@ -374,7 +528,18 @@ void testPrime() {
 
     bool* result=NULL;
     BEGIN_TIMING();
-    result=primes(capacity);
+    result=primeByFilter(capacity);
+    STOP_TIMING();
+    printf("Mem usage: %luKB\n",(sizeof(bool)*(capacity+1))/1024);
+    c=countPrimeFromArrayMap(result,capacity+1);
+    printf("Count:%d\n",c);
+    if(capacity<=100) {
+        c=showPrimeFromArrayMap(result,capacity+1);
+    }
+
+
+    BEGIN_TIMING();
+    result=primeByFilter2(capacity);
     STOP_TIMING();
     printf("Mem usage: %luKB\n",(sizeof(bool)*capacity+1)/1024);
     c=countPrimeFromArrayMap(result,capacity+1);
@@ -383,4 +548,42 @@ void testPrime() {
         c=showPrimeFromArrayMap(result,capacity+1);
     }
 
+    unsigned int cnt=0;
+    unsigned long long* primes=NULL;
+    BEGIN_TIMING();
+    primes=makePrimes(capacity,&cnt);
+    STOP_TIMING();
+    printf("Mem usage: %luKB\n",(sizeof(unsigned long long)*(capacity/2+1))/1024);
+    printf("Count:%ld\n",cnt);
+    if(capacity<=100) {
+        for(int i=0; i<cnt; ++i)
+            printf("%llu ",primes[i]);
+        printf("\n");
+    }
+
+
+    std::list<unsigned long long>* primesList=NULL;
+    BEGIN_TIMING();
+    primesList=makePrimesLinkedList(capacity);
+    STOP_TIMING();
+    printf("Count:%ld\n",cnt);
+    if(capacity<=100) {
+        for(std::list<unsigned long long>::iterator itr=primesList->begin(); itr!=primesList->end(); ++itr)
+            printf("%llu ",*itr);
+        printf("\n");
+    }
+
+
+    Node* primeNode=NULL;
+    BEGIN_TIMING();
+    primeNode=makePrimesLinkedList2(capacity);
+    STOP_TIMING();
+    printf("Count:%ld\n",cnt);
+    if(capacity<=100) {
+        for(Node* p=primeNode; p!=NULL; p=p->next) {
+            printf("%llu ",p->data);
+        }
+        printf("\n");
+    }
+}
 }

@@ -1,8 +1,15 @@
 #include "../common.h"
 /**
+
+DP:
+f(n)=f(n-1)+f(n-2)
+f(0)=0,f(1)=1
+
+Recursive
+
 0,1,2,3,4,5,6, 7, 8, 9,10
 0,1,1,2,3,5,8,13,21,34,55
-f(0)=0,f(1)=1
+
 **/
 //Recursive version
 long fibonacci(long n) {
