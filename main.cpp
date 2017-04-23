@@ -9,12 +9,6 @@
 #include "linked_list/Singly/OneLink.h"
 
 
-int factorial(int n) {
-    if(n==1) return 1;
-    return factorial(n-1)*n;
-}
-
-
 ////////////////////////////////////////////////////////////
 
 void permutation(char *s, int start, int end) {
@@ -121,15 +115,6 @@ void hanoi2(int n,char a,char b,char c) {
     }
 }
 
-int testOneLink() {
-    OneLink link1(8);
-    link1.set(2,'9');
-    link1.output();
-    return 0;
-}
-
-
-
 extern void testTree();
 extern void testMaxContinuousSeqSum();
 extern void testBitCount();
@@ -149,23 +134,33 @@ extern void testKMax();
 namespace UnionFind {
 extern void testUnionFind();
 }
+namespace search_mid_node{
+extern void testSearchMidList();
+}
+extern void testPrime();
 int main() {
+//printf("%lu\n",CLOCKS_PER_SEC );
+testPrime();
 
-    UnionFind::testUnionFind();
+//search_mid_node::testSearchMidList();
 
-    testKMax();
 
-    graphmatrix::testDijkstra();
-    graphmatrix::testPrim();
-    graphmatrix::testDFS();
-    simplegraph::testDFSGraph();
-    testStringAlg();
-    testLCM();
-    testGCD();
-    testBitCount();
-    testMaxContinuousSeqSum();
-    testTree();
-    testSortMain();
+
+//    UnionFind::testUnionFind();
+//
+//    testKMax();
+//
+//    graphmatrix::testDijkstra();
+//    graphmatrix::testPrim();
+//    graphmatrix::testDFS();
+//    simplegraph::testDFSGraph();
+//    testStringAlg();
+//    testLCM();
+//    testGCD();
+//    testBitCount();
+//    testMaxContinuousSeqSum();
+//    testTree();
+//    testSortMain();
 
 
 //    testOneLink();

@@ -20,6 +20,24 @@
 #include <algorithm>
 #include <numeric>
 
+
+
+
+//Test performance
+#define BEGIN_TIMING() {\
+    clock_t start = clock();
+//ms
+#define STOP_TIMING() \
+    clock_t clicks = clock() - start; \
+    printf("clicks=%lu\ttime=%lums\n", clicks, \
+    1e3*clicks/((float) CLOCKS_PER_SEC));}
+//ns with 1e style
+#define STOP_TIMING_NS() \
+    clock_t clicks = clock() - start; \
+    printf("clicks=%lu\ttime=%gns\n", clicks, \
+    1e9*clicks/((float) CLOCKS_PER_SEC));}
+
+
 //定义打印宏，并在打印信息前加入文件名、行号、函数名
 #define PRINTFUNC() \
     printf("<%s>: ",__FUNCTION__)

@@ -1,7 +1,9 @@
 #include "prime.h"
 #include "../common.h"
-//求素数
-//平方根方法判断素数
+////////////////////////////////////////
+//Check whetehr one number is prime
+
+//Use sqrt
 bool isPrime(unsigned long long n) {
     unsigned long long sqrtN=(unsigned long long)sqrt(n);
     for (unsigned long long i=2; i<sqrtN; i++)
@@ -9,23 +11,25 @@ bool isPrime(unsigned long long n) {
             return false;
     return true;
 }
+//Use sqrt + optimization for even number
 bool isPrime2(unsigned long long n) {
     unsigned long long sqrtN;
-    if(2==n)
+    if(2==n) //Special for 2
         return true;
     if(!(n%2))
         return false;
     sqrtN=(unsigned long long)sqrt(n);
+    //Start with odd and increase by 2
     for (unsigned long long i=3; i<sqrtN; i+=2)
         if (n%i==0)
             return false;
     return true;
 }
+//Use i*i<=n
 bool isPrime64(const unsigned long long n) {
     unsigned long long i;
-    if(2==n) {
+    if(2==n)
         return true;
-    }
     if (!(n % 2))
         return false;
     for (i = 3; i*i <= n; i += 2)
@@ -34,7 +38,9 @@ bool isPrime64(const unsigned long long n) {
     return true;
 }
 
-unsigned int getBit(int index) {
+
+/////////////////////////////////////////////////
+static unsigned int getBit(int index) {
     unsigned int k;
     switch (index) {
     case 0:
@@ -133,37 +139,20 @@ unsigned int getBit(int index) {
     case 31:
         k=0x00000001;
         break;
-
     }
     return k;
 }
-void setBit(unsigned int& num,int index,int value) {
-    //法二
+static void setBit(unsigned int& num,int index,int value) {
     unsigned int k=getBit(index);
-    if (value>0) {
-
+    if (value>0)
         num|=k;
-    } else {//不能用异或
+    else {//不能用异或
         //这里必须用有符号数
         k=~k;
         num&=k;
     }
-    //法一
-//    unsigned int k=0x80000000;
-//    for (int i=0;i<index;i++) {
-//        k>>=1;
-//    }
-//    if (value>0) {
-//
-//        num|=k;
-//    } else {//不能用异或
-//        //这里必须用有符号数
-//        k=~k;
-//        num&=k;
-//    }
-
 }
-void printBit(unsigned int num) {
+static void printBit(unsigned int num) {
     for (unsigned int k=0x80000000; k>0; k>>=1)
         if (num&k)
             printf("%d",1);
@@ -172,35 +161,45 @@ void printBit(unsigned int num) {
     printf("\n");
 }
 
-//使用位来筛,可以计算完1亿内的素数！！
-void primeUsingBit() {
-    //最大的范围，不包括capacity本身
-    unsigned long capacity=100;
-//    unsigned long capacity=100000000;
+static int showPrimeFromBitMap(unsigned int* arr, int capacity,int bits) {
+    int c=0;
+    for (int i=0,x=0,len=capacity*bits+1; i<len; i++)
+        for (unsigned int j=0,b=0x80000000; j<bits&&x<capacity; j++,b>>=1,++x) {
+            if (arr[i]&b) {
+                printf("%ld ",x);
+                ++c;
+            }
+        }
+    printf("\n");
+    return c;
+}
+
+static int countPrimeFromBitMap(unsigned int* arr, int capacity,int bits) {
+    int c=0;
+    for (int i=0,x=0,len=capacity*bits+1; i<len; i++)
+        for (unsigned int j=0,b=0x80000000; j<bits&&x<capacity; j++,b>>=1,++x) {
+            if (arr[i]&b) {
+                ++c;
+            }
+        }
+    return c;
+}
+//Filter + Bitmap
+//Calculate the prime between [0,capacity]
+void primeUsingBit(unsigned long long capacity=100) {
     //使用int作为bit的容器,win32中位32位
-    unsigned int each=8*sizeof(int);
-//    cout<<"unit size="<<each<<endl;
+    unsigned int each=32;
     unsigned int size=capacity/each+1;
     unsigned int* array=new unsigned int[size];
-//    cout<<"array size="<<size<<endl;
     unsigned long i;
-    for (i=0; i<size; i++) {
-        //初始化为1，表示默认都是1
+    for (i=0; i<size; i++)
         array[i]=0xffffffff;
-//        print(array[i]);
-    }
     setBit(array[0],0,0);
     setBit(array[0],1,0);
-//    print(array[0]);
-
-//    cout<<"\ninitilize finished\n";
-
 
     unsigned long seed=1,div,count;
     unsigned long square=sqrt(capacity);
     do {
-        //选择种子
-//        count=seed+1;
         for (i=seed+1; i<capacity; i++) {
             int p=i/each;
             int index=i%each;
@@ -212,141 +211,44 @@ void primeUsingBit() {
             }
             if ((array[p]&k)!=0) {
                 seed=i;
-//                cout<<"seed="<<seed<<endl;
                 break;
             }
 
         }
-//        for (i=(seed+1)/each;i<size;i++) {
-
-//            for (unsigned int j=0,k=0x80000000;j<each;j++,k>>=1) {
-//
-//                if ((array[i]&k)!=0) {
-//                    seed=count;
-//                    cout<<"seed="<<seed<<endl;
-//                    break;
-//                }
-//                count++;
-//            }
-
-//        }
         //这里以种子的平方开始筛，平方以内的数已被前面的素数筛过了
 
         for (div=seed*seed; div<capacity; div+=seed) {
             int p=div/each;
-
             int index=div%each;
-//            cout<<p<<" "<<index<<endl;
             setBit(array[p],index,0);
         }
-
-
     } while (i<square);
-//    cout<<"prime filter complete\n";
-//    print(array[0]);
 
 
-    count=0;
-    for (i=0; i<size; i++)
-        for (unsigned int j=0,k=0x80000000; j<each; j++,k>>=1) {
-            if (count>=capacity)
-                break;
-            if ((array[i]&k)!=0)
-                printf("%ld\n",count);
-            count++;
-        }
-
+    showPrimeFromBitMap(array,capacity,each);
 }
 //改进版
 //必须用unsigned long long 数据类型才能够表示大的数
 //使用位来筛,可以计算完1亿内的素数！！
-void primeUsingBit2() {
-    unsigned long long capacity=2000000ull;
-    //使用int作为bit的容器,win32中位32位
-    int each=8*sizeof(int);
-//    cout<<"unit size="<<each<<endl;
-    unsigned long long size=capacity/each+1;
-    unsigned int* array=new unsigned int[size];
-//    cout<<"array size="<<size<<endl;
-    unsigned long long i;
-    for (i=0; i<size; i++) {
-        //初始化为1，表示默认都是1
-        array[i]=0xffffffff;
-//        print(array[i]);
-    }
-    setBit(array[0],0,0);
-    setBit(array[0],1,0);
-//    print(array[0]);
-
-//    cout<<"\ninitilize finished\n";
-
-    unsigned long long sum=2ull;
-    unsigned long long div;
-    printf("2 ");
-    //选择种子
-    for (i=3ul; i<capacity; i+=2) {
-        unsigned int k=getBit(i%each);
-        if ((array[i/each]&k)!=0) {
-//            cout<<i<<endl;
-            sum+=i;
-//            if (sum>=2000000) {
-//                sum-=i;
-//                break;
-//            }
-        }
-        //种子即为所求的素数
-
-        unsigned long long d=i*2;
-        for (div=i*i; div<capacity; div+=d) {
-            setBit(array[div/each],div%each,0);
-        }
-    }
-    printf("sum=%I64u\n",sum);
-//    printf("sum=%lu\n",sum);
-}
 unsigned int* primeUsingBit2(unsigned long long capacity) {
-//    unsigned long long capacity=2000000ull;
-    //使用int作为bit的容器,win32中位32位
-    int each=8*sizeof(int);
-//    in each=32;
-//    cout<<"unit size="<<each<<endl;
-    unsigned long long size=(capacity>>5)+1;
+    //Use only 32bit of int
+    int bits=32;
+    unsigned long long size=capacity*bits+1;
     unsigned int* array=new unsigned int[size];
-//    cout<<"array size="<<size<<endl;
-    unsigned long long i;
-    for (i=0ull; i<size; i++) {
-        //初始化为1，表示默认都是1
+    unsigned long long i,div,d;
+    for (i=0ull; i<size; i++)
         array[i]=0x55555555;
-//        array[i]=0xffffffff;
-//        print(array[i]);
-    }
+    //Special cases
     setBit(array[0],0,0);
     setBit(array[0],1,0);
     setBit(array[0],2,1);
-//    print(array[0]);
 
-//    cout<<"\ninitilize finished\n";
-
-//    unsigned long long sum=2ull;
-    unsigned long long div,d;
-//    cout<<2<<endl;
-    //选择种子
     for (i=3ull; i<capacity; i+=2)
-        //种子即为所求的素数
         for (div=i*i,d=i*2; div<capacity; div+=d)
-            setBit(array[div>>5],div%each,0);
-//    for (i=2ull;i<capacity;i++) {
-//        //必须有符号！！！
-//        unsigned int k=getBit(i%each);
-//        if((array[i/each]&k)!=0){
-//            cout<<i<<endl;
-//        }
-//    }
-
+            setBit(array[div>>5],div%bits,0);
     return array;
-//    cout<<sum<<endl;
-
 }
+
 //筛法求素数,效率高！！
 //ordinal限制素数
 void prime(int ordinal) {
@@ -378,28 +280,39 @@ void prime(int ordinal) {
                 break;
         }
 }
+
+
+
+////////////////////////////////////////////////
+// Filter
+static int showPrimeFromArrayMap(bool* arr, int len) {
+    int c=0;
+    for (int i=2; i<len; i++)
+        if (arr[i]) {
+            printf("%ld ",i);
+            ++c;
+        }
+    printf("\n");
+    return c;
+}
+static int countPrimeFromArrayMap(bool* arr, int len) {
+    int c=0;
+    for (int i=2; i<len; i++)
+        if (arr[i])
+            ++c;
+    return c;
+}
+//Use array directly, more storage, but more faster
 bool* primes(unsigned long long size) {
-//    int size=200000;//素数最大值
-
-    //默认值为0
-    bool* array=new bool[size+1];
-    array[0]=false;
-    array[1]=false;
+    //By default, false
+    bool* array=(bool*)calloc(size+1,sizeof(bool));
     array[2]=true;
-    for (unsigned long long i=3ull; i<size; i+=2) {
+    for (unsigned long long i=3ull; i<size; i+=2)
         array[i]=true;
-        array[i+1]=false;
-    }
-
-    //先单独把2筛出来
-//    for (unsigned long long j=4;j<=size;j+=2) {
-//        array[j]=false;
-//    }
-//    cout<<"first filter\n";
-    for (unsigned long long i=3ull,d=i*2; i<=size; i+=2)
-        for (unsigned long long j=i*i; j<=size; j+=d)
+    for (unsigned long long i=3ull; i<=size; i+=2) {
+        for (unsigned long long j=2*i; j<=size; j+=i)
             array[j]=false;
-//    cout<<"finished filter\n";
+    }
     return array;
 }
 
@@ -431,10 +344,43 @@ bool isPrimeFilter(int n) {
     return result;
 }
 
+
+
+
 void testPrime() {
     int n=1997;
     printf("%d %d\n",n,isPrime(n));
     printf("%d %d\n",n,isPrime2(n));
     printf("%d %d\n",n,isPrime64(n));
     printf("%d %d\n",n,isPrimeFilter(n));
+
+
+
+    primeUsingBit(100ull);
+
+
+    unsigned long long  capacity=1000000ull;
+    int c=0;
+    unsigned int* array=NULL;
+    BEGIN_TIMING();
+    array=primeUsingBit2(capacity);
+    STOP_TIMING();
+    printf("Mem usage: %luKB\n",(sizeof(unsigned int)*capacity/32+1)/1024);
+    c=countPrimeFromBitMap(array,capacity,32);
+    printf("Count:%d\n",c);
+    if(capacity<=100) {
+        c=showPrimeFromBitMap(array,capacity,32);
+    }
+
+    bool* result=NULL;
+    BEGIN_TIMING();
+    result=primes(capacity);
+    STOP_TIMING();
+    printf("Mem usage: %luKB\n",(sizeof(bool)*capacity+1)/1024);
+    c=countPrimeFromArrayMap(result,capacity+1);
+    printf("Count:%d\n",c);
+    if(capacity<=100) {
+        c=showPrimeFromArrayMap(result,capacity+1);
+    }
+
 }
