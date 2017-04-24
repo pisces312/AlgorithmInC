@@ -138,10 +138,15 @@ extern void testSearchMidList();
 namespace prime{
 extern void testPrime();
 }
+extern void testSearch();
 int main() {
+
+
+    testSearch();
+
 //printf("%lu\n",CLOCKS_PER_SEC );
 //printf("%lu\n",sizeof(bool) );
-prime::testPrime();
+//prime::testPrime();
 
 //search_mid_node::testSearchMidList();
 
